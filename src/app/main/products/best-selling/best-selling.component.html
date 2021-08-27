@@ -1,18 +1,35 @@
-<table>
-  <thead>
-    <th>Id</th>
-    <th>Name</th>
-    <th>Price</th>
-    <th>Available</th>
-    <th>Ranking</th>
-  </thead>
-  <tbody>
-    <tr *ngFor="let product of products;">
-      <td>{{ product.productId }}</td>
-      <td>{{ product.name }}</td>
-      <td>{{ product.price }}</td>
-      <td>{{ product.available }}</td>
-      <td>{{ product.ranking }}</td>
-    </tr>
-  </tbody>
-</table>
+<section>
+  <div id="slider" class="sl-slider-wrapper">
+    <div class="sl-slider">
+      <div *ngFor="let product of products; let i = index" class="sl-slide bg-{{i+1}}" data-orientation="horizontal" data-slice1-rotation="-25" data-slice2-rotation="-25" data-slice1-scale="2" data-slice2-scale="2">
+        <div class="sl-slide-inner">
+          <div>
+            <div class="item">
+              <div class="backgroung-category">{{ product.category.description }}</div>
+              <span class="name">{{ product.name }}</span>
+        
+              <img class="image" src="../../../../assets/images/bo-590713-PCs-transparent-2021-update-small.png"
+                alt="">
+              <div class="background-orange">
+                <span class="price">{{ product.price | currency }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>      
+    </div>
+
+    <nav id="nav-arrows" class="nav-arrows">
+      <span class="nav-arrow-prev">Previous</span>
+      <span class="nav-arrow-next">Next</span>
+    </nav>
+
+    <nav id="nav-dots" class="nav-dots">
+      <span class="nav-dot-current"></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+    </nav>
+  </div>
+</section>

@@ -1,6 +1,8 @@
-import { NgModule } from '@angular/core';
+import { NgModule, LOCALE_ID } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatIconModule } from '@angular/material/icon';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -10,6 +12,8 @@ import { CategoryComponent } from './main/products/category/category.component';
 import { SelectedComponent } from './main/products/selected/selected.component';
 import { AllComponent } from './main/products/all/all.component';
 import { ClientComponent } from './main/client/client.component';
+import { HeaderComponent } from './layout/header/header.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -19,14 +23,18 @@ import { ClientComponent } from './main/client/client.component';
     CategoryComponent,
     SelectedComponent,
     AllComponent,
-    ClientComponent
+    ClientComponent,
+    HeaderComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    MatToolbarModule,
+    BrowserAnimationsModule,
+    MatIconModule
   ],
-  providers: [],
+  providers: [{provide: LOCALE_ID, useValue: 'pt-BR'}],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
