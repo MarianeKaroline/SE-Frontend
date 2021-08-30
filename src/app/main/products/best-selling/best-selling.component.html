@@ -1,35 +1,36 @@
-<section>
-  <div id="slider" class="sl-slider-wrapper">
-    <div class="sl-slider">
-      <div *ngFor="let product of products; let i = index" class="sl-slide bg-{{i+1}}" data-orientation="horizontal" data-slice1-rotation="-25" data-slice2-rotation="-25" data-slice1-scale="2" data-slice2-scale="2">
-        <div class="sl-slide-inner">
-          <div>
-            <div class="item">
+<section class="h-100-8">
+  <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+    <div class="carousel-indicators">
+      <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+      <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+      <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+      <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="3" aria-label="Slide 3"></button>
+      <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="4" aria-label="Slide 3"></button>
+    </div>
+    <div class="carousel-inner">
+      <div *ngFor="let product of products; let i = index" id="slide-{{ i+1 }}" class="carousel-item">
+        <div class="container h-100-8">
+          <div class="h-100-8 d-block w-100">
+            <div class="d-flex h-100-8 w-100">
               <div class="backgroung-category">{{ product.category.description }}</div>
               <span class="name">{{ product.name }}</span>
-        
-              <img class="image" src="../../../../assets/images/bo-590713-PCs-transparent-2021-update-small.png"
-                alt="">
+
+              <img class="image" src="../../../../assets/images/bo-590713-PCs-transparent-2021-update-small.png" alt="">
               <div class="background-orange">
-                <span class="price">{{ product.price | currency }}</span>
+                <span class="price">R$ {{ product.price }},00</span>
               </div>
             </div>
           </div>
         </div>
-      </div>      
+      </div>
     </div>
-
-    <nav id="nav-arrows" class="nav-arrows">
-      <span class="nav-arrow-prev">Previous</span>
-      <span class="nav-arrow-next">Next</span>
-    </nav>
-
-    <nav id="nav-dots" class="nav-dots">
-      <span class="nav-dot-current"></span>
-      <span></span>
-      <span></span>
-      <span></span>
-      <span></span>
-    </nav>
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Next</span>
+    </button>
   </div>
 </section>

@@ -19,7 +19,8 @@ export class BestSellingComponent implements OnInit {
   onBestSelling() {
     this.productService.getBestSelling()
       .subscribe(product => {
-        this.products = product;  
+        this.products = product;
+        console.log(product);
     });
   }
 }

@@ -1,15 +1,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+@import "~bootstrap-icons/font/bootstrap-icons.css";
 
-mat-toolbar {
+nav {
   background-color: #28282B;
   color: #fff;
   height: 8rem;
-}
-
-mat-icon {
-  margin-right: 20px;
-  margin-bottom: 20px;
-  font-size: 50px;
 }
 
 img {
@@ -17,28 +12,38 @@ img {
   margin-left: 30px;
 }
 
-.logo {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+input {
+  border-radius: 50rem!important;
 }
 
-.signin {
-  letter-spacing: 1px;
+.navbar-brand {
+  margin: 0;
+}
+
+.account {
+  color: #fff;
   font-size: 1rem;
-  margin-right: 8px;
+  margin-right: 10px;
 }
 
-.signup {
-  letter-spacing: 1px;
-  font-size: 1rem;
-  margin-left: 8px;
+.btn {
+  padding: 0;
+  color: #fff;
 }
 
-.title {
-  letter-spacing: 1.5px;
-  margin-left: 20px;
-  font-family: 'Roboto', sans-serif;
+.menu {
+  font-size: 2rem;
+}
+
+.cart {
+  font-size: 2rem;
+  margin-right: 10px;
+}
+
+.content-cart {
+  margin-right: 10px;
+  color: #fff;
+  cursor: pointer;
 }
 
 .spacer {
@@ -48,14 +53,18 @@ img {
 .cart-basket {
   font-size: .6rem;
   position: absolute;
-  top: 27px;
-  right: 5px;
-  width: 30px;
-  height: 30px;
+  top: 35px;
+  right: 10px;
+  width: 25px;
+  height: 25px;
   color: #fff;
   background-color: #FF6600;
   border-radius: 50%;
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.input-group {
+  border-radius: 50rem!important;
 }
