@@ -1,0 +1,12 @@
+<section>
+  <div class="container">
+    <div class="card" *ngFor="let category of categories">
+      <div class="background-category">{{ category.description }}</div>
+      <span>{{ category.description }}s</span>
+      <img class="img-fluid"
+        src="../../../assets/images/{{ category.description }}.png"
+        alt=""
+      />
+    </div>
+  </div>
+</section>

@@ -8,17 +8,19 @@
       <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="4" aria-label="Slide 3"></button>
     </div>
     <div class="carousel-inner">
-      <div *ngFor="let product of products; let i = index" id="slide-{{ i+1 }}" class="carousel-item">
+      <div *ngFor="let product of products; let i = index;" id="slide-{{ i+1 }}" [ngClass]="{ 'active' : i==0  }" class="carousel-item">
         <div class="container h-100-8">
           <div class="h-100-8 d-block w-100">
             <div class="d-flex h-100-8 w-100">
-              <div class="backgroung-category">{{ product.category.description }}</div>
+              <div class="background-category">{{ product.category.description }}</div>
               <span class="name">{{ product.name }}</span>
-
-              <img class="image" src="../../../../assets/images/bo-590713-PCs-transparent-2021-update-small.png" alt="">
-              <div class="background-orange">
-                <span class="price">R$ {{ product.price }},00</span>
+              <span class="price">{{ product.price | currency: 'BRL' }}</span>
+              <div class="button">
+                <button class="btn btn-lg">More details</button>
+                <button class="btn btn-lg add">Add to cart</button>
               </div>
+
+              <img class="image" src="../../../../assets/images/{{ product.image }}{{ product.extension }}" alt="">
             </div>
           </div>
         </div>

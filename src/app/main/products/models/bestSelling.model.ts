@@ -10,4 +10,6 @@ export interface BestSellingModel {
     description: string
   };
   ranking: number;
+  image: string;
+  extension: string;
 }

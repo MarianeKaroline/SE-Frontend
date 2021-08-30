@@ -1,4 +1,8 @@
+import { ProductSelectedModel } from './../models/ProductSelected.model';
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { ProductsService } from '../products.service';
+
 
 @Component({
   selector: 'app-selected',
@@ -7,9 +11,22 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SelectedComponent implements OnInit {
 
-  constructor() { }
+  selected: ProductSelectedModel;
+  id: any;
+
+  constructor(private productService: ProductsService,
+              private route: ActivatedRoute) { }
 
   ngOnInit(): void {
+    this.id = this.route.snapshot.paramMap.get("id");
+    this.onSelected();
   }
 
+  onSelected() {
+    this.productService.getSelected(this.id)
+      .subscribe(product => {
+        this.selected = product;
+        console.log(product);
+      });
+  }
 }

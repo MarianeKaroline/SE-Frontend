@@ -3,6 +3,8 @@ import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
+import { registerLocaleData } from '@angular/common';
+import localePt from '@angular/common/locales/pt';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -14,6 +16,9 @@ import { AllComponent } from './main/products/all/all.component';
 import { ClientComponent } from './main/client/client.component';
 import { HeaderComponent } from './layout/header/header.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { SearchComponent } from './layout/search/search.component';
+
+registerLocaleData(localePt);
 
 @NgModule({
   declarations: [
@@ -24,7 +29,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     SelectedComponent,
     AllComponent,
     ClientComponent,
-    HeaderComponent
+    HeaderComponent,
+    SearchComponent
   ],
   imports: [
     BrowserModule,

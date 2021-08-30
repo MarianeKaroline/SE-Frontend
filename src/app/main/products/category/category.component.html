@@ -1,1 +1,22 @@
-<p>category works!</p>
+<section>
+  <table>
+      <thead>
+          <tr>
+              <th>Product Id</th>
+              <th>Name</th>
+              <th>Price</th>
+              <th>Category Name</th>
+              <th>Available</th>
+          </tr>
+      </thead>
+      <tbody>
+          <tr *ngFor="let cat of category">
+              <td>{{ cat.productId }}</td>
+              <td>{{ cat.name }}</td>
+              <td>{{ cat.price }}</td>
+              <td>{{ cat.category.description }}</td>
+              <td>{{ cat.available }}</td>
+          </tr>
+      </tbody>
+  </table>
+</section>

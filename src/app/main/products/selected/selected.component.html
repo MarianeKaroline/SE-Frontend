@@ -1,1 +1,26 @@
-<p>selected works!</p>
+<section>
+  <table>
+      <thead>
+          <tr>
+              <th>Product Id</th>
+              <th>Rating</th>
+              <th>Name</th>
+              <th>Category Name</th>
+              <th>Price</th>
+              <th>Amount</th>
+              <th>Detail</th>
+          </tr>
+      </thead>
+      <tbody>
+          <tr *ngIf="selected">
+              <td>{{ selected.productId }}</td>
+              <td>{{ selected.rating }}</td>
+              <td>{{ selected.name }}</td>
+              <td>{{ selected.category.description }}</td>
+              <td>{{ selected.price }}</td>
+              <td>{{ selected.amount }}</td>
+              <td>{{ selected.detail }}</td>
+          </tr>
+      </tbody>
+  </table>
+</section>
