@@ -13,8 +13,10 @@ const apiUrl = environment.apiUrl;
 export class ProductsService {
   private products = new BehaviorSubject<BestSellingModel[]>([]);
   public products$ = this.products.asObservable();
+
   private categoryProduct = new BehaviorSubject<CategoryModel[]>([]);
   public categoryProduct$ = this.categoryProduct.asObservable();
+
   private selectedProduct = new BehaviorSubject<ProductSelectedModel[]>([]);
   public selectedProduct$ = this.selectedProduct.asObservable();
 

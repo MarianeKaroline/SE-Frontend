@@ -1,6 +1,6 @@
 
   <div class="container">
-    <div class="card" *ngFor="let category of categories">
+    <div class="card" *ngFor="let category of categories" routerLink="/category/{{ category.categoryEnum }}">
       <div class="background-category">{{ category.description }}</div>
       <span>{{ category.description }}s</span>
       <img class="img-fluid"

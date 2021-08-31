@@ -9,4 +9,6 @@ export interface CategoryModel {
         description: string
     };
     available: boolean;
+    image: string;
+    extension: string;
 }

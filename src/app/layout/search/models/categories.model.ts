@@ -1,4 +1,6 @@
+import { CategoryEnum } from './../../../main/enums/categoryEnum';
+
 export interface CategoriesModel {
-  categoryId: number,
+  categoryEnum: CategoryEnum,
   description: string
 }

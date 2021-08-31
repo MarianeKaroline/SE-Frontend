@@ -17,6 +17,7 @@ import { ClientComponent } from './main/client/client.component';
 import { HeaderComponent } from './layout/header/header.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SearchComponent } from './layout/search/search.component';
+import { SidebarComponent } from './layout/sidebar/sidebar.component';
 
 registerLocaleData(localePt);
 
@@ -30,7 +31,8 @@ registerLocaleData(localePt);
     AllComponent,
     ClientComponent,
     HeaderComponent,
-    SearchComponent
+    SearchComponent,
+    SidebarComponent
   ],
   imports: [
     BrowserModule,

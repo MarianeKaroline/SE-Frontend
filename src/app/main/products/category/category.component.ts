@@ -10,13 +10,13 @@ import { ProductsService } from '../products.service';
 })
 export class CategoryComponent implements OnInit {
   category: CategoryModel[] = [];
-  id: any;
+  id: number;
 
   constructor(private productService: ProductsService,
               private route: ActivatedRoute) { }
 
   ngOnInit(): void {
-    this.id = this.route.snapshot.paramMap.get("id");
+    this.id = +this.route.snapshot.paramMap.get("id");
     this.onCategory();
   }
 

@@ -1,22 +1,15 @@
+<app-sidebar></app-sidebar>
 <section>
-  <table>
-      <thead>
-          <tr>
-              <th>Product Id</th>
-              <th>Name</th>
-              <th>Price</th>
-              <th>Category Name</th>
-              <th>Available</th>
-          </tr>
-      </thead>
-      <tbody>
-          <tr *ngFor="let cat of category">
-              <td>{{ cat.productId }}</td>
-              <td>{{ cat.name }}</td>
-              <td>{{ cat.price }}</td>
-              <td>{{ cat.category.description }}</td>
-              <td>{{ cat.available }}</td>
-          </tr>
-      </tbody>
-  </table>
+  <div class="container">
+    <div class="card" *ngFor="let cat of category" routerLink="/product/{{ cat.productId }}">
+      <div class="img">
+        <img
+          src="../../../../assets/images/{{ cat.image }}{{ cat.extension }}"
+          alt=""
+        />
+      </div>
+      <span class="price">{{ cat.price | currency: "BRL" }}</span>
+      <span class="name">{{ cat.name }}</span>
+    </div>
+  </div>
 </section>

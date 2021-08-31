@@ -9,7 +9,7 @@ const routes: Routes = [
   { path: '', component: BestSellingComponent },
   { path: 'category/:id', component: CategoryComponent },
   { path: 'product/:id', component: SelectedComponent },
-  { path: 'search', component: SearchComponent }
+  { path: 'search', component: SearchComponent },
 ];
 
 @NgModule({

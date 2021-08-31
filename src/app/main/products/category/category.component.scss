@@ -1,3 +1,55 @@
 section {
   color: #fff;
+  height: calc(100vh - 8rem);
+  width: calc(100% - 75px);
+  margin-left: 75px;
 }
+
+.container {
+  display: grid;
+  grid-gap: 30px;
+  grid-template-columns: repeat(auto-fit, 350px);
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  max-width: 100%;
+  height: calc(100vh - 8rem);
+}
+
+.card {
+  cursor: pointer;
+  height: 30rem;
+  background-color: #28282B;
+  box-shadow: 0 4px 6px 0 hsla(0, 0%, 0%, 0.2);
+  align-items: center;
+}
+
+.img {
+  background-color: #232325;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 70%;
+}
+
+.price {
+  margin-top: 40px;
+  font-size: 2rem;
+}
+
+.name {
+  font-size: 1rem;
+  margin-top: 40px;
+}
+
+span {
+  font-weight: 300;
+}
+
+img {
+  width: 100%;
+  max-height: 100%;
+}
+
