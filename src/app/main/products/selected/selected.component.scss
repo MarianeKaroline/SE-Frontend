@@ -1,3 +1,68 @@
 section {
+  display: flex;
+  justify-content: center;
   color: #fff;
+  height: calc(100vh - 8rem);
+  width: calc(100% - 75px);
+  margin-left: 75px;
+}
+
+ngb-rating {
+  margin-top: 40px;
+}
+
+.star {
+  position: relative;
+  display: inline-block;
+  font-size: 1.5rem;
+  color: #d3d3d3;
+}
+
+.full {
+  color: #ffd000;
+}
+
+.half {
+  position: absolute;
+  display: inline-block;
+  overflow: hidden;
+  color: #ffd000;
+}
+
+.container {
+  margin-top: 30px;
+  display: flex;
+}
+
+.image {
+  display: flex;
+  align-items: center;
+  width: 50%;
+  max-height: 60%;
+}
+
+.containt {
+  margin-left: 10%;
+  width: 40%;
+}
+
+.name {
+  margin-top: 5px;
+  font-size: 40px;
+  font-weight: 400;
+  display: block;
+}
+
+.rating {
+  margin-left: 20px;
+  font-size: 1.2rem;
+  font-weight: 300;
+}
+
+.box-price {
+  margin-top: 40px;
+}
+
+img {
+  width: 100%;
 }

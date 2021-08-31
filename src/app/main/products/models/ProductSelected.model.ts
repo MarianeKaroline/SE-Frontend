@@ -11,4 +11,6 @@ export interface ProductSelectedModel {
   price: number;
   amount: number;
   detail: string;
+  image: string;
+  extension: string;
 }

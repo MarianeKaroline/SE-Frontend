@@ -1,3 +1,6 @@
+import { LayoutModule } from './layout/layout.module';
+import { HeaderComponent } from './layout/header/header.component';
+import { Routes, RouterModule } from '@angular/router';
 import { NgModule, LOCALE_ID } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
@@ -6,43 +9,49 @@ import { MatIconModule } from '@angular/material/icon';
 import { registerLocaleData } from '@angular/common';
 import localePt from '@angular/common/locales/pt';
 
-import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { ProductsComponent } from './main/products/products.component';
 import { BestSellingComponent } from './main/products/best-selling/best-selling.component';
-import { CategoryComponent } from './main/products/category/category.component';
-import { SelectedComponent } from './main/products/selected/selected.component';
-import { AllComponent } from './main/products/all/all.component';
 import { ClientComponent } from './main/client/client.component';
-import { HeaderComponent } from './layout/header/header.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { SearchComponent } from './layout/search/search.component';
-import { SidebarComponent } from './layout/sidebar/sidebar.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 registerLocaleData(localePt);
+
+const appRoutes: Routes = [
+  {
+    path: '',
+    component: BestSellingComponent
+  },
+  {
+    path:'product',
+    loadChildren: () => import('./main/products/product.module').then(m => m.ProductModule)
+  },
+  {
+    path:'categories',
+    loadChildren: () => import('./layout/layout.module').then(m => m.LayoutModule)
+  }
+];
 
 @NgModule({
   declarations: [
     AppComponent,
-    ProductsComponent,
-    BestSellingComponent,
-    CategoryComponent,
-    SelectedComponent,
-    AllComponent,
     ClientComponent,
-    HeaderComponent,
-    SearchComponent,
-    SidebarComponent
+    HeaderComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule,
     HttpClientModule,
-    MatToolbarModule,
     BrowserAnimationsModule,
-    MatIconModule
+    RouterModule.forRoot(appRoutes, {
+      paramsInheritanceStrategy: 'always',
+      enableTracing: false
+    }),
+    LayoutModule,
+    MatToolbarModule,
+    MatIconModule,
+    NgbModule
   ],
-  providers: [{provide: LOCALE_ID, useValue: 'pt-BR'}],
-  bootstrap: [AppComponent]
+  providers: [{ provide: LOCALE_ID, useValue: 'pt-BR' }],
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

@@ -1,26 +1,25 @@
+<app-sidebar></app-sidebar>
 <section>
-  <table>
-      <thead>
-          <tr>
-              <th>Product Id</th>
-              <th>Rating</th>
-              <th>Name</th>
-              <th>Category Name</th>
-              <th>Price</th>
-              <th>Amount</th>
-              <th>Detail</th>
-          </tr>
-      </thead>
-      <tbody>
-          <tr *ngIf="selected">
-              <td>{{ selected.productId }}</td>
-              <td>{{ selected.rating }}</td>
-              <td>{{ selected.name }}</td>
-              <td>{{ selected.category.description }}</td>
-              <td>{{ selected.price }}</td>
-              <td>{{ selected.amount }}</td>
-              <td>{{ selected.detail }}</td>
-          </tr>
-      </tbody>
-  </table>
+  <div class="container" *ngIf="selected">
+    <div class="image">
+      <img src="../../../../assets/images/{{ selected.image }}{{ selected.extension }}" alt="">
+    </div>
+    <div class="containt">
+      <span class="name">{{ selected.name }}</span>
+
+      <div class="rater">
+        <ng-template #t let-fill="fill">
+          <span class="star" [class.full]="fill === 100">
+            <span class="span half" [style.width.%]="fill">&starf;</span>&starf;
+          </span>
+        </ng-template>
+
+        <ngb-rating [rate]="selected.rating" [starTemplate]="t" [readonly]="true" [max]="5"></ngb-rating>
+        <span class="rating">{{ selected.rating | number: '1.1-1' }}</span>
+      </div>
+      <div class="box-price">
+        <span class="name-price">por <span class="price">{{ selected.price | currency: 'BRL' }}</span></span>
+      </div>
+    </div>
+  </div>
 </section>

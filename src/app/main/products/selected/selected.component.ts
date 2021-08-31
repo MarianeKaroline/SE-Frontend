@@ -12,13 +12,13 @@ import { ProductsService } from '../products.service';
 export class SelectedComponent implements OnInit {
 
   selected: ProductSelectedModel;
-  id: any;
+  id: number;
 
   constructor(private productService: ProductsService,
               private route: ActivatedRoute) { }
 
   ngOnInit(): void {
-    this.id = this.route.snapshot.paramMap.get("id");
+    this.id = +this.route.snapshot.paramMap.get("id");
     this.onSelected();
   }
 
@@ -26,7 +26,6 @@ export class SelectedComponent implements OnInit {
     this.productService.getSelected(this.id)
       .subscribe(product => {
         this.selected = product;
-        console.log(product);
       });
   }
 }
