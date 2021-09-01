@@ -1,4 +1,4 @@
-import { SearchService } from './search.service';
+import { LayoutService } from '../layout.service';
 import { Component, OnInit } from '@angular/core';
 import { CategoriesModel } from './models/categories.model';
 
@@ -10,14 +10,14 @@ import { CategoriesModel } from './models/categories.model';
 export class SearchComponent implements OnInit {
   categories: CategoriesModel[] = [];
 
-  constructor(private searchService: SearchService) { }
+  constructor(private layoutService: LayoutService) { }
 
   ngOnInit(): void {
     this.onCategories();
   }
 
   onCategories() {
-    this.searchService.getCategories()
+    this.layoutService.getCategories()
       .subscribe(category => {
         this.categories = category;
       })

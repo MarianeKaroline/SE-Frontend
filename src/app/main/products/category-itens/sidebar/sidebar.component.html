@@ -1,0 +1,38 @@
+<div class="l-navbar" id="nav-bar">
+  <nav class="nav">
+    <div>
+      <div class="nav_list">
+        <a
+          *ngFor="let category of categories; let i = index"
+          data-toggle="tooltip"
+          data-placement="right"
+          title="{{ category.description }}"
+          routerLink="/product/category/{{ category.categoryEnum }}"
+          [ngClass]="{ 'active': categoryId == category.categoryEnum }"
+          class="nav_link"
+        >
+          <i
+            *ngIf="category.description == 'Accessorie'"
+            class="bi bi-mouse nav_icon"
+          ></i>
+          <i
+            *ngIf="category.description == 'Cellphone'"
+            class="bi bi-phone nav_icon"
+          ></i>
+          <i
+            *ngIf="category.description == 'Computer'"
+            class="bi bi-cpu nav_icon"
+          ></i>
+          <i
+            *ngIf="category.description == 'Notebook'"
+            class="bi bi-laptop nav_icon"
+          ></i>
+          <i
+            *ngIf="category.description == 'Tablet'"
+            class="bi bi-tablet nav_icon"
+          ></i>
+        </a>
+      </div>
+    </div>
+  </nav>
+</div>

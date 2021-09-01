@@ -1,19 +1,45 @@
 <nav class="navbar navbar-expand-lg">
   <div class="container-fluid">
-    <a class="btn btn-lg icon-menu" routerLink="/categories">
+    <a
+      class="btn btn-lg icon-menu"
+      routerLink="/categories"
+      *ngIf="home === '/'"
+    >
       <i class="bi bi-list menu"></i>
     </a>
+    <a
+      class="btn btn-lg icon-menu"
+      routerLink=""
+      *ngIf="home === '/categories'"
+    >
+      <i class="bi bi-x menu"></i>
+    </a>
     <a class="navbar-brand" routerLink="">
-      <img src="../../assets/logo/logo.svg" alt="logo-site">
+      <img src="../../assets/logo/logo.svg" alt="logo-site" />
     </a>
 
     <span class="spacer"></span>
 
-    <div class="p-1 bg-light rounded rounded-pill shadow-sm mb-4" style="width: 30rem; background-color: #1b1b1d;">
-      <div class="input-group" style="background-color: #1b1b1d;">
-        <input type="search" placeholder="What're you searching for?" aria-describedby="button-addon1" class="form-control border-0 bg-light" style="background: #1b1b1d!important;">
+    <div
+      class="p-1 bg-light rounded rounded-pill shadow-sm mb-4"
+      style="width: 30rem; background-color: #1b1b1d"
+    >
+      <div class="input-group" style="background-color: #1b1b1d">
+        <input
+          type="search"
+          placeholder="What're you searching for?"
+          aria-describedby="button-addon1"
+          class="form-control border-0 bg-light"
+          style="background: #1b1b1d !important"
+        />
         <div class="input-group-append">
-          <button id="button-addon1" type="submit" class="btn btn-link text-primary"><i class="bi bi-search"></i></button>
+          <button
+            id="button-addon1"
+            type="submit"
+            class="btn btn-link text-primary"
+          >
+            <i class="bi bi-search"></i>
+          </button>
         </div>
       </div>
     </div>
@@ -21,7 +47,13 @@
     <span class="spacer"></span>
 
     <div class="dropdown">
-      <a class="nav-link dropdown-toggle account" id="navbarDropdownMenuLink" aria-haspopup="true" data-toggle="dropdown" aria-expanded="false">
+      <a
+        class="nav-link dropdown-toggle account"
+        id="navbarDropdownMenuLink"
+        aria-haspopup="true"
+        data-toggle="dropdown"
+        aria-expanded="false"
+      >
         Your account
       </a>
       <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">

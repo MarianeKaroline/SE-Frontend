@@ -3,14 +3,14 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
-import { CategoriesModel } from './models/categories.model';
+import { CategoriesModel } from './search/models/categories.model';
 
 const apiUrl = environment.apiUrl;
 
 @Injectable({
   providedIn: 'root',
 })
-export class SearchService {
+export class LayoutService {
   private category = new BehaviorSubject<CategoriesModel[]>([]);
   public category$ = this.category.asObservable();
 

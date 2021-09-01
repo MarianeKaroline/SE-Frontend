@@ -1,9 +1,44 @@
 <app-sidebar></app-sidebar>
 <section>
   <div class="container" *ngIf="selected">
-    <div class="image">
-      <img src="../../../../assets/images/{{ selected.image }}{{ selected.extension }}" alt="">
+    <div class="galery">
+      <div class="images image-1 active">
+        <img
+          src="../../../../assets/images/{{ selected.image }}{{
+            selected.extension
+          }}"
+          alt=""
+        />
+      </div>
+
+      <div class="images image-2">
+        <img
+          src="../../../../assets/images/{{ selected.image }}-2{{
+            selected.extension
+          }}"
+          alt=""
+        />
+      </div>
+
+      <div class="images image-3">
+        <img
+          src="../../../../assets/images/{{ selected.image }}-3{{
+            selected.extension
+          }}"
+          alt=""
+        />
+      </div>
     </div>
+
+    <div class="image">
+      <img
+        src="../../../../assets/images/{{ selected.image }}{{
+          selected.extension
+        }}"
+        alt=""
+      />
+    </div>
+
     <div class="containt">
       <span class="name">{{ selected.name }}</span>
 
@@ -14,12 +49,33 @@
           </span>
         </ng-template>
 
-        <ngb-rating [rate]="selected.rating" [starTemplate]="t" [readonly]="true" [max]="5"></ngb-rating>
-        <span class="rating">{{ selected.rating | number: '1.1-1' }}</span>
+        <ngb-rating
+          [rate]="selected.rating"
+          [starTemplate]="t"
+          [readonly]="true"
+          [max]="5"
+        ></ngb-rating>
       </div>
+
       <div class="box-price">
-        <span class="name-price">por <span class="price">{{ selected.price | currency: 'BRL' }}</span></span>
+        <span class="name-price"
+          >por
+          <span class="price">{{
+            selected.price | currency: "BRL"
+          }}</span></span
+        >
       </div>
+
+      <div class="content-detail">
+        <span *ngFor="let detail of details" class="detail">{{ detail }}</span>
+      </div>
+
+      <button class="btn btn-lg">Add to cart</button>
     </div>
+  </div>
+
+  <div class="continue">
+    <span class="more">See more</span>
+    <hr />
   </div>
 </section>

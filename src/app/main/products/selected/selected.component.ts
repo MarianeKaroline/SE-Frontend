@@ -12,6 +12,7 @@ import { ProductsService } from '../products.service';
 export class SelectedComponent implements OnInit {
 
   selected: ProductSelectedModel;
+  details: string[];
   id: number;
 
   constructor(private productService: ProductsService,
@@ -26,6 +27,7 @@ export class SelectedComponent implements OnInit {
     this.productService.getSelected(this.id)
       .subscribe(product => {
         this.selected = product;
+        this.details = product.detail.split(";");
       });
   }
 }
