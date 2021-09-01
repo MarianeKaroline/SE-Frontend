@@ -14,8 +14,6 @@ import { BestSellingComponent } from './main/products/best-selling/best-selling.
 import { ClientComponent } from './main/client/client.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { CartComponent } from './main/cart/cart.component';
-import { ProductsComponent } from './main/cart/products/products.component';
 
 registerLocaleData(localePt);
 
@@ -33,7 +31,8 @@ const appRoutes: Routes = [
     loadChildren: () => import('./layout/layout.module').then(m => m.LayoutModule)
   },
   {
-    path:'cart'
+    path:'cart',
+    loadChildren: () => import('./main/cart/cart.module').then(m => m.CartModule)
   }
 ];
 
@@ -42,8 +41,6 @@ const appRoutes: Routes = [
     AppComponent,
     ClientComponent,
     HeaderComponent,
-    CartComponent,
-    ProductsComponent,
   ],
   imports: [
     BrowserModule,
