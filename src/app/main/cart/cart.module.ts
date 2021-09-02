@@ -1,27 +1,38 @@
+import { MatIconModule } from '@angular/material/icon';
 import { registerLocaleData, CommonModule } from "@angular/common";
 import { HttpClientModule } from "@angular/common/http";
 import { NgModule, LOCALE_ID } from "@angular/core";
 import { Routes, RouterModule } from "@angular/router";
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
-import { ProductsComponent } from "./products/products.component";
 import localePt from '@angular/common/locales/pt';
 import { CartComponent } from "./cart.component";
+import { ProductsCartComponent } from './products-cart/products-cart.component';
+import { MatStepperModule } from '@angular/material/stepper';
 
 registerLocaleData(localePt);
 
 const routes: Routes = [
-  { path: "", component: CartComponent }
+  {
+    path: "",
+    component: CartComponent,
+    children: [
+      { path: "product/:id", component: ProductsCartComponent }
+    ]
+  }
 ];
 
 @NgModule({
   declarations: [
-    ProductsComponent
+    CartComponent,
+    ProductsCartComponent
   ],
   imports: [
     RouterModule.forChild(routes),
     CommonModule,
     HttpClientModule,
-    NgbModule
+    NgbModule,
+    MatStepperModule,
+    MatIconModule
   ],
   exports: [RouterModule],
   providers: [{ provide: LOCALE_ID, useValue: 'pt-BR' }],

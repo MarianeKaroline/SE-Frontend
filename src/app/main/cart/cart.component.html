@@ -1,3 +1,50 @@
 <section>
-  <p>cart works!</p>
+  <div class="container">
+    <div class="row">
+      <div class="col-8 content-1">
+        <span class="title">Shopping Cart</span>
+        <div class="products">
+          <app-products-cart></app-products-cart>
+        </div>
+        <span class="subtotal"
+          >Subtotal ({{ total.totalAmount }})
+          {{ total.totalPrice | currency: "BRL" }}</span
+        >
+      </div>
+      <div class="col-3 content-2">
+        <mat-stepper #stepper>
+          <mat-step state="confirm">
+            <span
+              >Subtotal ({{ total.totalAmount }})
+              {{ total.totalPrice | currency: "BRL" }}</span
+            >
+          </mat-step>
+          <mat-step state="address">
+            <span
+              >Subtotal ({{ total.totalAmount }})
+              {{ total.totalPrice | currency: "BRL" }}</span
+            >
+          </mat-step>
+          <mat-step state="credit-card">
+            <span
+              >Subtotal ({{ total.totalAmount }})
+              {{ total.totalPrice | currency: "BRL" }}</span
+            >
+          </mat-step>
+
+          <ng-template matStepperIcon="confirm">
+            <mat-icon>done</mat-icon>
+          </ng-template>
+          <ng-template matStepperIcon="address">
+            <mat-icon>location_on</mat-icon>
+          </ng-template>
+          <ng-template matStepperIcon="credit-card">
+            <mat-icon>credit_card</mat-icon>
+          </ng-template>
+
+
+        </mat-stepper>
+      </div>
+    </div>
+  </div>
 </section>

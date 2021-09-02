@@ -1,6 +1,6 @@
 <section>
   <div class="container">
-    <div class="card" *ngFor="let cat of category" routerLink="/product/{{ cat.productId }}">
+    <div class="card" *ngFor="let cat of product" routerLink="/product/{{ cat.productId }}">
       <div class="img">
         <img
           src="../../../../assets/images/{{ cat.image }}{{ cat.extension }}"

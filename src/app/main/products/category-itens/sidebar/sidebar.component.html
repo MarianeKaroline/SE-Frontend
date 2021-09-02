@@ -7,30 +7,11 @@
           data-toggle="tooltip"
           data-placement="right"
           title="{{ category.description }}"
-          routerLink="/product/category/{{ category.categoryEnum }}"
-          [ngClass]="{ 'active': categoryId == category.categoryEnum }"
+          [routerLink]="['/product/category', category.categoryEnum]"
           class="nav_link"
+          (click)="redirect(category.categoryEnum)"
         >
-          <i
-            *ngIf="category.description == 'Accessorie'"
-            class="bi bi-mouse nav_icon"
-          ></i>
-          <i
-            *ngIf="category.description == 'Cellphone'"
-            class="bi bi-phone nav_icon"
-          ></i>
-          <i
-            *ngIf="category.description == 'Computer'"
-            class="bi bi-cpu nav_icon"
-          ></i>
-          <i
-            *ngIf="category.description == 'Notebook'"
-            class="bi bi-laptop nav_icon"
-          ></i>
-          <i
-            *ngIf="category.description == 'Tablet'"
-            class="bi bi-tablet nav_icon"
-          ></i>
+          <img src="../../../../../assets/icons/{{ category.description }}.svg" alt="icon-{{ category.description }}" class="nav_icon">
         </a>
       </div>
     </div>

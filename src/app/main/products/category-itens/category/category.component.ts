@@ -10,30 +10,39 @@ import { ProductsService } from '../../products.service';
   styleUrls: ['./category.component.scss']
 })
 export class CategoryComponent implements OnInit {
-  category: CategoryModel[] = [];
+  product: CategoryModel[] = [];
   categoryId: number;
 
   constructor(private productService: ProductsService,
-              private route: ActivatedRoute) { }
+              private route: ActivatedRoute,
+              private productsService: ProductsService) { }
 
   ngOnInit(): void {
-    this.onCategory();
-
     this.route.params
-      .pipe(
-        tap(params => this.categoryId = +params['id']),
-        switchMap(() => this.onCategory())
-      )
-      .subscribe();
+      .subscribe(params => this.categoryId = +params['id']);
+
+      this.productService.getCategory(this.categoryId)
+        .subscribe(products => this.product = products);
+
+        console.log(this.categoryId);
+
+    // this.route.params
+    //   .pipe(
+    //     tap(params => this.categoryId = +params['id']),
+    //     switchMap(() => this.onCategory())
+    //   )
+    //   .subscribe();
   }
 
   onCategory() {
-    return this.productService.getCategory(this.categoryId)
-      .pipe(
-        tap(product => {
-          this.category = product;
-        })
-      )
+
+
+    // return this.productService.getCategory(this.categoryId)
+    //   .pipe(
+    //     tap(product => {
+    //       this.category = product;
+    //     })
+    //   )
   }
 
 }

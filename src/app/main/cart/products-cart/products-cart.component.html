@@ -1,0 +1,8 @@
+<div class="product">
+  <span *ngIf="products.length == 0">You cart is empty</span>
+  <div class="box" *ngFor="let product of products">
+    <div class="image">
+      <img src="../../../../assets/images/{{ product.image }}{{ product.extension }}" alt="">
+    </div>
+  </div>
+</div>

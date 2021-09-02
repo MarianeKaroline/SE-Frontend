@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { tap, switchMap } from 'rxjs/operators';
 import { LayoutService } from '../../../../layout/layout.service';
 import { CategoriesModel } from '../../../../layout/search/models/categories.model';
@@ -14,25 +14,22 @@ export class SidebarComponent implements OnInit {
   categories: CategoriesModel[] = [];
   categoryId: number;
 
-  constructor(private layoutService: LayoutService, private route: ActivatedRoute) { }
+  constructor(private layoutService: LayoutService, private route: ActivatedRoute, private router: Router) { }
 
   ngOnInit(): void {
-    this.route.params
-      .pipe(
-        tap(params => this.categoryId = +params['id']),
-        switchMap(() => this.onCategories())
-      )
-      .subscribe();
-
-    console.log(this.categoryId);
+    this.onCategories();
   }
 
   onCategories() {
     return this.layoutService.getCategories()
-      .pipe(
-        tap(category => {
+      .subscribe(category => {
           this.categories = category;
-      }))
+      });
+  }
+
+  redirect(id: any) {
+    console.log(id)
+    this.router.navigate(["/product/category/", id])
   }
 }
 

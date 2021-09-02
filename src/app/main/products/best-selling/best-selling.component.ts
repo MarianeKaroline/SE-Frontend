@@ -1,3 +1,4 @@
+import { CartService } from './../../cart/cart.service';
 import { BestSellingModel } from './../models/bestSelling.model';
 import { ProductsService } from './../products.service';
 import { Component, OnInit } from '@angular/core';
@@ -10,7 +11,10 @@ import { Component, OnInit } from '@angular/core';
 export class BestSellingComponent implements OnInit {
   products: BestSellingModel[] = [];
 
-  constructor(private productService: ProductsService) { }
+  constructor(
+    private productService: ProductsService,
+    private cartService: CartService
+  ) { }
 
   ngOnInit(): void {
     this.onBestSelling();
@@ -18,8 +22,16 @@ export class BestSellingComponent implements OnInit {
 
   onBestSelling() {
     this.productService.getBestSelling()
-      .subscribe(product => {
-        this.products = product;
+    .subscribe(product => {
+      this.products = product;
     });
+  }
+
+  addProducts(id: number) {
+    console.log("id: " + id);
+    this.cartService.addProducts(id)
+    .subscribe(product => {
+      console.log(product);
+    })
   }
 }

@@ -1,4 +1,6 @@
+import { TotalCartModel } from './models/totalCart.model';
 import { Component, OnInit } from '@angular/core';
+import { CartService } from './cart.service';
 
 @Component({
   selector: 'app-cart',
@@ -7,9 +9,19 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CartComponent implements OnInit {
 
-  constructor() { }
+  total: TotalCartModel;
+
+  constructor(private cartService: CartService) { }
 
   ngOnInit(): void {
+    this.getTotal();
+  }
+
+  getTotal() {
+    this.cartService.getTotal()
+      .subscribe(total => {
+        this.total = total;
+      })
   }
 
 }

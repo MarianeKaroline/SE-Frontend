@@ -16,13 +16,13 @@ export class LayoutService {
 
   constructor(private http: HttpClient) {}
 
-  getCategories() {
+  public getCategories() {
     return this.categories();
   }
 
   private categories() {
     return this.http
-      .get<CategoriesModel[]>(apiUrl + '/product/category')
+      .get<CategoriesModel[]>(`${apiUrl}/product/category`)
       .pipe(take(1));
   }
 }

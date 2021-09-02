@@ -1,3 +1,55 @@
 section {
   color: #fff;
+  height: calc(100vh - 8rem);
+  display: flex;
+  justify-content: center;
+}
+
+mat-stepper {
+  background-color: transparent;
+  .mat-step-header .mat-step-label,
+  .mat-step header .mat-step-optional {
+    color: #fff;
+  }
+  .mat-step-header .mat-step-label.mat-step-label-active {
+    color: #fff !important;
+  }
+}
+
+
+.container {
+  max-width: 90%;
+  height: 90%;
+  margin: 0;
+  box-shadow: 0 4px 6px 0 hsla(0, 0%, 0%, 0.2);
+}
+
+.content-2 {
+  background: #19191b;
+}
+
+.content-1 {
+  margin: 30px 112px 30px 30px;
+  flex-direction: column;
+}
+
+.title {
+  font-size: 2rem;
+}
+
+.row {
+  justify-content: center;
+  height: 100%;
+}
+
+.products {
+  margin-top: 30px;
+  height: 90%;
+}
+
+.subtotal {
+  font-size: 1.3rem;
+  font-weight: 300;
+  position: relative;
+  left: 950px;
 }
