@@ -11,5 +11,4 @@ export interface BestSellingModel {
   };
   ranking: number;
   image: string;
-  extension: string;
 }

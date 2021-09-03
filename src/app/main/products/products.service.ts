@@ -11,8 +11,6 @@ const apiUrl = environment.apiUrl;
 
 @Injectable({providedIn: 'root'})
 export class ProductsService {
-  public categoryId: number;
-
   private products = new BehaviorSubject<BestSellingModel[]>([]);
   public products$ = this.products.asObservable();
 

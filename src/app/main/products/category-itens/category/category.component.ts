@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { tap, switchMap } from 'rxjs/operators';
+import { AppService } from 'src/app/app.service';
 import { CategoryModel } from '../../models/category.model';
 import { ProductsService } from '../../products.service';
 
@@ -14,17 +15,21 @@ export class CategoryComponent implements OnInit {
   categoryId: number;
 
   constructor(private productService: ProductsService,
-              private route: ActivatedRoute,
-              private productsService: ProductsService) { }
+    private route: ActivatedRoute,
+    private productsService: ProductsService,
+    private appService: AppService) { }
 
   ngOnInit(): void {
+    console.log("oi")
+    this.appService.getIpAddress();
+
     this.route.params
       .subscribe(params => this.categoryId = +params['id']);
 
-      this.productService.getCategory(this.categoryId)
-        .subscribe(products => this.product = products);
+    this.productService.getCategory(this.categoryId)
+      .subscribe(products => this.product = products);
 
-        console.log(this.categoryId);
+    console.log(this.categoryId);
 
     // this.route.params
     //   .pipe(

@@ -10,5 +10,4 @@ export interface CategoryModel {
     };
     available: boolean;
     image: string;
-    extension: string;
 }

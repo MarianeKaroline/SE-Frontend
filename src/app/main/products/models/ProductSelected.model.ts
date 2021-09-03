@@ -12,5 +12,4 @@ export interface ProductSelectedModel {
   amount: number;
   detail: string;
   image: string;
-  extension: string;
 }

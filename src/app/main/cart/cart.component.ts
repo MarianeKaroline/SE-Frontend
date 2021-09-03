@@ -1,6 +1,7 @@
 import { TotalCartModel } from './models/totalCart.model';
 import { Component, OnInit } from '@angular/core';
 import { CartService } from './cart.service';
+import { AppService } from 'src/app/app.service';
 
 @Component({
   selector: 'app-cart',
@@ -14,6 +15,7 @@ export class CartComponent implements OnInit {
   constructor(private cartService: CartService) { }
 
   ngOnInit(): void {
+
     this.getTotal();
   }
 

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AppService } from 'src/app/app.service';
 import { CartService } from '../cart.service';
 import { ProductCartModel } from '../models/productCart.model';
 
@@ -10,9 +11,12 @@ import { ProductCartModel } from '../models/productCart.model';
 export class ProductsCartComponent implements OnInit {
   products: ProductCartModel[] = [];
 
-  constructor(private cartService: CartService) { }
+  constructor(private cartService: CartService,
+    private appService: AppService) { }
 
   ngOnInit(): void {
+    this.appService.getIpAddress();
+
     this.getProducts();
   }
 
@@ -21,6 +25,14 @@ export class ProductsCartComponent implements OnInit {
       .subscribe(products => {
         this.products = products;
         console.log(products);
+      })
+  }
+
+  addProducts(id: number) {
+    console.log("id: " + id);
+    this.cartService.addProducts(id)
+      .subscribe(product => {
+        console.log(product);
       })
   }
 

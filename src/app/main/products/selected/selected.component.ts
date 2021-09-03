@@ -1,3 +1,4 @@
+import { AppService } from './../../../app.service';
 import { ProductSelectedModel } from './../models/ProductSelected.model';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
@@ -16,9 +17,13 @@ export class SelectedComponent implements OnInit {
   id: number;
 
   constructor(private productService: ProductsService,
-              private route: ActivatedRoute) { }
+    private appService: AppService,
+    private route: ActivatedRoute) { }
 
   ngOnInit(): void {
+    console.log("oi")
+    this.appService.getIpAddress();
+
     this.id = +this.route.snapshot.paramMap.get("id");
     this.onSelected();
   }
