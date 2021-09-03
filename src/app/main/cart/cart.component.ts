@@ -2,6 +2,7 @@ import { TotalCartModel } from './models/totalCart.model';
 import { Component, OnInit } from '@angular/core';
 import { CartService } from './cart.service';
 import { AppService } from 'src/app/app.service';
+import { ProductCartModel } from './models/productCart.model';
 
 @Component({
   selector: 'app-cart',
@@ -10,20 +11,32 @@ import { AppService } from 'src/app/app.service';
 })
 export class CartComponent implements OnInit {
 
+  products: ProductCartModel[] = [];
   total: TotalCartModel;
 
-  constructor(private cartService: CartService) { }
+  constructor(private cartService: CartService,
+              private appService: AppService) { }
 
   ngOnInit(): void {
+    this.appService.getIpAddress();
 
-    this.getTotal();
+    this.cartService.getTotal()
+    .subscribe();
+
+    this.cartService.totalCart$
+    .subscribe(total => this.total = total)
+
+    this.getProducts();
+
+    this.cartService.productsCart$
+    .subscribe(products => this.products = products);
   }
 
-  getTotal() {
-    this.cartService.getTotal()
-      .subscribe(total => {
-        this.total = total;
+  getProducts() {
+    this.cartService.getProducts()
+      .subscribe(products => {
+        this.products = products;
+        console.log(products);
       })
   }
-
 }

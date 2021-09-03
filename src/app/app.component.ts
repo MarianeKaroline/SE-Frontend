@@ -1,21 +1,26 @@
-import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { take } from 'rxjs/operators';
-import { environment } from 'src/environments/environment';
 import { AppService } from './app.service';
+import { mainContentAnimation } from './animation';
 
-const apiUrl = environment.apiUrl;
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  styleUrls: ['./app.component.scss'],
+  animations: [
+    mainContentAnimation()
+  ]
 })
 export class AppComponent implements OnInit {
+  sidebarOpen=false;
 
   constructor(private appService: AppService) {}
 
   ngOnInit() {
       this.appService.getIpAddress();
+  }
+
+  sidebarToggler() {
+    return this.sidebarOpen = this.appService.sidebarOpen;
   }
 }

@@ -16,24 +16,20 @@ export class ProductsCartComponent implements OnInit {
 
   ngOnInit(): void {
     this.appService.getIpAddress();
+    this.cartService.getProducts().subscribe;
 
-    this.getProducts();
-  }
-
-  getProducts() {
-    this.cartService.getProducts()
-      .subscribe(products => {
-        this.products = products;
-        console.log(products);
-      })
+    this.cartService.productsCart$
+    .subscribe(products => this.products = products);
   }
 
   addProducts(id: number) {
-    console.log("id: " + id);
     this.cartService.addProducts(id)
-      .subscribe(product => {
-        console.log(product);
-      })
+    .subscribe();
+  }
+
+  deleteProducts(id: number) {
+    this.cartService.deleteProducts(id)
+    .subscribe();
   }
 
 }

@@ -1,7 +1,7 @@
 import { CartService } from './../../cart/cart.service';
 import { BestSellingModel } from './../models/bestSelling.model';
 import { ProductsService } from './../products.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { AppService } from 'src/app/app.service';
 
 @Component({
@@ -10,6 +10,7 @@ import { AppService } from 'src/app/app.service';
   styleUrls: ['./best-selling.component.scss']
 })
 export class BestSellingComponent implements OnInit {
+  sidebarOpen=false;
   products: BestSellingModel[] = [];
 
   constructor(
@@ -19,10 +20,10 @@ export class BestSellingComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    console.log("oi")
     this.appService.getIpAddress();
 
     this.onBestSelling();
+
   }
 
   onBestSelling() {
@@ -38,5 +39,10 @@ export class BestSellingComponent implements OnInit {
       .subscribe(product => {
         console.log(product);
       })
+  }
+
+  showSideNav(id: number) {
+    this.sidebarOpen = this.sidebarOpen === false ? true : false; // não vai ter,  fazer uma função 'closeSideNav', quando clicar no x fechar a side, passando o this.sidebarOpen como true
+    this.appService.sidebarToggler(this.sidebarOpen);
   }
 }

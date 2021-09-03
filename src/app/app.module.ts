@@ -7,6 +7,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
 import { registerLocaleData } from '@angular/common';
+import { MatSidenavModule } from '@angular/material/sidenav';
 import localePt from '@angular/common/locales/pt';
 
 import { AppComponent } from './app.component';
@@ -57,7 +58,8 @@ const appRoutes: Routes = [
     LayoutModule,
     MatToolbarModule,
     MatIconModule,
-    NgbModule
+    NgbModule,
+    MatSidenavModule
   ],
   providers: [{ provide: LOCALE_ID, useValue: 'pt-BR' }],
   bootstrap: [AppComponent],

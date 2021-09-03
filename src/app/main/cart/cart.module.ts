@@ -8,6 +8,8 @@ import localePt from '@angular/common/locales/pt';
 import { CartComponent } from "./cart.component";
 import { ProductsCartComponent } from './products-cart/products-cart.component';
 import { MatStepperModule } from '@angular/material/stepper';
+import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
+import { CookieService } from 'ngx-cookie-service';
 
 registerLocaleData(localePt);
 
@@ -35,7 +37,17 @@ const routes: Routes = [
     MatIconModule
   ],
   exports: [RouterModule],
-  providers: [{ provide: LOCALE_ID, useValue: 'pt-BR' }],
+  providers: [
+    {
+      provide: LOCALE_ID,
+      useValue: 'pt-BR'
+    },
+    {
+      provide: STEPPER_GLOBAL_OPTIONS,
+      useValue: {displayDefaultIndicatorType: false}
+    },
+    CookieService
+  ],
   bootstrap: [CartComponent],
 })
 export class CartModule {}

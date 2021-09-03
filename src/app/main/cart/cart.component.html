@@ -11,24 +11,43 @@
           {{ total.totalPrice | currency: "BRL" }}</span
         >
       </div>
+
       <div class="col-3 content-2">
         <mat-stepper #stepper>
           <mat-step state="confirm">
-            <span
-              >Subtotal ({{ total.totalAmount }})
-              {{ total.totalPrice | currency: "BRL" }}</span
-            >
+            <div class="confirm">
+              <span>Summary</span>
+
+              <div class="summary-product" *ngFor="let product of products">
+                <span class="name">{{ product.name }}</span>
+
+                <span class="spacer"></span>
+
+                <span class="amount">{{ product.amount }}x</span>
+                <span class="price">{{ product.price | currency: "BRL" }}</span>
+              </div>
+
+              <span class="priceTotal">Total {{ total.totalPrice | currency: "BRL" }}</span>
+
+              <div class="lognIn">
+                <span>You aren't logged in</span>
+
+                <div class="button">
+                  <button class="btn btn-lg btn-1">Sign In</button>
+                  <button class="btn btn-lg btn-2">Sign Up</button>
+                </div>
+              </div>
+            </div>
+
           </mat-step>
+
           <mat-step state="address">
-            <span
-              >Subtotal ({{ total.totalAmount }})
-              {{ total.totalPrice | currency: "BRL" }}</span
-            >
+            <span>Address</span>
           </mat-step>
+
           <mat-step state="credit-card">
             <span
-              >Subtotal ({{ total.totalAmount }})
-              {{ total.totalPrice | currency: "BRL" }}</span
+              >Credit Card</span
             >
           </mat-step>
 
@@ -41,8 +60,6 @@
           <ng-template matStepperIcon="credit-card">
             <mat-icon>credit_card</mat-icon>
           </ng-template>
-
-
         </mat-stepper>
       </div>
     </div>

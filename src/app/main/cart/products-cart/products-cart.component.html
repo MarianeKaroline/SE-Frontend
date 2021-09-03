@@ -10,7 +10,7 @@
 
     <div class="amount">
       <span class="next" (click)="addProducts(product.productId)"></span>
-      <span class="prev" onclick="prevNum()"></span>
+      <span class="prev" (click)="deleteProducts(product.productId)"></span>
       <div id="box">
         <span>{{ product.amount }}</span>
       </div>
