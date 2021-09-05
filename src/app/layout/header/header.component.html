@@ -20,28 +20,9 @@
 
     <span class="spacer"></span>
 
-    <div
-      class="p-1 bg-light rounded rounded-pill shadow-sm mb-4"
-      style="width: 30rem; background-color: #1b1b1d"
-    >
-      <div class="input-group" style="background-color: #1b1b1d">
-        <input
-          type="search"
-          placeholder="What're you searching for?"
-          aria-describedby="button-addon1"
-          class="form-control border-0 bg-light"
-          style="background: #1b1b1d !important"
-        />
-        <div class="input-group-append">
-          <button
-            id="button-addon1"
-            type="submit"
-            class="btn btn-link text-primary"
-          >
-            <i class="bi bi-search"></i>
-          </button>
-        </div>
-      </div>
+    <div class="search-box">
+      <button mat-fab class="btn-search"><mat-icon class="mat-18">search</mat-icon></button>
+      <input type="text" class="input-search" placeholder="Type to search...">
     </div>
 
     <span class="spacer"></span>
@@ -65,6 +46,6 @@
   </div>
   <a class="content-cart" routerLink="/cart">
     <i class="bi bi-cart-fill cart"></i>
-    <span class="cart-basket">0</span>
+    <span class="cart-basket">{{ total.totalAmount }}</span>
   </a>
 </nav>

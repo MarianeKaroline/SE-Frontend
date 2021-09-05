@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { tap, switchMap } from 'rxjs/operators';
 import { AppService } from 'src/app/app.service';
 import { LayoutService } from '../../../../layout/layout.service';
 import { CategoriesModel } from '../../../../layout/search/models/categories.model';
@@ -13,15 +12,16 @@ import { CategoriesModel } from '../../../../layout/search/models/categories.mod
 export class SidebarComponent implements OnInit {
 
   categories: CategoriesModel[] = [];
-  categoryId: number;
 
   constructor(private layoutService: LayoutService,
-    private route: ActivatedRoute,
-    private router: Router,
-    private appService: AppService) { }
+              private router: Router,
+              private appService: AppService) { }
 
   ngOnInit(): void {
-    console.log("oi")
+    this.router.routeReuseStrategy.shouldReuseRoute = () => {
+      return false;
+    }
+
     this.appService.getIpAddress();
 
     this.onCategories();
@@ -35,8 +35,7 @@ export class SidebarComponent implements OnInit {
   }
 
   redirect(id: any) {
-    console.log(id)
-    this.router.navigate(["/product/category/", id])
+    this.router.navigateByUrl(`/product/category/${id}`);
   }
 }
 

@@ -3,6 +3,7 @@ import { ProductSelectedModel } from './../models/ProductSelected.model';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ProductsService } from '../products.service';
+import { CartService } from '../../cart/cart.service';
 
 
 @Component({
@@ -12,13 +13,15 @@ import { ProductsService } from '../products.service';
 })
 export class SelectedComponent implements OnInit {
 
+  sidebarOpen=false;
   selected: ProductSelectedModel;
   details: string[];
   id: number;
 
   constructor(private productService: ProductsService,
-    private appService: AppService,
-    private route: ActivatedRoute) { }
+              private appService: AppService,
+              private route: ActivatedRoute,
+              private cartService: CartService) { }
 
   ngOnInit(): void {
     console.log("oi")
@@ -34,5 +37,18 @@ export class SelectedComponent implements OnInit {
         this.selected = product;
         this.details = product.detail.split(";");
       });
+  }
+
+  addProducts(id: number) {
+    console.log("id: " + id);
+    this.cartService.addProducts(id)
+      .subscribe(product => {
+        console.log(product);
+      })
+  }
+
+  showSideNav(id: number) {
+    this.appService.sidebarToggler(this.sidebarOpen);
+    this.addProducts(id);
   }
 }

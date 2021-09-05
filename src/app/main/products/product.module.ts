@@ -1,3 +1,4 @@
+import { MatIconModule } from '@angular/material/icon';
 import { SidebarComponent } from './category-itens/sidebar/sidebar.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AllComponent } from './all/all.component';
@@ -43,7 +44,8 @@ const routes: Routes = [
     RouterModule.forChild(routes),
     CommonModule,
     HttpClientModule,
-    NgbModule
+    NgbModule,
+    MatIconModule
   ],
   exports: [RouterModule],
   providers: [{ provide: LOCALE_ID, useValue: 'pt-BR' }],

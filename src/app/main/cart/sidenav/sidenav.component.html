@@ -1,0 +1,11 @@
+<mat-nav-list>
+  <div class="content" >
+    <button class="close" mat-button (click)="closeSideNav()"><mat-icon class="mat-18">close</mat-icon></button>
+    <span class="subtotal">Subtotal: <span class="price">{{ total.totalPrice | currency: 'BRL' }}</span></span>
+    <button class="button-buy" mat-raised-button>Buy</button>
+    <mat-divider></mat-divider>
+    <div class="image" *ngFor="let product of products">
+      <img src="../../../../assets/images/{{ product.image }}" alt="">
+    </div>
+  </div>
+</mat-nav-list>

@@ -1,10 +1,12 @@
-<div class="product">
-  <span *ngIf="products.length == 0">You cart is empty</span>
-  <div class="box" *ngFor="let product of products">
+<span *ngIf="products.length == 0">You cart is empty</span>
+<div class="product" *ngFor="let product of products">
+  <div class="box">
     <div class="image">
       <img src="../../../../assets/images/{{ product.image }}" alt="">
     </div>
-    <span class="name">{{ product.name }}</span>
+    <div class="name">
+      <span>{{ product.name }}</span>
+    </div>
 
     <span class="spacer"></span>
 
@@ -21,5 +23,6 @@
     <span class="price">{{ product.price | currency: 'BRL' }}</span>
     <i class="bi bi-x"></i>
   </div>
+  <mat-divider></mat-divider>
 </div>
-<hr>
+

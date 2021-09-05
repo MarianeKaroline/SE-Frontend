@@ -9,7 +9,8 @@ import { CartComponent } from "./cart.component";
 import { ProductsCartComponent } from './products-cart/products-cart.component';
 import { MatStepperModule } from '@angular/material/stepper';
 import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
-import { CookieService } from 'ngx-cookie-service';
+import { MatListModule } from '@angular/material/list';
+import { MatButtonModule } from '@angular/material/button';
 
 registerLocaleData(localePt);
 
@@ -34,7 +35,9 @@ const routes: Routes = [
     HttpClientModule,
     NgbModule,
     MatStepperModule,
-    MatIconModule
+    MatIconModule,
+    MatListModule,
+    MatButtonModule
   ],
   exports: [RouterModule],
   providers: [
@@ -45,8 +48,7 @@ const routes: Routes = [
     {
       provide: STEPPER_GLOBAL_OPTIONS,
       useValue: {displayDefaultIndicatorType: false}
-    },
-    CookieService
+    }
   ],
   bootstrap: [CartComponent],
 })

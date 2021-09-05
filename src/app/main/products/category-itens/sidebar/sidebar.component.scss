@@ -39,7 +39,7 @@
 }
 
 .nav_icon {
-  color: #AFA5D9;
+  filter: invert(81%) sepia(4%) saturate(2846%) hue-rotate(332deg) brightness(108%) contrast(107%);
   width: 1.25rem
 }
 
@@ -52,7 +52,7 @@
 }
 
 .active {
-  color: #F7F6FB;
+  filter: invert(90%) sepia(94%) saturate(0%) hue-rotate(208deg) brightness(107%) contrast(105%);
 }
 
 .active::before {
@@ -61,5 +61,5 @@
   left: 0;
   width: 2px;
   height: 32px;
-  background-color: #F7F6FB;
+  filter: invert(90%) sepia(94%) saturate(0%) hue-rotate(208deg) brightness(107%) contrast(105%);
 }

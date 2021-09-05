@@ -48,7 +48,7 @@
         <span *ngFor="let detail of details" class="detail">{{ detail }}</span>
       </div>
 
-      <button class="btn btn-lg">Add to cart</button>
+      <button class="btn btn-lg" (click)="showSideNav(selected.productId)">Add to cart</button>
     </div>
   </div>
 

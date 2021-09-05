@@ -16,11 +16,9 @@ export class CategoryComponent implements OnInit {
 
   constructor(private productService: ProductsService,
     private route: ActivatedRoute,
-    private productsService: ProductsService,
     private appService: AppService) { }
 
   ngOnInit(): void {
-    console.log("oi")
     this.appService.getIpAddress();
 
     this.route.params
@@ -28,26 +26,6 @@ export class CategoryComponent implements OnInit {
 
     this.productService.getCategory(this.categoryId)
       .subscribe(products => this.product = products);
-
-    console.log(this.categoryId);
-
-    // this.route.params
-    //   .pipe(
-    //     tap(params => this.categoryId = +params['id']),
-    //     switchMap(() => this.onCategory())
-    //   )
-    //   .subscribe();
-  }
-
-  onCategory() {
-
-
-    // return this.productService.getCategory(this.categoryId)
-    //   .pipe(
-    //     tap(product => {
-    //       this.category = product;
-    //     })
-    //   )
   }
 
 }
