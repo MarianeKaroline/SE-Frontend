@@ -13,11 +13,14 @@ import localePt from '@angular/common/locales/pt';
 
 import { AppComponent } from './app.component';
 import { BestSellingComponent } from './main/products/best-selling/best-selling.component';
-import { ClientComponent } from './main/client/client.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { SidenavComponent } from './main/cart/sidenav/sidenav.component';
-import {MatListModule} from '@angular/material/list';
+import { MatListModule } from '@angular/material/list';
+import { MatGridListModule } from '@angular/material/grid-list';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
 
 registerLocaleData(localePt);
 
@@ -39,6 +42,10 @@ const appRoutes: Routes = [
     loadChildren: () => import('./main/cart/cart.module').then(m => m.CartModule)
   },
   {
+    path: 'user',
+    loadChildren: () => import('./main/user/user.module').then(m => m.UserModule)
+  },
+  {
     path: '**',
     redirectTo: ''
   }
@@ -47,7 +54,6 @@ const appRoutes: Routes = [
 @NgModule({
   declarations: [
     AppComponent,
-    ClientComponent,
     HeaderComponent,
     SidenavComponent
   ],
@@ -66,7 +72,11 @@ const appRoutes: Routes = [
     NgbModule,
     MatSidenavModule,
     MatListModule,
-    MatButtonModule
+    MatButtonModule,
+    MatGridListModule,
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatInputModule
   ],
   providers: [{ provide: LOCALE_ID, useValue: 'pt-BR' }],
   bootstrap: [AppComponent],
