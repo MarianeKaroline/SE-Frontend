@@ -1,21 +1,45 @@
 <section>
-  <div class="container">
-    <div class="content">
-      <div class="elements">
-        <div></div>
-        <div></div>
-        <div></div>
-        <div></div>
-        <div></div>
-        <div></div>
-      </div>
-
-      <div class="image">
-        <img src="../../../../assets/images/bo-590713-PCs-transparent-2021-update-small.png" alt="">
-      </div>
+  <div class="container" id="container" [ngClass]="{ 'right-panel-active': clicked }">
+    <div class="form sign-up-form">
+      <app-sign-up></app-sign-up>
     </div>
-    <div class="form">
+    <div class="form sign-in-form">
       <app-sign-in></app-sign-in>
+    </div>
+    <div class="content">
+      <div class="overlay">
+        <div class="overlay-panel overlay-left">
+          <div class="elements">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+          </div>
+
+          <div class="image">
+            <img src="../../../../assets/images/bo-590713-PCs-transparent-2021-update-small.png" alt="">
+            <button id="signIn" (click)="addClass()" mat-button>Sign In</button>
+          </div>
+        </div>
+
+        <div class="overlay-panel overlay-right">
+          <div class="elements">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+          </div>
+
+          <div class="image">
+            <img src="../../../../assets/images/bo-590713-PCs-transparent-2021-update-small.png" alt="">
+            <button id="signUp" (click)="addClass()" mat-button>Sign Up</button>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </section>

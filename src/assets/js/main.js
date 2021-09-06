@@ -27,4 +27,5 @@ $(document).ready(function () {
     index = (index - 1 + num.length) % num.length;
     num[index].css('display', 'initial');
   }
+
 });

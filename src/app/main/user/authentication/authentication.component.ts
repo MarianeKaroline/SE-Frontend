@@ -6,10 +6,15 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./authentication.component.scss']
 })
 export class AuthenticationComponent implements OnInit {
+  clicked: boolean = false;
 
   constructor() { }
 
   ngOnInit(): void {
+  }
+
+  addClass() {
+    this.clicked = !this.clicked;
   }
 
 }

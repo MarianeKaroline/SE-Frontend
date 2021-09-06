@@ -3,7 +3,7 @@
   <div class="input-group">
     <mat-form-field appearance="legacy">
       <mat-label><mat-icon matSuffix>person</mat-icon> Email</mat-label>
-      <input matInput type="text" name="email" id="email" formControlName="email">
+      <input matInput type="text" name="email" formControlName="email">
     </mat-form-field>
     <div class="text-danger" *ngIf="getControl.email.touched && getControl.email.invalid">
       <div *ngIf="getControl.email.errors.required">Email is required</div>
@@ -15,7 +15,7 @@
   <div class="input-group">
     <mat-form-field appearance="legacy">
       <mat-label><mat-icon matSuffix>lock</mat-icon> Password</mat-label>
-      <input matInput type="password" name="password" id="password" formControlName="password">
+      <input matInput type="password" name="password" formControlName="password">
     </mat-form-field>
     <div class="text-danger" *ngIf="getControl.password.touched && getControl.password.invalid">
       <div *ngIf="getControl.password.errors.required">Password is required</div>

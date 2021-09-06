@@ -27,7 +27,7 @@ export class SignInComponent implements OnInit {
 
   login() {
     this.userService.login(this.form.value).subscribe(login => {
-      console.log(login);
+      window.localStorage.setItem('token', login.cpf);
     })
 
     this.form.reset();

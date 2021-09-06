@@ -1,0 +1,68 @@
+form {
+  width: 100%;
+}
+
+form h2 {
+  font-size: 2rem;
+  text-align: center;
+  letter-spacing: 1px;
+  margin-bottom: 2rem;
+  color: #fff;
+}
+
+mat-form-field {
+  width: 100%;
+  color: #fff;
+}
+
+.input-group-signUp {
+  position: relative;
+  margin-bottom: 1.3rem !important;
+}
+
+.input-group-signUp input {
+  width: 100%;
+  font-size: 1rem;
+  letter-spacing: 1px;
+  border: none;
+  outline: none;
+  background-color: transparent;
+  color: inherit;
+}
+
+.input-group-signUp mat-label {
+  pointer-events:  none;
+  color: #fff;
+}
+
+.mat-form-field-underline {
+  background-color: #fff !important;
+}
+
+.submit-btn {
+  display: block;
+  width: 100%;
+  border: none;
+  outline: none;
+  background: #ff652f;
+  font-size: 1rem;
+  letter-spacing: 1px;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.phone-email {
+  display: flex;
+  flex-direction: row;
+}
+
+.phone, .email {
+  width: 47.27%;
+  margin-right: 10px;
+}
+
+.phone-email mat-form-field,
+.phone-email mat-form-field {
+  width: 100%;
+}
