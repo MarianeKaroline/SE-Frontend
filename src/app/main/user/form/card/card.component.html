@@ -1,0 +1,68 @@
+<form method="POST" [formGroup]="form" (ngSubmit)="addCard()" *ngIf="card">
+  <h2>New Card</h2>
+
+  <div class="credit-card">
+    <div class="face">
+      <h3 class="credit">Credit Card</h3>
+      <img src="../../../../assets/icons/chip.png" alt="" class="chip">
+      <h3 class="number">{{creditCardNumber()}}</h3>
+      <h5 class="valid"><span>Valid<br>thru</span><span>{{valid() | date: 'MM/yy'}}</span></h5>
+      <h5 class="cvv"><span>Security<br>Code</span><span>{{securityCode()}}</span></h5>
+      <h5 class="cardHolder">{{cardHolder()}}</h5>
+      <img *ngIf="validate() != ''" src="../../../../assets/icons/{{ validate() }}.svg" alt="" class="flag">
+    </div>
+  </div>
+
+  <div class="input-group">
+    <mat-form-field appearance="legacy">
+      <mat-label>Card Number</mat-label>
+      <input matInput type="text" name="cardNumber" formControlName="cardNumber">
+    </mat-form-field>
+    <div class="text-danger" *ngIf="getControl.cardNumber.touched && getControl.cardNumber.invalid">
+      <div *ngIf="getControl.cardNumber.errors.required">Card Number is required</div>
+      <div *ngIf="getControl.cardNumber.errors.length">Card Number seems invalid</div>
+    </div>
+  </div>
+
+  <div class="input-group">
+    <mat-form-field appearance="legacy">
+      <mat-label>Name</mat-label>
+      <input matInput type="text" name="name" formControlName="name">
+    </mat-form-field>
+    <div class="text-danger" *ngIf="getControl.name.touched && getControl.name.invalid">
+      <div *ngIf="getControl.name.errors.required">Name is required</div>
+    </div>
+  </div>
+
+  <div class="shelfLife-cvv">
+    <div class="input-group shelfLife">
+
+      <mat-form-field appearance="legacy">
+        <mat-label>Shelf Life</mat-label>
+        <input matInput [matDatepicker]="dp" name="shelfLife" formControlName="shelfLife">
+        <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
+        <mat-datepicker #dp startView="multi-year"></mat-datepicker>
+      </mat-form-field>
+
+      <div class="text-danger" *ngIf="getControl.shelfLife.touched && getControl.shelfLife.invalid">
+        <div *ngIf="getControl.shelfLife.errors.required">Shelf Life is required</div>
+      </div>
+    </div>
+
+    <div class="input-group cvv">
+      <mat-form-field appearance="legacy">
+        <mat-label>Cvv</mat-label>
+        <input matInput type="text" name="cvv" formControlName="cvv">
+      </mat-form-field>
+      <div class="text-danger" *ngIf="getControl.cvv.touched && getControl.cvv.invalid">
+        <div *ngIf="getControl.cvv.errors.required">City is required</div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="button">
+    <button (click)="newCard()" *ngIf="card" class="submit-btn your-address" mat-button>See your Cards</button>
+    <button type="submit" class="submit-btn continue" mat-button [disabled]="form.invalid">Continue</button>
+  </div>
+</form>

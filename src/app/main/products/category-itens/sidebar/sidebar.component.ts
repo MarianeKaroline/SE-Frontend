@@ -14,15 +14,12 @@ export class SidebarComponent implements OnInit {
   categories: CategoriesModel[] = [];
 
   constructor(private layoutService: LayoutService,
-              private router: Router,
-              private appService: AppService) { }
+              private router: Router) { }
 
   ngOnInit(): void {
     this.router.routeReuseStrategy.shouldReuseRoute = () => {
       return false;
     }
-
-    this.appService.getIpAddress();
 
     this.onCategories();
   }

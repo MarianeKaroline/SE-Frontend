@@ -11,6 +11,14 @@ import { MatStepperModule } from '@angular/material/stepper';
 import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
 import { MatListModule } from '@angular/material/list';
 import { MatButtonModule } from '@angular/material/button';
+import { AddressComponent } from '../user/form/address/address.component';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { ReactiveFormsModule } from '@angular/forms';
+import { ShowAddressComponent } from '../user/form/address/show-address/show-address.component';
+import { CardComponent } from '../user/form/card/card.component';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import { PaymentComponent } from '../user/payment/payment.component';
 
 registerLocaleData(localePt);
 
@@ -27,7 +35,11 @@ const routes: Routes = [
 @NgModule({
   declarations: [
     CartComponent,
-    ProductsCartComponent
+    ProductsCartComponent,
+    AddressComponent,
+    ShowAddressComponent,
+    CardComponent,
+    PaymentComponent
   ],
   imports: [
     RouterModule.forChild(routes),
@@ -37,7 +49,11 @@ const routes: Routes = [
     MatStepperModule,
     MatIconModule,
     MatListModule,
-    MatButtonModule
+    MatButtonModule,
+    MatFormFieldModule,
+    MatInputModule,
+    ReactiveFormsModule,
+    MatDatepickerModule
   ],
   exports: [RouterModule],
   providers: [

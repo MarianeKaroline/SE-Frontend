@@ -1,0 +1,65 @@
+<div id="carouselExampleIndicators" class="carousel slide" data-bs-touch="false" data-bs-interval="false" data-bs-ride="carousel" *ngIf="!address">
+  <div class="carousel-inner">
+    <div *ngFor="let item of addresses; let i = index;" [ngClass]="{ 'active' : i == 0 }" id="slide-{{ i+1 }}" class="carousel-item show-address">
+      <h2>Address {{i + 1}}</h2>
+
+      <div class="image-google">
+        <img src="../../../../../assets/images/google-maps-1603435098.jpg" alt="">
+      </div>
+      <div class="input-group">
+        <mat-form-field appearance="legacy">
+          <mat-label>Postcode</mat-label>
+          <input value="{{item.cep}}" matInput type="text" name="postcode">
+        </mat-form-field>
+      </div>
+
+      <div class="street-number">
+        <div class="input-group street">
+          <mat-form-field appearance="legacy">
+            <mat-label>Street</mat-label>
+            <input value="{{item.street}}" matInput type="text" name="street">
+          </mat-form-field>
+        </div>
+
+        <div class="input-group number">
+          <mat-form-field appearance="legacy">
+            <mat-label>Number</mat-label>
+            <input value="{{item.number}}" matInput type="text" name="number">
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="input-group">
+        <mat-form-field appearance="legacy">
+          <mat-label>City</mat-label>
+          <input value="{{item.city}}" matInput type="text" name="city">
+        </mat-form-field>
+      </div>
+
+      <div class="input-group">
+        <mat-form-field appearance="legacy">
+          <mat-label>State</mat-label>
+          <input value="{{item.state}}" matInput type="text" name="state">
+        </mat-form-field>
+      </div>
+
+      <div class="button">
+        <button class="submit-btn continue" (click)="buy(item.addressId)" mat-button>Continue</button>
+      </div>
+      <div class="back">
+        <mat-icon class="mat-18" (click)="newAddress()">arrow_back</mat-icon>
+      </div>
+    </div>
+  </div>
+  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Previous</span>
+  </button>
+  <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Next</span>
+  </button>
+</div>
+
+
+<app-address *ngIf="address"></app-address>

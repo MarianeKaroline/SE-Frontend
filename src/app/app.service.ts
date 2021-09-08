@@ -1,3 +1,4 @@
+import { CookieService } from 'ngx-cookie-service';
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { BehaviorSubject } from "rxjs";
@@ -13,7 +14,7 @@ export class AppService {
   private sidebarChanged = new BehaviorSubject<string>(this.sidebarState);
   public sidebarStateObservable = this.sidebarChanged.asObservable();
   public sidebarOpen: boolean;
-  public ipAddress: string;
+  public ip: string;
 
   constructor(private http: HttpClient)
   {
@@ -21,22 +22,15 @@ export class AppService {
   }
 
   public getIpAddress() {
-    return this.getIp()
+    this.http
+    .get("http://api.ipify.org/?format=json")
     .subscribe((ip: any) => {
-      this.ipAddress = ip
-      console.log(ip);
-      window.localStorage.setItem('token', this.ipAddress);
+      this.ip = ip.ip;
+      window.localStorage.setItem('sessionId', this.ip);
     });
   }
 
   public sidebarToggler(sidebarOpen: boolean) {
     this.sidebarOpen = !sidebarOpen;
-  }
-
-  private getIp() {
-    return this.http.get(apiUrl + "/user/ip")
-      .pipe(
-        take(1)
-      );
   }
 }

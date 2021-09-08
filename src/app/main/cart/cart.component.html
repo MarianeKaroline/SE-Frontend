@@ -1,5 +1,5 @@
 <section>
-  <div class="container">
+  <div class="container" *ngIf="total">
     <div class="row">
       <div class="col-8 content-1">
         <span class="title">Shopping Cart</span>
@@ -13,7 +13,7 @@
       </div>
 
       <div class="col-3 content-2">
-        <mat-stepper #stepper>
+        <mat-stepper linear #stepper>
           <mat-step state="confirm">
             <div class="confirm">
               <span>Summary</span>
@@ -29,11 +29,11 @@
 
               <span class="priceTotal">Total {{ total.totalPrice | currency: "BRL" }}</span>
 
-              <div class="lognIn">
+              <div class="lognIn" *ngIf="logged.length != 11">
                 <span>You aren't logged in</span>
 
                 <div class="button">
-                  <button class="btn-1" mat-raised-button>Sign In</button>
+                  <button class="btn-1" mat-raised-button routerLink="/user/auth">Sign In</button>
                   <button class="btn-2" mat-raised-button>Sign Up</button>
                 </div>
               </div>
@@ -42,13 +42,11 @@
           </mat-step>
 
           <mat-step state="address">
-            <span>Address</span>
+            <app-address></app-address>
           </mat-step>
 
           <mat-step state="credit-card">
-            <span
-              >Credit Card</span
-            >
+            <app-payment></app-payment>
           </mat-step>
 
           <ng-template matStepperIcon="confirm">

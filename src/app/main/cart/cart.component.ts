@@ -13,13 +13,11 @@ export class CartComponent implements OnInit {
 
   products: ProductCartModel[] = [];
   total: TotalCartModel;
+  logged: string;
 
-  constructor(private cartService: CartService,
-              private appService: AppService) { }
+  constructor(private cartService: CartService) { }
 
   ngOnInit(): void {
-    this.appService.getIpAddress();
-
     this.cartService.getTotal()
     .subscribe();
 
@@ -30,6 +28,8 @@ export class CartComponent implements OnInit {
 
     this.cartService.productsCart$
     .subscribe(products => this.products = products);
+
+    this.logged = localStorage.getItem('sessionId');
   }
 
   getProducts() {

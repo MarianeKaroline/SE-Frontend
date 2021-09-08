@@ -5,6 +5,7 @@ import { environment } from 'src/environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { take, tap, switchMap } from 'rxjs/operators';
 import { ProductCartModel } from './models/productCart.model';
+import { CookieService } from 'ngx-cookie-service';
 
 const apiUrl = environment.apiUrl;
 
@@ -18,7 +19,11 @@ export class CartService {
   private productsCart = new BehaviorSubject<ProductCartModel[]>([]);
   public productsCart$ = this.productsCart.asObservable();
 
-  constructor(private http: HttpClient) { }
+  private sessionId: string;
+
+  constructor(private http: HttpClient) {
+    this.sessionId = localStorage.getItem('sessionId');
+  }
 
   public getTotal() {
     return this.total()
@@ -52,7 +57,7 @@ export class CartService {
 
   private total() {
     return this.http
-      .get<TotalCartModel>(`${apiUrl}/cart/total`)
+      .get<TotalCartModel>(`${apiUrl}/cart/total/${this.sessionId}`)
       .pipe(
         take(1)
       );
@@ -60,7 +65,7 @@ export class CartService {
 
   private products() {
     return this.http
-      .get<ProductCartModel[]>(`${apiUrl}/cart`)
+      .get<ProductCartModel[]>(`${apiUrl}/cart/${this.sessionId}`)
       .pipe(
         take(1)
       );
@@ -68,7 +73,7 @@ export class CartService {
 
   private add(id: number) {
     return this.http
-      .post(`${apiUrl}/cart/${id}`, null)
+      .post(`${apiUrl}/cart/${id}/${this.sessionId}`, null)
       .pipe(
         take(1)
       );
@@ -76,7 +81,7 @@ export class CartService {
 
   private delete(id: number) {
     return this.http
-      .delete(`${apiUrl}/cart/${id}`)
+      .delete(`${apiUrl}/cart/${id}/${this.sessionId}`)
       .pipe(
         take(1)
       );

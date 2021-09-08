@@ -44,7 +44,7 @@
       </ul>
     </div>
   </div>
-  <a class="content-cart" routerLink="/cart">
+  <a class="content-cart" routerLink="/cart" *ngIf="total">
     <i class="bi bi-cart-fill cart"></i>
     <span class="cart-basket">{{ total.totalAmount }}</span>
   </a>

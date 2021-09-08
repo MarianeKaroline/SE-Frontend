@@ -17,6 +17,7 @@ export class AppComponent implements OnInit {
   constructor(private appService: AppService) {}
 
   ngOnInit() {
+    if (localStorage.getItem('sessionId') == null)
       this.appService.getIpAddress();
   }
 

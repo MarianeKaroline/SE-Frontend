@@ -15,6 +15,9 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import localePt from '@angular/common/locales/pt';
 import { SignUpComponent } from './form/sign-up/sign-up.component';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import { StyleCardComponent } from './style-card/style-card.component';
+
 
 registerLocaleData(localePt);
 
@@ -30,7 +33,8 @@ const routes: Routes = [
     UserComponent,
     AuthenticationComponent,
     SignInComponent,
-    SignUpComponent
+    SignUpComponent,
+    StyleCardComponent
   ],
   imports: [
     RouterModule.forChild(routes),
@@ -43,7 +47,8 @@ const routes: Routes = [
     ReactiveFormsModule,
     MatButtonModule,
     MatFormFieldModule,
-    MatInputModule
+    MatInputModule,
+    MatDatepickerModule
   ],
   exports: [RouterModule],
   providers: [{ provide: LOCALE_ID, useValue: 'pt-BR' }],

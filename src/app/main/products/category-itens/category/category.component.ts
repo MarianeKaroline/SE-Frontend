@@ -15,11 +15,9 @@ export class CategoryComponent implements OnInit {
   categoryId: number;
 
   constructor(private productService: ProductsService,
-    private route: ActivatedRoute,
-    private appService: AppService) { }
+    private route: ActivatedRoute) { }
 
   ngOnInit(): void {
-    this.appService.getIpAddress();
 
     this.route.params
       .subscribe(params => this.categoryId = +params['id']);

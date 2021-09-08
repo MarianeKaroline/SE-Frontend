@@ -24,9 +24,6 @@ export class SelectedComponent implements OnInit {
               private cartService: CartService) { }
 
   ngOnInit(): void {
-    console.log("oi")
-    this.appService.getIpAddress();
-
     this.id = +this.route.snapshot.paramMap.get("id");
     this.onSelected();
   }

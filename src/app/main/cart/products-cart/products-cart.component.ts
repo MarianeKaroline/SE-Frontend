@@ -11,11 +11,9 @@ import { ProductCartModel } from '../models/productCart.model';
 export class ProductsCartComponent implements OnInit {
   products: ProductCartModel[] = [];
 
-  constructor(private cartService: CartService,
-    private appService: AppService) { }
+  constructor(private cartService: CartService) { }
 
   ngOnInit(): void {
-    this.appService.getIpAddress();
     this.cartService.getProducts().subscribe;
 
     this.cartService.productsCart$

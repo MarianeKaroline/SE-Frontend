@@ -1,3 +1,5 @@
+import { ShowAddressModel } from './models/showAddress.model';
+import { state } from '@angular/animations';
 import { take } from 'rxjs/operators';
 import { UserModel } from './models/user.model';
 import { Injectable } from "@angular/core";
@@ -12,7 +14,14 @@ export class UserService {
   private user = new BehaviorSubject<UserModel[]>([]);
   public user$ = this.user.asObservable();
 
-  constructor(private http: HttpClient) {}
+  private address$ = new BehaviorSubject<ShowAddressModel[]>([]);
+  public address = this.address$.asObservable();
+
+  sessionId: string;
+
+  constructor(private http: HttpClient) {
+    this.sessionId = localStorage.getItem('sessionId');
+  }
 
   public login(model: {email: string, password: string}) {
     return this.signIn(model);
@@ -30,6 +39,38 @@ export class UserService {
     accessRegister: boolean
   }) {
     return this.signUp(model);
+  }
+
+  public addAddress(
+    model: {
+      postCode: string,
+      street: string,
+      number: string,
+      city: string,
+      state: string,
+      cpf: string
+    }
+  )
+  {
+    return this.addAddress$(model);
+  }
+
+  public showAddresses() {
+    return this.showAddresses$();
+  }
+
+  public addCard(
+    model:
+    {
+      cardNumber: string,
+      name: string,
+      shelfLife: Date,
+      cvv: string,
+      cpf: string
+    }
+  )
+  {
+    return this.addCard$(model);
   }
 
   private signIn(model: {email: string, password: string}) {
@@ -57,5 +98,47 @@ export class UserService {
       .pipe(
         take(1)
       )
+  }
+
+  private addAddress$(model: {
+                      postCode: string,
+                      street: string,
+                      number: string,
+                      city: string,
+                      state: string,
+                      cpf: string
+                    })
+  {
+    return this.http
+    .post(`${apiUrl}/client/address`, model)
+    .pipe(
+      take(1)
+    )
+  }
+
+  private showAddresses$() {
+    return this.http
+    .get<ShowAddressModel[]>(`${apiUrl}/client/address/${this.sessionId}`)
+    .pipe(
+      take(1)
+    )
+  }
+
+  private addCard$(
+    model:
+    {
+      cardNumber: string,
+      name: string,
+      shelfLife: Date,
+      cvv: string,
+      cpf: string
+    }
+  )
+  {
+    return this.http
+    .post(`${apiUrl}/client/creditcard`, model)
+    .pipe(
+      take(1)
+    )
   }
 }

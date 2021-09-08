@@ -20,8 +20,6 @@ export class BestSellingComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.appService.getIpAddress();
-
     this.onBestSelling();
 
   }

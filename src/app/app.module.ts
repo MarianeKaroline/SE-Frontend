@@ -9,6 +9,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { registerLocaleData } from '@angular/common';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatButtonModule } from '@angular/material/button';
+import { CookieService } from 'ngx-cookie-service'
 import localePt from '@angular/common/locales/pt';
 
 import { AppComponent } from './app.component';
@@ -78,7 +79,7 @@ const appRoutes: Routes = [
     MatFormFieldModule,
     MatInputModule
   ],
-  providers: [{ provide: LOCALE_ID, useValue: 'pt-BR' }],
+  providers: [{ provide: LOCALE_ID, useValue: 'pt-BR' }, CookieService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
