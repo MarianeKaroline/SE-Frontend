@@ -1,0 +1,17 @@
+<div class="payment-method" *ngIf="paymentMethod == 0">
+  <span class="payment">Payment Method</span>
+  <button mat-stroked-button class="method" *ngFor="let item of method" (click)="pMethod(item.paymentEnum)">
+    <mat-icon class="mat-18">
+      credit_card
+    </mat-icon>
+    <div class="method_name">
+      {{item.description}}
+    </div>
+  </button>
+</div>
+
+<app-card *ngIf="paymentMethod == paymentEnum.creditCard"></app-card>
+
+<div class="back" *ngIf="paymentMethod == 0">
+  <button mat-button matStepperPrevious><mat-icon class="mat-18">arrow_back</mat-icon></button>
+</div>

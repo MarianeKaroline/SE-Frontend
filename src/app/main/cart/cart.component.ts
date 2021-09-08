@@ -1,8 +1,9 @@
 import { TotalCartModel } from './models/totalCart.model';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { CartService } from './cart.service';
 import { AppService } from 'src/app/app.service';
 import { ProductCartModel } from './models/productCart.model';
+import { MatStepper } from '@angular/material/stepper';
 
 @Component({
   selector: 'app-cart',
@@ -11,6 +12,7 @@ import { ProductCartModel } from './models/productCart.model';
 })
 export class CartComponent implements OnInit {
 
+  @ViewChild('stepper') stepper: MatStepper;
   products: ProductCartModel[] = [];
   total: TotalCartModel;
   logged: string;
@@ -38,5 +40,10 @@ export class CartComponent implements OnInit {
         this.products = products;
         console.log(products);
       })
+  }
+
+  nextClicked() {
+    this.cartService.stepper = this.stepper;
+    this.cartService.nextClicked();
   }
 }

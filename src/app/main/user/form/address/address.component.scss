@@ -101,3 +101,12 @@ mat-icon {
   background-color: transparent;
   border: 1px solid rgba(255,255,255,.2);
 }
+
+.back {
+  margin-top: 4rem;
+}
+
+.back mat-icon {
+  font-size: 1.5rem;
+  cursor: pointer;
+}

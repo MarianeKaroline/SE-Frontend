@@ -21,7 +21,7 @@
   border: 1px solid rgba(255,255,255,.2) !important;
 }
 
-.mat-button-wrapper {
+.method .mat-button-wrapper {
   display: flex;
   flex-direction: row;
   font-size: 1rem;
@@ -37,3 +37,11 @@
   width: 70%;
 }
 
+.back {
+  margin-top: 4rem;
+}
+
+.back mat-icon {
+  font-size: 1.5rem;
+  cursor: pointer;
+}

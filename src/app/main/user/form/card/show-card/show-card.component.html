@@ -1,0 +1,92 @@
+<div *ngIf="cards.length == 0 && !card">
+  You don't have any card
+</div>
+
+<div
+  id="carouselExampleIndicators"
+  class="carousel slide"
+  data-bs-touch="false"
+  data-bs-interval="false"
+  data-bs-ride="carousel"
+  *ngIf="!card"
+>
+  <div class="carousel-inner">
+    <div
+      *ngFor="let item of cards; let i = index"
+      [ngClass]="{ active: i == 0 }"
+      id="slide-{{ i + 1 }}"
+      class="carousel-item show-card"
+    >
+      <h2>New Card</h2>
+
+      <div class="credit-card">
+        <div class="face">
+          <h3 class="credit">Credit Card</h3>
+          <img src="../../../../assets/icons/chip.png" alt="" class="chip" />
+          <h3 class="number">{{ creditCardNumber(item.cardNumber) }}</h3>
+          <h5 class="valid">
+            <span>Valid<br />thru</span><span>{{ item.shelfLife }}</span>
+          </h5>
+          <h5 class="cardHolder">{{ item.name }}</h5>
+          <img
+            *ngIf="validate(item.cardNumber) != ''"
+            src="../../../../assets/icons/{{ validate(item.cardNumber) }}.svg"
+            alt=""
+            class="flag"
+          />
+        </div>
+      </div>
+
+      <div class="input-group">
+        <mat-form-field appearance="legacy">
+          <mat-label>Card Number</mat-label>
+          <input
+            value="{{ item.cardNumber }}"
+            matInput
+            type="text"
+            name="cardNumber"
+          />
+        </mat-form-field>
+      </div>
+
+      <div class="input-group">
+        <mat-form-field appearance="legacy">
+          <mat-label>Name</mat-label>
+          <input value="{{ item.name }}" matInput type="text" name="name"/>
+        </mat-form-field>
+      </div>
+
+      <div class="shelfLife-cvv">
+        <div class="input-group shelfLife">
+          <mat-form-field appearance="legacy">
+            <mat-label>Shelf Life</mat-label>
+            <input
+              value="{{ item.shelfLife }}"
+              matInput
+              name="shelfLife"
+            />
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="button">
+        <button type="submit" class="submit-btn continue" mat-button>
+          Continue
+        </button>
+      </div>
+    </div>
+  </div>
+  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Previous</span>
+  </button>
+  <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Next</span>
+  </button>
+</div>
+
+<div class="back" *ngIf="!card">
+  <mat-icon class="mat-18" (click)="newCard()">arrow_back</mat-icon>
+</div>
+<app-card *ngIf="card"></app-card>

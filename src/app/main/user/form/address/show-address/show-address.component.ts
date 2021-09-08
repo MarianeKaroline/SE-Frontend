@@ -1,3 +1,4 @@
+import { CartService } from './../../../../cart/cart.service';
 import { Component, OnInit } from '@angular/core';
 import { ShowAddressModel } from '../../../models/showAddress.model';
 import { UserService } from '../../../user.service';
@@ -9,10 +10,10 @@ import { UserService } from '../../../user.service';
 })
 export class ShowAddressComponent implements OnInit {
   addresses: ShowAddressModel[] = [];
-  addressId: number;
   address: boolean = false;
 
-  constructor(private userService: UserService) { }
+  constructor(private userService: UserService,
+              private cartService: CartService) { }
 
   ngOnInit(): void {
     this.userService.showAddresses()
@@ -26,7 +27,8 @@ export class ShowAddressComponent implements OnInit {
   }
 
   buy(id: number) {
-    this.addressId = id;
-    console.log(this.addressId);
+    window.localStorage.setItem("addressId", id.toString())
+
+    this.cartService.nextClicked();
   }
 }

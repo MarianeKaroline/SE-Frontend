@@ -1,34 +1,12 @@
+import { CartService } from './../../../cart/cart.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '../../user.service';
-import {MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS} from '@angular/material-moment-adapter';
-import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/core';
-
-export const MY_FORMATS = {
-  parse: {
-    dateInput: 'MM/YY'
-  },
-  display: {
-    dateInput: 'MM/YY',
-    monthYearLabel: 'MMM YY',
-    dateA11yLabel: 'LL',
-    monthYearA11yLabel: 'MMMM YY'
-  }
-};
 
 @Component({
   selector: 'app-card',
   templateUrl: './card.component.html',
-  styleUrls: ['./card.component.scss'],
-  providers: [
-    {
-      provide: DateAdapter,
-      useClass: MomentDateAdapter,
-      deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS]
-    },
-
-    { provide: MAT_DATE_FORMATS, useValue: MY_FORMATS }
-  ]
+  styleUrls: ['./card.component.scss']
 })
 export class CardComponent implements OnInit {
   form: FormGroup;
@@ -43,7 +21,8 @@ export class CardComponent implements OnInit {
   };
 
   constructor(private userService: UserService,
-              private formBuilder: FormBuilder) { }
+              private formBuilder: FormBuilder,
+              private cartService: CartService) { }
 
   ngOnInit(): void {
     this.formConfig();
@@ -61,10 +40,11 @@ export class CardComponent implements OnInit {
   }
 
   addCard() {
+    console.log(this.form.value);
     this.userService.addCard(this.form.value)
     .subscribe()
 
-    this.form.reset();
+    this.cartService.nextClicked();
   }
 
   newCard() {

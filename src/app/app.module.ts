@@ -22,6 +22,7 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { CreditCardDirectivesModule } from 'angular-cc-library';
 
 registerLocaleData(localePt);
 
@@ -45,6 +46,10 @@ const appRoutes: Routes = [
   {
     path: 'user',
     loadChildren: () => import('./main/user/user.module').then(m => m.UserModule)
+  },
+  {
+    path: 'bought',
+    loadChildren: () => import('./main/bought/bought.module').then(m => m.BoughtModule)
   },
   {
     path: '**',
@@ -77,7 +82,8 @@ const appRoutes: Routes = [
     MatGridListModule,
     ReactiveFormsModule,
     MatFormFieldModule,
-    MatInputModule
+    MatInputModule,
+    CreditCardDirectivesModule
   ],
   providers: [{ provide: LOCALE_ID, useValue: 'pt-BR' }, CookieService],
   bootstrap: [AppComponent],

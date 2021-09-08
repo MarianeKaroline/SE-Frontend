@@ -1,11 +1,13 @@
+import { PaymentModel } from './models/payment.model';
 import { TotalCartModel } from './models/totalCart.model';
-import { Injectable } from '@angular/core';
+import { Injectable, ViewChild } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { take, tap, switchMap } from 'rxjs/operators';
 import { ProductCartModel } from './models/productCart.model';
 import { CookieService } from 'ngx-cookie-service';
+import { MatStepper } from '@angular/material/stepper';
 
 const apiUrl = environment.apiUrl;
 
@@ -13,6 +15,8 @@ const apiUrl = environment.apiUrl;
   providedIn: 'root'
 })
 export class CartService {
+
+  public stepper: MatStepper;
   private totalCart = new BehaviorSubject<TotalCartModel>(null);
   public totalCart$ = this.totalCart.asObservable();
 
@@ -55,12 +59,21 @@ export class CartService {
     );
   }
 
+  public nextClicked() {
+    this.stepper.selected.completed = true;
+    this.stepper.next();
+  }
+
   private total() {
     return this.http
       .get<TotalCartModel>(`${apiUrl}/cart/total/${this.sessionId}`)
       .pipe(
         take(1)
       );
+  }
+
+  public getPayment() {
+    return this.payment();
   }
 
   private products() {
@@ -85,5 +98,13 @@ export class CartService {
       .pipe(
         take(1)
       );
+  }
+
+  private payment() {
+    return this.http
+    .get<PaymentModel[]>(`${apiUrl}/cart/payment`)
+    .pipe(
+      take(1)
+    );
   }
 }

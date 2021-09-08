@@ -14,7 +14,7 @@
 
       <div class="col-3 content-2">
         <mat-stepper linear #stepper>
-          <mat-step state="confirm">
+          <mat-step state="confirm" completed="false">
             <div class="confirm">
               <span>Summary</span>
 
@@ -37,15 +37,19 @@
                   <button class="btn-2" mat-raised-button>Sign Up</button>
                 </div>
               </div>
+
+              <div class="button-continue" *ngIf="logged.length == 11">
+                <button class="btn-3" mat-raised-button (click)="nextClicked()">Continue</button>
+              </div>
             </div>
 
           </mat-step>
 
-          <mat-step state="address">
+          <mat-step state="address" *ngIf="logged.length == 11" completed="false">
             <app-address></app-address>
           </mat-step>
 
-          <mat-step state="credit-card">
+          <mat-step state="credit-card" *ngIf="logged.length == 11">
             <app-payment></app-payment>
           </mat-step>
 

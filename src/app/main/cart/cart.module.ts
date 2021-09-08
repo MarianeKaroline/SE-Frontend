@@ -18,7 +18,8 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { ShowAddressComponent } from '../user/form/address/show-address/show-address.component';
 import { CardComponent } from '../user/form/card/card.component';
 import {MatDatepickerModule} from '@angular/material/datepicker';
-import { PaymentComponent } from '../user/payment/payment.component';
+import { PaymentComponent } from './payment/payment.component';
+import { ShowCardComponent } from '../user/form/card/show-card/show-card.component';
 
 registerLocaleData(localePt);
 
@@ -39,7 +40,8 @@ const routes: Routes = [
     AddressComponent,
     ShowAddressComponent,
     CardComponent,
-    PaymentComponent
+    PaymentComponent,
+    ShowCardComponent
   ],
   imports: [
     RouterModule.forChild(routes),

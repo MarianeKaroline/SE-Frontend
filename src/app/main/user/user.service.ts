@@ -1,3 +1,4 @@
+import { ShowCardModel } from './models/showCard.model';
 import { ShowAddressModel } from './models/showAddress.model';
 import { state } from '@angular/animations';
 import { take } from 'rxjs/operators';
@@ -16,6 +17,9 @@ export class UserService {
 
   private address$ = new BehaviorSubject<ShowAddressModel[]>([]);
   public address = this.address$.asObservable();
+
+  private card$ = new BehaviorSubject<ShowCardModel[]>([]);
+  public card = this.card$.asObservable();
 
   sessionId: string;
 
@@ -64,13 +68,17 @@ export class UserService {
     {
       cardNumber: string,
       name: string,
-      shelfLife: Date,
+      shelfLife: string,
       cvv: string,
       cpf: string
     }
   )
   {
     return this.addCard$(model);
+  }
+
+  public showCard() {
+    return this.showCard$();
   }
 
   private signIn(model: {email: string, password: string}) {
@@ -129,7 +137,7 @@ export class UserService {
     {
       cardNumber: string,
       name: string,
-      shelfLife: Date,
+      shelfLife: string,
       cvv: string,
       cpf: string
     }
@@ -137,6 +145,13 @@ export class UserService {
   {
     return this.http
     .post(`${apiUrl}/client/creditcard`, model)
+    .pipe(
+      take(1)
+    )
+  }
+
+  private showCard$() {
+    return this.http.get<ShowCardModel[]>(`${apiUrl}/client/creditcard/${this.sessionId}`)
     .pipe(
       take(1)
     )
