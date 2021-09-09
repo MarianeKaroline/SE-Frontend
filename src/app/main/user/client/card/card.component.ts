@@ -42,7 +42,10 @@ export class CardComponent implements OnInit {
   addCard() {
     console.log(this.form.value);
     this.userService.addCard(this.form.value)
-    .subscribe()
+    .subscribe(card => {
+      console.log(card)
+      window.localStorage.setItem('cardId', card.toString())
+    })
 
     this.cartService.nextClicked();
   }
@@ -55,6 +58,36 @@ export class CardComponent implements OnInit {
     return this.form.controls;
   }
 
+  /* Validations */
+  carNumberError() {
+    if (this.form.get("cardNumber").hasError("required")) {
+      return 'You must enter a value';
+    }
+    return this.form.get("cardNumber").hasError("pattern") ? 'Credit card number may only contain number and must have 16 digits' : '';
+  }
+
+  nameError() {
+    if (this.form.get("name").hasError("required")) {
+      return 'You must enter a value';
+    }
+    return '';
+  }
+
+  shelfLifeError() {
+    if (this.form.get("shelfLife").hasError("required")) {
+      return 'You must enter a value';
+    }
+    return '';
+  }
+
+  cvvError() {
+    if (this.form.get("cvv").hasError("required")) {
+      return 'You must enter a value';
+    }
+    return this.form.get("cvv").hasError("pattern") ? 'CVV number may only contain number and must have 3 digits' : '';
+  }
+
+  /* Show card */
   validate(): string {
     if (this.form.value.cardNumber) {
       if (this.form.value.cardNumber.substring(0,4) == '1234') {

@@ -11,15 +11,15 @@ import { MatStepperModule } from '@angular/material/stepper';
 import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
 import { MatListModule } from '@angular/material/list';
 import { MatButtonModule } from '@angular/material/button';
-import { AddressComponent } from '../user/form/address/address.component';
+import { AddressComponent } from '../user/client/address/address.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { ReactiveFormsModule } from '@angular/forms';
-import { ShowAddressComponent } from '../user/form/address/show-address/show-address.component';
-import { CardComponent } from '../user/form/card/card.component';
+import { ShowAddressComponent } from '../user/client/address/show-address/show-address.component';
+import { CardComponent } from '../user/client/card/card.component';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import { PaymentComponent } from './payment/payment.component';
-import { ShowCardComponent } from '../user/form/card/show-card/show-card.component';
+import { ShowCardComponent } from '../user/client/card/show-card/show-card.component';
 
 registerLocaleData(localePt);
 

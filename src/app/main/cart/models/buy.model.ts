@@ -1,6 +1,6 @@
 export interface BuyModel {
   paymentId: number;
-  creditCardId: string;
+  creditCardId: number;
   addressId: number;
   sessionId: string;
 }

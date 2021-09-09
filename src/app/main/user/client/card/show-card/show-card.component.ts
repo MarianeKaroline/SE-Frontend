@@ -1,3 +1,4 @@
+import { Router } from '@angular/router';
 import { ShowCardModel } from './../../../models/showCard.model';
 import { UserService } from './../../../user.service';
 import { Component, OnInit } from '@angular/core';
@@ -11,21 +12,21 @@ export class ShowCardComponent implements OnInit {
   card: boolean = false;
   cards: ShowCardModel[] = [];
 
-  constructor(private userService: UserService) { }
+  constructor(private userService: UserService,
+              private router: Router) { }
 
   ngOnInit(): void {
-    this.showCard();
-  }
-
-  showCard() {
     this.userService.showCard()
-    .subscribe(card => {
-      this.cards = card;
+    .subscribe(cards => {
+      console.log(cards)
+      this.cards = cards;
     });
   }
 
   continue(id: number) {
-    window.localStorage.setItem("addressId", id.toString())
+    window.localStorage.setItem("cardId", id.toString())
+
+    this.router.navigateByUrl('/bought');
   }
 
   validate(cardNumber: string): string {

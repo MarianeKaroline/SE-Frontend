@@ -17,21 +17,16 @@
     <mat-form-field appearance="legacy">
       <mat-label>Card Number</mat-label>
       <input matInput type="text" name="cardNumber" formControlName="cardNumber">
+      <mat-error *ngIf="form.controls.cardNumber.invalid">{{carNumberError()}}</mat-error>
     </mat-form-field>
-    <div class="text-danger" *ngIf="getControl.cardNumber.touched && getControl.cardNumber.invalid">
-      <div *ngIf="getControl.cardNumber.errors.required">Card Number is required</div>
-      <div *ngIf="getControl.cardNumber.errors.length">Card Number seems invalid</div>
-    </div>
   </div>
 
   <div class="input-group">
     <mat-form-field appearance="legacy">
       <mat-label>Name</mat-label>
       <input matInput type="text" name="name" formControlName="name">
+      <mat-error *ngIf="form.controls.name.invalid">{{nameError()}}</mat-error>
     </mat-form-field>
-    <div class="text-danger" *ngIf="getControl.name.touched && getControl.name.invalid">
-      <div *ngIf="getControl.name.errors.required">Name is required</div>
-    </div>
   </div>
 
   <div class="shelfLife-cvv">
@@ -39,21 +34,16 @@
       <mat-form-field appearance="legacy">
         <mat-label>Shelf Life</mat-label>
         <input matInput type="text" name="shelfLife" formControlName="shelfLife">
+        <mat-error *ngIf="form.controls.shelfLife.invalid">{{shelfLifeError()}}</mat-error>
       </mat-form-field>
-
-      <div class="text-danger" *ngIf="getControl.shelfLife.touched && getControl.shelfLife.invalid">
-        <div *ngIf="getControl.shelfLife.errors.required">Shelf Life is required</div>
-      </div>
     </div>
 
     <div class="input-group cvv">
       <mat-form-field appearance="legacy">
         <mat-label>Cvv</mat-label>
         <input matInput type="text" name="cvv" formControlName="cvv">
+        <mat-error *ngIf="form.controls.cvv.invalid">{{cvvError()}}</mat-error>
       </mat-form-field>
-      <div class="text-danger" *ngIf="getControl.cvv.touched && getControl.cvv.invalid">
-        <div *ngIf="getControl.cvv.errors.required">City is required</div>
-      </div>
     </div>
   </div>
 

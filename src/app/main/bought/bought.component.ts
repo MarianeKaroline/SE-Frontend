@@ -1,3 +1,5 @@
+import { PreviewBoughtModel } from './models/previewBought.model';
+import { BoughtService } from './bought.service';
 import { Component, OnInit } from '@angular/core';
 
 @Component({

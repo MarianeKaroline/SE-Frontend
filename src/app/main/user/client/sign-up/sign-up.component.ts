@@ -40,6 +40,49 @@ export class SignUpComponent implements OnInit {
     this.form.reset();
   }
 
+  /* Validations */
+  cpfError() {
+    if (this.form.get('cpf').hasError('required')) {
+      return 'You must enter a value';
+    }
+    return this.form.get('cpf').hasError('pattern') ? 'CPF may only contain number and must have 11 digits' : '';
+  }
+
+  fullNameError() {
+    if (this.form.get('fullName').hasError('required')) {
+      return 'You must enter a value';
+    }
+    return '';
+  }
+
+  phoneError() {
+    if (this.form.get('phone').hasError('required')) {
+      return 'You must enter a value';
+    }
+    return this.form.get('phone').hasError('pattern') ? 'Phone may only contain number and must have 11 digits' : '';
+  }
+
+  birthDateError() {
+    if (this.form.get('birthDate').hasError('required')) {
+      return 'You must enter a value';
+    }
+    return '';
+  }
+
+  emailError() {
+    if (this.form.get('email').hasError('required')) {
+      return 'You must enter a value';
+    }
+    return this.form.get('email').hasError('email') ? 'Email invalid' : '';
+  }
+
+  passwordError() {
+    if (this.form.get('email').hasError('required')) {
+      return 'You must enter a value';
+    }
+    return '';
+  }
+
   get getControl() {
     return this.form.controls;
   }

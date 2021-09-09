@@ -33,6 +33,21 @@ export class SignInComponent implements OnInit {
     this.form.reset();
   }
 
+  /* Validations */
+  emailError() {
+    if (this.form.get('email').hasError('required')) {
+      return 'You must enter a value';
+    }
+    return this.form.get('email').hasError('email') ? 'Email invalid' : '';
+  }
+
+  passwordError() {
+    if (this.form.get('email').hasError('required')) {
+      return 'You must enter a value';
+    }
+    return '';
+  }
+
   get getControl() {
     return this.form.controls;
   }

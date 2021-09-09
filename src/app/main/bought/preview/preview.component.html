@@ -1,0 +1,32 @@
+<section>
+  <div class="container" *ngIf="preview">
+    <div class="products">
+      <div *ngFor="let item of preview.itens; let i = index" class="product product-{{i+1}}">
+
+        <div class="image">
+          <img src="../../../../assets/images/{{item.image}}" alt="">
+        </div>
+        <span class="item-name">{{item.name}}</span>
+        <span class="item-amount">Amount: {{item.amount}}</span>
+        <span class="item-price">{{item.price | currency: 'BRL'}}</span>
+
+      </div>
+    </div>
+    <div class="details">
+      <div class="shipping">
+        <span class="title">Shipping Information</span>
+        <span class="clientName"><mat-icon class="mat-18">person</mat-icon> {{preview.fullName}}</span>
+        <span class="address"><mat-icon class="mat-18">location_on</mat-icon> {{preview.street}}, {{preview.number}} - {{preview.cep}} | {{preview.city}} - {{preview.state}}</span>
+        <span class="phone"><mat-icon class="mat-18">call</mat-icon> {{preview.phone}}</span>
+      </div>
+      <div class="payment">
+        <span class="title">Payment</span>
+        <span><mat-icon class="mat-18">credit_card</mat-icon> {{preview.numberCard}}</span>
+      </div>
+      <div class="total">
+
+      </div>
+      <button class="confirm" mat-button>Confirm</button>
+    </div>
+  </div>
+</section>

@@ -16,25 +16,33 @@ export class BoughtService {
   public previewBought$ = this.previewBought.asObservable();
 
   public paymentId: number;
-  public creditCardId: string;
+  public creditCardId: number;
   public addressId: number;
   public sessionId: string;
 
-  model: BuyModel
+  model: BuyModel;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+    this.paymentId = +localStorage.getItem("paymentId");
+    this.creditCardId = +localStorage.getItem("cardId");
+    this.addressId = +localStorage.getItem("addressId");
+    this.sessionId = localStorage.getItem("sessionId");
+  }
 
-  private preview() {
+  public preview() {
+    return this.preview$();
+  }
+
+  private preview$() {
     this.model = {
-
       paymentId: this.paymentId,
       creditCardId: this.creditCardId,
       addressId: this.addressId,
       sessionId: this.sessionId
     };
 
-    this.http
-    .post(`${apiUrl}/bought/preview`, this.model)
+    return this.http
+    .post<PreviewBoughtModel>(`${apiUrl}/bought/preview`, this.model)
     .pipe(
       take(1)
     );

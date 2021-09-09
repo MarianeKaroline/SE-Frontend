@@ -39,8 +39,8 @@ export class AddressComponent implements OnInit {
 
   addAddress() {
     this.userService.addAddress(this.form.value).subscribe((address) => {
-      this.addressId = +address;
-      window.localStorage.setItem('addressId', this.addressId.toString());
+      console.log(address)
+      window.localStorage.setItem('addressId', address.toString());
     });
 
     this.cartService.nextClicked();
@@ -50,13 +50,14 @@ export class AddressComponent implements OnInit {
     this.address = !this.address;
   }
 
+
+  /* Validations */
   getPostErrorMessage() {
     if (this.form.get("postcode").hasError('required')) {
-      console.log('entrou 2');
       return 'You must enter a value';
     }
     return this.form.get("postcode").hasError('pattern')
-      ? 'Must be only numbers and 8 char'
+      ? 'Postcode number may only contain number and must have 8 digits'
       : '';
   }
 
@@ -69,34 +70,26 @@ export class AddressComponent implements OnInit {
   }
 
   getNumberMessage() {
-    if (this.form.value.number) {
-      if (this.form.value.number.hasError('required')) {
+      if (this.form.get("number").hasError('required')) {
         return 'You must enter a value';
       }
-      return this.form.value.number.hasError('pattern')
-        ? 'Must be only numbers and need at least 8 char'
+      return this.form.get("number").hasError('pattern')
+        ? 'number may only contain number and must be between 1 and 5 digits'
         : '';
-    }
-
-    return '';
   }
 
   getCityMessage() {
-    if (this.form.value.city) {
-      if (this.form.value.city.hasError('required')) {
+      if (this.form.get("city").hasError('required')) {
         return 'You must enter a value';
       }
-    }
 
     return '';
   }
 
   getStateMessage() {
-    if (this.form.value.city) {
-      if (this.form.value.city.hasError('required')) {
+      if (this.form.get("state").hasError('required')) {
         return 'You must enter a value';
       }
-    }
 
     return '';
   }
