@@ -12,14 +12,6 @@ const apiUrl = environment.apiUrl;
 
 @Injectable({providedIn: 'root'})
 export class UserService {
-  private user = new BehaviorSubject<UserModel[]>([]);
-  public user$ = this.user.asObservable();
-
-  private address$ = new BehaviorSubject<ShowAddressModel[]>([]);
-  public address = this.address$.asObservable();
-
-  private card$ = new BehaviorSubject<ShowCardModel[]>([]);
-  public card = this.card$.asObservable();
 
   sessionId: string;
 
@@ -28,7 +20,7 @@ export class UserService {
   }
 
   public login(model: {email: string, password: string}) {
-    return this.signIn(model);
+    return this._signIn(model);
   }
 
   public register(model: {
@@ -42,7 +34,7 @@ export class UserService {
     accessInventory: boolean,
     accessRegister: boolean
   }) {
-    return this.signUp(model);
+    return this._signUp(model);
   }
 
   public addAddress(
@@ -56,11 +48,11 @@ export class UserService {
     }
   )
   {
-    return this.addAddress$(model);
+    return this._addAddress(model);
   }
 
   public showAddresses() {
-    return this.showAddresses$();
+    return this._showAddresses();
   }
 
   public addCard(
@@ -74,14 +66,14 @@ export class UserService {
     }
   )
   {
-    return this.addCard$(model);
+    return this._addCard(model);
   }
 
   public showCard() {
-    return this.showCard$();
+    return this._showCard();
   }
 
-  private signIn(model: {email: string, password: string}) {
+  private _signIn(model: {email: string, password: string}) {
     return this.http
       .post<UserModel>(`${apiUrl}/user/signin`, model)
       .pipe(
@@ -89,7 +81,7 @@ export class UserService {
       )
   }
 
-  private signUp(model: {
+  private _signUp(model: {
                   cpf: string,
                   fullName: string,
                   phone: string,
@@ -108,7 +100,7 @@ export class UserService {
       )
   }
 
-  private addAddress$(model: {
+  private _addAddress(model: {
                       postCode: string,
                       street: string,
                       number: string,
@@ -124,7 +116,7 @@ export class UserService {
     )
   }
 
-  private showAddresses$() {
+  private _showAddresses() {
     return this.http
     .get<ShowAddressModel[]>(`${apiUrl}/client/address/${this.sessionId}`)
     .pipe(
@@ -132,7 +124,7 @@ export class UserService {
     )
   }
 
-  private addCard$(
+  private _addCard(
     model:
     {
       cardNumber: string,
@@ -150,7 +142,7 @@ export class UserService {
     )
   }
 
-  private showCard$() {
+  private _showCard() {
     return this.http.get<ShowCardModel[]>(`${apiUrl}/client/creditcard/${this.sessionId}`)
     .pipe(
       take(1)

@@ -1,4 +1,7 @@
 <section>
+  <div class="confirmed">
+    <h2><mat-icon class="mat-18">done</mat-icon> Thank you for your purchase</h2>
+  </div>
   <div class="container" *ngIf="preview">
     <div class="products">
       <div *ngFor="let item of preview.itens; let i = index" class="product product-{{i+1}}">
@@ -25,10 +28,18 @@
         <span *ngIf="preview.pix"><mat-icon class="mat-18">credit_card</mat-icon> PIX</span>
         <span *ngIf="preview.code"><mat-icon class="mat-18">credit_card</mat-icon> Billet</span>
       </div>
+      <div *ngIf="preview.pix" class="pix">
+        <ngx-qrcode [elementType]="elementType" [width]="width" [errorCorrectionLevel]="correctionLevel" [value]="value" cssClass="bshadow"></ngx-qrcode>
+        <p>{{preview.pix}}</p>
+      </div>
+
+      <div *ngIf="preview.code" class="billet">
+        <ngx-barcode [bc-value]="preview.code" [bc-display-value]="true" [bc-width]="1.5" [bc-background]=""></ngx-barcode>
+      </div>
+
       <div class="total">
         <span>Value total: {{total.totalPrice | currency: 'BRL'}}</span>
       </div>
-      <button class="confirm" mat-button (click)="confirm()">Confirm</button>
     </div>
   </div>
 </section>

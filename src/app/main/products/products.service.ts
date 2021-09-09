@@ -11,30 +11,22 @@ const apiUrl = environment.apiUrl;
 
 @Injectable({providedIn: 'root'})
 export class ProductsService {
-  private products = new BehaviorSubject<BestSellingModel[]>([]);
-  public products$ = this.products.asObservable();
-
-  private categoryProduct = new BehaviorSubject<CategoryModel[]>([]);
-  public categoryProduct$ = this.categoryProduct.asObservable();
-
-  private selectedProduct = new BehaviorSubject<ProductSelectedModel[]>([]);
-  public selectedProduct$ = this.selectedProduct.asObservable();
 
   constructor(private http: HttpClient) {}
 
   public getBestSelling() {
-    return this.bestSelling();
+    return this._bestSelling();
   }
 
   public getCategory(id: number) {
-    return this.category(id);
+    return this._category(id);
   }
 
   public getSelected(id: number) {
-    return this.selected(id);
+    return this._selected(id);
   }
 
-  private bestSelling() {
+  private _bestSelling() {
     return this.http
       .get<BestSellingModel[]>(`${apiUrl}/product`)
       .pipe(
@@ -42,7 +34,7 @@ export class ProductsService {
       );
   }
 
-  private category(id: number) {
+  private _category(id: number) {
     return this.http
       .get<CategoryModel[]>(`${apiUrl}/product/category/${id}`)
       .pipe(
@@ -50,7 +42,7 @@ export class ProductsService {
       );
   }
 
-  private selected(id: number) {
+  private _selected(id: number) {
     return this.http
       .get<ProductSelectedModel>(`${apiUrl}/product/${id}`)
       .pipe(

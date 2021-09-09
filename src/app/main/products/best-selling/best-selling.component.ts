@@ -32,7 +32,6 @@ export class BestSellingComponent implements OnInit {
   }
 
   addProducts(id: number) {
-    console.log("id: " + id);
     this.cartService.addProducts(id)
       .subscribe(product => {
         console.log(product);

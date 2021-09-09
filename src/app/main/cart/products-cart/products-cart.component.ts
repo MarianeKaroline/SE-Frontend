@@ -14,7 +14,7 @@ export class ProductsCartComponent implements OnInit {
   constructor(private cartService: CartService) { }
 
   ngOnInit(): void {
-    this.cartService.getProducts().subscribe;
+    this.cartService.getProducts().subscribe(() => {});
 
     this.cartService.productsCart$
     .subscribe(products => this.products = products);
@@ -22,12 +22,12 @@ export class ProductsCartComponent implements OnInit {
 
   addProducts(id: number) {
     this.cartService.addProducts(id)
-    .subscribe();
+    .subscribe(() => {});
   }
 
   deleteProducts(id: number) {
     this.cartService.deleteProducts(id)
-    .subscribe();
+    .subscribe(() => {});
   }
 
 }

@@ -69,7 +69,7 @@ img {
   display: flex;
   justify-content: center;
   flex-direction: column;
-  height: 20%;
+  height: 23%;
   width: 100%;
   border-radius: 10px;
   background-color: #202022;
@@ -116,6 +116,17 @@ img {
 }
 
 mat-icon {
-  font-size: 18px;
+  font-size: 18px !important;
   margin-right: 5px;
+}
+
+.total {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 30px;
+}
+
+.total span {
+  font-size: 20px;
 }

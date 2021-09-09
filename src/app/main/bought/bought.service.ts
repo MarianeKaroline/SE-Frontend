@@ -12,8 +12,6 @@ const apiUrl = environment.apiUrl;
   providedIn: 'root',
 })
 export class BoughtService {
-  private previewBought = new BehaviorSubject<PreviewBoughtModel>(null);
-  public previewBought$ = this.previewBought.asObservable();
 
   public paymentId: number;
   public creditCardId: number;
@@ -30,10 +28,14 @@ export class BoughtService {
   }
 
   public preview() {
-    return this.preview$();
+    return this._preview();
   }
 
-  private preview$() {
+  public addBought() {
+    return this._addBought();
+  }
+
+  private _preview() {
     this.model = {
       paymentId: this.paymentId,
       creditCardId: this.creditCardId,
@@ -43,6 +45,21 @@ export class BoughtService {
 
     return this.http
     .post<PreviewBoughtModel>(`${apiUrl}/bought/preview`, this.model)
+    .pipe(
+      take(1)
+    );
+  }
+
+  private _addBought() {
+    this.model = {
+      paymentId: this.paymentId,
+      creditCardId: this.creditCardId,
+      addressId: this.addressId,
+      sessionId: this.sessionId
+    };
+
+    return this.http
+    .post(`${apiUrl}/bought/addbought`, this.model)
     .pipe(
       take(1)
     );

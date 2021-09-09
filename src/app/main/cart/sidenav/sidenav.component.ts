@@ -25,7 +25,7 @@ export class SidenavComponent implements OnInit {
 
 
     this.cartService.getTotal()
-    .subscribe();
+    .subscribe(() => {});
 
     this.cartService.totalCart$
     .subscribe(total => this.total = total)

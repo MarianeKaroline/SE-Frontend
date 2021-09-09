@@ -19,13 +19,12 @@ export class HeaderComponent implements OnInit {
       filter(event => event instanceof NavigationEnd)
     )
     .subscribe((event: NavigationEnd) => {
-        console.log(event.url);
         this.home = event.url;
     });
   }
 
   ngOnInit(): void {
-    this.cartService.getTotal().subscribe;
+    this.cartService.getTotal().subscribe(() => {});
 
     this.cartService.totalCart$
     .subscribe(total => this.total = total)

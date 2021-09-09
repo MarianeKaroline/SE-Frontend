@@ -6,7 +6,6 @@ import { environment } from 'src/environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { take, tap, switchMap } from 'rxjs/operators';
 import { ProductCartModel } from './models/productCart.model';
-import { CookieService } from 'ngx-cookie-service';
 import { MatStepper } from '@angular/material/stepper';
 
 const apiUrl = environment.apiUrl;
@@ -30,21 +29,21 @@ export class CartService {
   }
 
   public getTotal() {
-    return this.total()
+    return this._total()
       .pipe(
         tap(total => this.totalCart.next(total))
       );
   }
 
   public getProducts() {
-    return this.products()
+    return this._products()
       .pipe(
         tap(products => this.productsCart.next(products))
       );
   }
 
   public addProducts(id: number) {
-    return this.add(id)
+    return this._add(id)
     .pipe(
       switchMap(() => this.getProducts()),
       switchMap(() => this.getTotal())
@@ -52,7 +51,7 @@ export class CartService {
   }
 
   public deleteProducts(id: number) {
-    return this.delete(id)
+    return this._delete(id)
     .pipe(
       switchMap(() => this.getProducts()),
       switchMap(() => this.getTotal())
@@ -64,7 +63,11 @@ export class CartService {
     this.stepper.next();
   }
 
-  private total() {
+  public getPayment() {
+    return this._payment();
+  }
+
+  private _total() {
     return this.http
       .get<TotalCartModel>(`${apiUrl}/cart/total/${this.sessionId}`)
       .pipe(
@@ -72,11 +75,7 @@ export class CartService {
       );
   }
 
-  public getPayment() {
-    return this.payment();
-  }
-
-  private products() {
+  private _products() {
     return this.http
       .get<ProductCartModel[]>(`${apiUrl}/cart/${this.sessionId}`)
       .pipe(
@@ -84,7 +83,7 @@ export class CartService {
       );
   }
 
-  private add(id: number) {
+  private _add(id: number) {
     return this.http
       .post(`${apiUrl}/cart/${id}/${this.sessionId}`, null)
       .pipe(
@@ -92,7 +91,7 @@ export class CartService {
       );
   }
 
-  private delete(id: number) {
+  private _delete(id: number) {
     return this.http
       .delete(`${apiUrl}/cart/${id}/${this.sessionId}`)
       .pipe(
@@ -100,7 +99,7 @@ export class CartService {
       );
   }
 
-  private payment() {
+  private _payment() {
     return this.http
     .get<PaymentModel[]>(`${apiUrl}/cart/payment`)
     .pipe(

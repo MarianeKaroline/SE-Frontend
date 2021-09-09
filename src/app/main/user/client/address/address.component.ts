@@ -39,7 +39,6 @@ export class AddressComponent implements OnInit {
 
   addAddress() {
     this.userService.addAddress(this.form.value).subscribe((address) => {
-      console.log(address)
       window.localStorage.setItem('addressId', address.toString());
     });
 

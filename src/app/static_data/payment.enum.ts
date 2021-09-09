@@ -1,5 +1,5 @@
 export enum Payment {
   creditCard = 1,
-  BankSlip = 2,
-  Pix = 3
+  bankSlip = 2,
+  pix = 3
 }

@@ -5,8 +5,6 @@ $(document).ready(function () {
     wrap: false
   });
 
-  console.log(carousel);
-
   $('.dropdown-toggle').dropdown();
 
   $('[data-toggle="tooltip"]').tooltip();

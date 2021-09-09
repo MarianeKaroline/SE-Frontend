@@ -9,7 +9,9 @@ import { MatIconModule } from '@angular/material/icon';
 import { registerLocaleData } from '@angular/common';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatButtonModule } from '@angular/material/button';
-import { CookieService } from 'ngx-cookie-service'
+import { CookieService } from 'ngx-cookie-service';
+import { NgxQRCodeModule } from '@techiediaries/ngx-qrcode';
+import { NgxBarcodeModule } from 'ngx-barcode';
 import localePt from '@angular/common/locales/pt';
 
 import { AppComponent } from './app.component';
@@ -83,7 +85,9 @@ const appRoutes: Routes = [
     ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,
-    CreditCardDirectivesModule
+    CreditCardDirectivesModule,
+    NgxQRCodeModule,
+    NgxBarcodeModule
   ],
   providers: [{ provide: LOCALE_ID, useValue: 'pt-BR' }, CookieService],
   bootstrap: [AppComponent],

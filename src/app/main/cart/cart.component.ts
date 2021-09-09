@@ -21,7 +21,7 @@ export class CartComponent implements OnInit {
 
   ngOnInit(): void {
     this.cartService.getTotal()
-    .subscribe();
+    .subscribe(() => {});
 
     this.cartService.totalCart$
     .subscribe(total => this.total = total)
@@ -38,7 +38,6 @@ export class CartComponent implements OnInit {
     this.cartService.getProducts()
       .subscribe(products => {
         this.products = products;
-        console.log(products);
       })
   }
 

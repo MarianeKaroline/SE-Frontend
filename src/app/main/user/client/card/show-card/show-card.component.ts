@@ -18,7 +18,6 @@ export class ShowCardComponent implements OnInit {
   ngOnInit(): void {
     this.userService.showCard()
     .subscribe(cards => {
-      console.log(cards)
       this.cards = cards;
     });
   }
@@ -26,7 +25,7 @@ export class ShowCardComponent implements OnInit {
   continue(id: number) {
     window.localStorage.setItem("cardId", id.toString())
 
-    this.router.navigateByUrl('/bought');
+    this.router.navigateByUrl('/bought/preview');
   }
 
   validate(cardNumber: string): string {

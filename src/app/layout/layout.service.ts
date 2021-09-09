@@ -17,10 +17,10 @@ export class LayoutService {
   constructor(private http: HttpClient) {}
 
   public getCategories() {
-    return this.categories();
+    return this._categories();
   }
 
-  private categories() {
+  private _categories() {
     return this.http
       .get<CategoriesModel[]>(`${apiUrl}/product/category`)
       .pipe(take(1));

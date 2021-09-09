@@ -40,10 +40,8 @@ export class CardComponent implements OnInit {
   }
 
   addCard() {
-    console.log(this.form.value);
     this.userService.addCard(this.form.value)
     .subscribe(card => {
-      console.log(card)
       window.localStorage.setItem('cardId', card.toString())
     })
 

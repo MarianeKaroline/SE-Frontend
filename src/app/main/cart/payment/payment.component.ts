@@ -1,3 +1,4 @@
+import { Router } from '@angular/router';
 import { CartService } from './../cart.service';
 import { PaymentModel } from './../models/payment.model';
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
@@ -14,7 +15,8 @@ export class PaymentComponent implements OnInit {
   paymentMethod: number = 0;
   paymentEnum = Payment;
 
-  constructor(private cartService: CartService) { }
+  constructor(private cartService: CartService,
+              private router: Router) { }
 
   ngOnInit(): void {
     this.payment();
@@ -29,7 +31,15 @@ export class PaymentComponent implements OnInit {
 
   pMethod(id: number) {
     this.paymentMethod = id;
-    window.localStorage.setItem("paymentId", this.paymentMethod.toString())
+    window.localStorage.setItem("paymentId", id.toString())
+
+    if (id == this.paymentEnum.pix || id == this.paymentEnum.bankSlip) {
+      if (localStorage.getItem("cardId") != null) {
+        window.localStorage.removeItem("cardId")
+      }
+
+      this.router.navigateByUrl('/bought/preview')
+    }
   }
 
 

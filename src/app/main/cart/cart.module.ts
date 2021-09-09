@@ -1,3 +1,4 @@
+import { CartService } from './cart.service';
 import { MatIconModule } from '@angular/material/icon';
 import { registerLocaleData, CommonModule } from "@angular/common";
 import { HttpClientModule } from "@angular/common/http";
@@ -66,7 +67,8 @@ const routes: Routes = [
     {
       provide: STEPPER_GLOBAL_OPTIONS,
       useValue: {displayDefaultIndicatorType: false}
-    }
+    },
+    CartService
   ],
   bootstrap: [CartComponent],
 })
