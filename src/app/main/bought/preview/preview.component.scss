@@ -5,6 +5,7 @@ section {
 }
 
 .container {
+  padding-top: 50px;
   height: 100%;
   max-width: 100%;
   display: flex;
@@ -14,11 +15,13 @@ section {
   width: 60%;
   height: 100%;
   display: flex;
+  justify-content: center;
+
 }
 
 .product {
-  width: 40%;
-  height: 40%;
+  width: 25%;
+  height: 50%;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -73,6 +76,7 @@ img {
 }
 
 .title {
+  font-weight: 500;
   position: absolute;
   top: 15px;
 }
