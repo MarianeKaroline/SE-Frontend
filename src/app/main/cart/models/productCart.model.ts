@@ -10,5 +10,4 @@ export interface ProductCartModel {
   statusId: number;
   price: number;
   image: string;
-  extension: string;
 }

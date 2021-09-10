@@ -26,7 +26,7 @@ export class CartComponent implements OnInit {
     this.cartService.totalCart$
     .subscribe(total => this.total = total)
 
-    this.getProducts();
+    this.cartService.getProducts();
 
     this.cartService.productsCart$
     .subscribe(products => this.products = products);
@@ -34,12 +34,12 @@ export class CartComponent implements OnInit {
     this.logged = localStorage.getItem('sessionId');
   }
 
-  getProducts() {
-    this.cartService.getProducts()
-      .subscribe(products => {
-        this.products = products;
-      })
-  }
+  // getProducts() {
+  //   this.cartService.getProducts()
+  //     .subscribe(products => {
+  //       this.products = products;
+  //     })
+  // }
 
   nextClicked() {
     this.cartService.stepper = this.stepper;

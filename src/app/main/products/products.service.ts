@@ -1,3 +1,4 @@
+import { ListProductsModel } from './models/list-products.model';
 import { ProductSelectedModel } from './models/ProductSelected.model';
 import { HttpClient } from '@angular/common/http';
 import { environment } from './../../../environments/environment';
@@ -11,6 +12,10 @@ const apiUrl = environment.apiUrl;
 
 @Injectable({providedIn: 'root'})
 export class ProductsService {
+  private _list: ListProductsModel[] = [];
+
+  private _products = new BehaviorSubject<ListProductsModel[]>([]);
+  public products$ = this._products.asObservable();
 
   constructor(private http: HttpClient) {}
 
@@ -24,6 +29,19 @@ export class ProductsService {
 
   public getSelected(id: number) {
     return this._selected(id);
+  }
+
+  public getAll() {
+    // this._addList();
+  }
+
+  public addList() {
+    this._getAll()
+    .subscribe(list => {
+      this._list = list;
+      this._products.next(this._list);
+    });
+
   }
 
   private _bestSelling() {
@@ -48,5 +66,13 @@ export class ProductsService {
       .pipe(
         take(1)
       );
+  }
+
+  private _getAll() {
+    return this.http
+    .get<ListProductsModel[]>(`${apiUrl}/product/get/all`)
+    .pipe(
+      take(1)
+    );
   }
 }

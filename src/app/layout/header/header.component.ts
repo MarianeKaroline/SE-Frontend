@@ -15,6 +15,8 @@ export class HeaderComponent implements OnInit {
   total: TotalCartModel;
 
   constructor(private router: Router, private cartService: CartService) {
+    this.cartService.getTotal();
+
     router.events.pipe(
       filter(event => event instanceof NavigationEnd)
     )
@@ -24,7 +26,6 @@ export class HeaderComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.cartService.getTotal().subscribe(() => {});
 
     this.cartService.totalCart$
     .subscribe(total => this.total = total)
