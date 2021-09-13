@@ -34,13 +34,6 @@ export class CartComponent implements OnInit {
     this.logged = localStorage.getItem('sessionId');
   }
 
-  // getProducts() {
-  //   this.cartService.getProducts()
-  //     .subscribe(products => {
-  //       this.products = products;
-  //     })
-  // }
-
   nextClicked() {
     this.cartService.stepper = this.stepper;
     this.cartService.nextClicked();

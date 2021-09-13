@@ -40,7 +40,7 @@ export class CardComponent implements OnInit {
   }
 
   addCard() {
-    this.userService.addCard(this.form.value)
+    this.userService.addCreditCard(this.form.value)
     .subscribe(card => {
       window.localStorage.setItem('cardId', card.toString())
     })

@@ -1,4 +1,4 @@
-import { CategoryEnum } from "../../enums/categoryEnum";
+import { CategoryEnum } from "../../../static_data/category.enum";
 
 export interface BestSellingModel {
   productId: number;

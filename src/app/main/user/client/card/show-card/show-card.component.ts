@@ -16,7 +16,7 @@ export class ShowCardComponent implements OnInit {
               private router: Router) { }
 
   ngOnInit(): void {
-    this.userService.showCard()
+    this.userService.GetCreditCards()
     .subscribe(cards => {
       this.cards = cards;
     });

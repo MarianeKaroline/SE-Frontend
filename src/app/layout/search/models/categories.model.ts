@@ -1,4 +1,4 @@
-import { CategoryEnum } from './../../../main/enums/categoryEnum';
+import { CategoryEnum } from '../../../static_data/category.enum';
 
 export interface CategoriesModel {
   categoryEnum: CategoryEnum,

@@ -1,3 +1,4 @@
+import { LayoutService } from './../../layout/layout.service';
 import { CartService } from './cart.service';
 import { MatIconModule } from '@angular/material/icon';
 import { registerLocaleData, CommonModule } from "@angular/common";

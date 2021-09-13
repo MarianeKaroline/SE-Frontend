@@ -1,3 +1,4 @@
+import { CartService } from './../cart/cart.service';
 import { ProductsService } from './products.service';
 import { MatIconModule } from '@angular/material/icon';
 import { SidebarComponent } from './category-itens/sidebar/sidebar.component';
@@ -49,7 +50,10 @@ const routes: Routes = [
     MatIconModule
   ],
   exports: [RouterModule],
-  providers: [{ provide: LOCALE_ID, useValue: 'pt-BR' }, ProductsService],
+  providers: [
+    { provide: LOCALE_ID, useValue: 'pt-BR' },
+    CartService
+  ],
   bootstrap: [ProductsComponent],
 })
 export class ProductModule {}

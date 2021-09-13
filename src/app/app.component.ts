@@ -1,20 +1,26 @@
-import { Component, OnInit } from '@angular/core';
+import { CartService } from './main/cart/cart.service';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { AppService } from './app.service';
-import { mainContentAnimation } from './animation';
+import { distinctUntilChanged, map, switchMap, tap } from 'rxjs/operators';
 
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss'],
-  animations: [
-    mainContentAnimation()
-  ]
+  styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
-  sidebarOpen=false;
+  sidebarOpen = false;
+  count: number = 0;
 
-  constructor(private appService: AppService) {}
+  constructor(
+    private appService: AppService,
+    private cartService: CartService
+  ) {
+    this.cartService.added$.subscribe(open => {
+      this.sidebarOpen = open;
+    });
+  }
 
   ngOnInit() {
     if (localStorage.getItem('sessionId') == null)
@@ -22,6 +28,9 @@ export class AppComponent implements OnInit {
   }
 
   sidebarToggler() {
-    return this.sidebarOpen = this.appService.sidebarOpen;
+    if (this.appService.route == "/cart") {
+      return false;
+    }
+    return this.sidebarOpen;
   }
 }

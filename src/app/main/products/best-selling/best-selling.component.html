@@ -17,7 +17,7 @@
               <span class="price">{{ product.price | currency: 'BRL' }}</span>
               <div class="button">
                 <button class="btn btn-lg" routerLink="/product/{{ product.productId }}">More details</button>
-                <button class="btn btn-lg add" (click)="showSideNav(product.productId)">Add to cart</button>
+                <button class="btn btn-lg add" (click)="addProducts(product.productId)">Add to cart</button>
               </div>
 
               <img class="image" src="../../../../assets/images/{{ product.image }}" alt="">

@@ -10,16 +10,10 @@ const apiUrl = environment.apiUrl;
 @Injectable({providedIn: 'root'})
 export class AppService {
 
-  private sidebarState = 'close';
-  private sidebarChanged = new BehaviorSubject<string>(this.sidebarState);
-  public sidebarStateObservable = this.sidebarChanged.asObservable();
-  public sidebarOpen: boolean;
   public ip: string;
+  public route: string;
 
-  constructor(private http: HttpClient)
-  {
-    this.sidebarChanged.next('close');
-  }
+  constructor(private http: HttpClient) { }
 
   public getIpAddress() {
     this.http
@@ -28,9 +22,5 @@ export class AppService {
       this.ip = ip.ip;
       window.localStorage.setItem('sessionId', this.ip);
     });
-  }
-
-  public sidebarToggler(sidebarOpen: boolean) {
-    this.sidebarOpen = !sidebarOpen;
   }
 }

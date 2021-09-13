@@ -1,19 +1,11 @@
 <nav class="navbar navbar-expand-lg">
   <div class="container-fluid">
-    <a
-      class="btn btn-lg icon-menu"
-      routerLink="/categories"
-      *ngIf="home === '/'"
-    >
-      <i class="bi bi-list menu"></i>
-    </a>
-    <a
-      class="btn btn-lg icon-menu"
-      routerLink=""
-      *ngIf="home === '/categories'"
-    >
-      <i class="bi bi-x menu"></i>
-    </a>
+    <button mat-icon-button routerLink="/categories" *ngIf="home === '/'">
+      <mat-icon class="mat-18">menu</mat-icon>
+    </button>
+    <button mat-icon-button routerLink="" *ngIf="home === '/categories'">
+      <mat-icon class="mat-18">close</mat-icon>
+    </button>
     <a class="navbar-brand" routerLink="">
       <img src="../../assets/logo/logo.svg" alt="logo-site" />
     </a>
@@ -21,31 +13,25 @@
     <span class="spacer"></span>
 
     <div class="search-box">
-      <button mat-fab class="btn-search"><mat-icon class="mat-18">search</mat-icon></button>
+      <button mat-fab class="btn-search">
+        <mat-icon class="mat-18">search</mat-icon>
+      </button>
       <input type="text" class="input-search" placeholder="Type to search...">
     </div>
 
     <span class="spacer"></span>
 
-    <div class="dropdown">
-      <a
-        class="nav-link dropdown-toggle account"
-        id="navbarDropdownMenuLink"
-        aria-haspopup="true"
-        data-toggle="dropdown"
-        aria-expanded="false"
-      >
-        Your account
-      </a>
-      <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-        <a class="dropdown-item">Sign In</a>
-        <a class="dropdown-item">Sign Up</a>
-        <a class="dropdown-item">Employee Area</a>
-      </ul>
-    </div>
+    <button mat-button [matMenuTriggerFor]="menu">Your account <mat-icon class="mat-18">arrow_drop_down</mat-icon>
+      </button>
+
+    <mat-menu #menu="matMenu">
+      <button mat-menu-item routerLink="/user/auth" *ngIf="sessionId.length != 11">Sign In | Sign Up</button>
+      <button mat-menu-item (click)="loggOut()" *ngIf="sessionId.length == 11">Sign Out</button>
+      <button mat-menu-item>Employee Area</button>
+    </mat-menu>
   </div>
-  <a class="content-cart" routerLink="/cart" *ngIf="total">
-    <i class="bi bi-cart-fill cart"></i>
-    <span class="cart-basket">{{ total.totalAmount }}</span>
-  </a>
+  <button mat-icon-button class="content-cart" routerLink="/cart" *ngIf="total">
+    <span class="cart-basket">{{ total | async }}</span>
+    <mat-icon class="mat-18 cart">shopping_cart</mat-icon>
+  </button>
 </nav>

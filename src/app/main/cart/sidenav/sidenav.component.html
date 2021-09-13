@@ -1,6 +1,5 @@
 <mat-nav-list>
   <div class="content" *ngIf="total">
-    <button class="close" mat-button (click)="closeSideNav()"><mat-icon class="mat-18">close</mat-icon></button>
     <span class="subtotal">Subtotal: <span class="price">{{ total.totalPrice | currency: 'BRL' }}</span></span>
     <button class="button-buy" mat-raised-button>Buy</button>
     <mat-divider></mat-divider>

@@ -25,6 +25,9 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { CreditCardDirectivesModule } from 'angular-cc-library';
+import { ProductsService } from './main/products/products.service';
+import { UserService } from './main/user/user.service';
+import {MatMenuModule} from '@angular/material/menu';
 
 registerLocaleData(localePt);
 
@@ -34,15 +37,15 @@ const appRoutes: Routes = [
     component: BestSellingComponent
   },
   {
-    path:'product',
+    path: 'product',
     loadChildren: () => import('./main/products/product.module').then(m => m.ProductModule)
   },
   {
-    path:'category',
+    path: 'category',
     loadChildren: () => import('./layout/layout.module').then(m => m.LayoutModule)
   },
   {
-    path:'cart',
+    path: 'cart',
     loadChildren: () => import('./main/cart/cart.module').then(m => m.CartModule)
   },
   {
@@ -87,9 +90,15 @@ const appRoutes: Routes = [
     MatInputModule,
     CreditCardDirectivesModule,
     NgxQRCodeModule,
-    NgxBarcodeModule
+    NgxBarcodeModule,
+    MatMenuModule
   ],
-  providers: [{ provide: LOCALE_ID, useValue: 'pt-BR' }, CookieService],
+  providers: [
+    { provide: LOCALE_ID, useValue: 'pt-BR' },
+    CookieService,
+    ProductsService,
+    UserService
+  ],
   bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule { }

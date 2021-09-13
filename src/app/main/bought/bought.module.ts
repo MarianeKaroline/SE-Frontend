@@ -1,3 +1,4 @@
+import { BoughtService } from './bought.service';
 import { LOCALE_ID, NgModule } from '@angular/core';
 import { CommonModule, registerLocaleData } from '@angular/common';
 import { BoughtComponent } from './bought.component';
@@ -41,6 +42,7 @@ const routes: Routes = [
   providers: [{
     provide: LOCALE_ID,
     useValue: 'pt-BR'
-  }]
+  },
+  BoughtService]
 })
 export class BoughtModule { }

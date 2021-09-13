@@ -1,8 +1,10 @@
+import { UserService } from './../../main/user/user.service';
 import { CartService } from './../../main/cart/cart.service';
 import { Component, OnInit } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
-import { filter } from 'rxjs/operators';
+import { filter, map } from 'rxjs/operators';
 import { TotalCartModel } from 'src/app/main/cart/models/totalCart.model';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-header',
@@ -12,12 +14,15 @@ import { TotalCartModel } from 'src/app/main/cart/models/totalCart.model';
 export class HeaderComponent implements OnInit {
 
   home: any;
-  total: TotalCartModel;
+  sessionId: string;
+  total: Observable<number>;
 
-  constructor(private router: Router, private cartService: CartService) {
-    this.cartService.getTotal();
-
-    router.events.pipe(
+  constructor(
+    private router: Router,
+    private cartService: CartService,
+    private userService: UserService
+  ) {
+    this.router.events.pipe(
       filter(event => event instanceof NavigationEnd)
     )
     .subscribe((event: NavigationEnd) => {
@@ -26,9 +31,18 @@ export class HeaderComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.total = this.cartService.getTotal()
+    .pipe(
+      map((total) => {
+        return total.totalAmount
+      })
+    );
 
-    this.cartService.totalCart$
-    .subscribe(total => this.total = total)
+    this.sessionId = this.userService.sessionId;
+  }
+
+  loggOut() {
+    this.userService.LoggOut();
   }
 
 }

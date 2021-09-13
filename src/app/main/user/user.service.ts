@@ -1,6 +1,9 @@
+import { AppService } from 'src/app/app.service';
+import { CreditCardModel } from './models/credit-card.model';
+import { AddressModel } from './models/address.model';
+import { SignUpModel } from './models/sign-up.model';
 import { ShowCardModel } from './models/showCard.model';
 import { ShowAddressModel } from './models/showAddress.model';
-import { state } from '@angular/animations';
 import { take } from 'rxjs/operators';
 import { UserModel } from './models/user.model';
 import { Injectable } from "@angular/core";
@@ -10,69 +13,62 @@ import { HttpClient } from '@angular/common/http';
 
 const apiUrl = environment.apiUrl;
 
-@Injectable({providedIn: 'root'})
+@Injectable()
 export class UserService {
 
-  sessionId: string;
+  public sessionId: string;
+  private _session = new BehaviorSubject<string>(null);
+  public session$ = this._session.asObservable();
 
-  constructor(private http: HttpClient) {
+  constructor(
+    private http: HttpClient,
+    private appService: AppService
+  ) {
     this.sessionId = localStorage.getItem('sessionId');
   }
 
+  /* ---- Public ---- */
   public login(model: {email: string, password: string}) {
+    this._signIn(model).subscribe(user => {
+      this.sessionId = user.cpf;
+      window.localStorage.setItem('sessionId', this.sessionId);
+      this._session.next(this.sessionId);
+    });
+
+
     return this._signIn(model);
   }
 
-  public register(model: {
-    cpf: string,
-    fullName: string,
-    phone: string,
-    email: string,
-    birthDate: Date,
-    password: string,
-    employee: boolean,
-    accessInventory: boolean,
-    accessRegister: boolean
-  }) {
+  public register(model: SignUpModel) {
     return this._signUp(model);
   }
 
-  public addAddress(
-    model: {
-      postCode: string,
-      street: string,
-      number: string,
-      city: string,
-      state: string,
-      cpf: string
-    }
-  )
+  public addAddress(model: AddressModel)
   {
     return this._addAddress(model);
   }
 
-  public showAddresses() {
-    return this._showAddresses();
+  public getAddresses() {
+    return this._getAddresses();
   }
 
-  public addCard(
-    model:
-    {
-      cardNumber: string,
-      name: string,
-      shelfLife: string,
-      cvv: string,
-      cpf: string
-    }
-  )
+  public addCreditCard(model: CreditCardModel)
   {
-    return this._addCard(model);
+    return this._addCreditCard(model);
   }
 
-  public showCard() {
-    return this._showCard();
+  public GetCreditCards() {
+    return this._getCreditCards();
   }
 
+  public LoggOut() {
+    this.appService.getIpAddress();
+    return true;
+  }
+  /* ---- end Public ---- */
+
+
+  /* ---- Private ---- */
   private _signIn(model: {email: string, password: string}) {
     return this.http
       .post<UserModel>(`${apiUrl}/user/signin`, model)
@@ -81,17 +77,7 @@ export class UserService {
       )
   }
 
-  private _signUp(model: {
-                  cpf: string,
-                  fullName: string,
-                  phone: string,
-                  email: string,
-                  birthDate: Date,
-                  password: string,
-                  employee: boolean,
-                  accessInventory: boolean,
-                  accessRegister: boolean
-                })
+  private _signUp(model: SignUpModel)
   {
     return this.http
       .post(`${apiUrl}/client/signup`, model)
@@ -100,14 +86,7 @@ export class UserService {
       )
   }
 
-  private _addAddress(model: {
-                      postCode: string,
-                      street: string,
-                      number: string,
-                      city: string,
-                      state: string,
-                      cpf: string
-                    })
+  private _addAddress(model: AddressModel)
   {
     return this.http
     .post(`${apiUrl}/client/address`, model)
@@ -116,7 +95,7 @@ export class UserService {
     )
   }
 
-  private _showAddresses() {
+  private _getAddresses() {
     return this.http
     .get<ShowAddressModel[]>(`${apiUrl}/client/address/${this.sessionId}`)
     .pipe(
@@ -124,16 +103,7 @@ export class UserService {
     )
   }
 
-  private _addCard(
-    model:
-    {
-      cardNumber: string,
-      name: string,
-      shelfLife: string,
-      cvv: string,
-      cpf: string
-    }
-  )
+  private _addCreditCard(model: CreditCardModel)
   {
     return this.http
     .post(`${apiUrl}/client/creditcard`, model)
@@ -142,10 +112,11 @@ export class UserService {
     )
   }
 
-  private _showCard() {
+  private _getCreditCards() {
     return this.http.get<ShowCardModel[]>(`${apiUrl}/client/creditcard/${this.sessionId}`)
     .pipe(
       take(1)
     )
   }
+  /* ---- end Private ---- */
 }

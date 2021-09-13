@@ -10,7 +10,7 @@ import { CategoryModel } from './models/category.model';
 
 const apiUrl = environment.apiUrl;
 
-@Injectable({providedIn: 'root'})
+@Injectable()
 export class ProductsService {
   private _list: ListProductsModel[] = [];
 
@@ -32,7 +32,7 @@ export class ProductsService {
   }
 
   public getAll() {
-    // this._addList();
+    return this._products.value;
   }
 
   public addList() {
@@ -41,7 +41,6 @@ export class ProductsService {
       this._list = list;
       this._products.next(this._list);
     });
-
   }
 
   private _bestSelling() {

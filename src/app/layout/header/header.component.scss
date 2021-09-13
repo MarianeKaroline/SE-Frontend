@@ -20,10 +20,6 @@ input {
   margin: 0;
 }
 
-.icon-menu {
-  border-radius: 50%;
-}
-
 .account {
   color: #fff;
   font-size: 1rem;
@@ -36,18 +32,13 @@ input {
   color: #fff;
 }
 
-.menu {
-  font-size: 2rem;
-  padding: 10px;
-}
-
 .cart {
-  font-size: 2rem;
-  margin-right: 10px;
+  font-size: 2.5rem;
+  margin-right: 25px;
 }
 
 .content-cart {
-  margin-right: 10px;
+  margin-right: 20px;
   color: #fff;
   cursor: pointer;
 }
@@ -59,10 +50,10 @@ input {
 .cart-basket {
   font-size: .6rem;
   position: absolute;
-  top: 35px;
-  right: 10px;
-  width: 25px;
-  height: 25px;
+  bottom: 24px;
+  left: 18px;
+  width: 28px;
+  height: 28px;
   color: #fff;
   background-color: #FF6600;
   border-radius: 50%;

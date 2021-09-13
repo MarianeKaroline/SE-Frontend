@@ -14,13 +14,13 @@ export class ProductsCartComponent implements OnInit {
   constructor(private cartService: CartService) { }
 
   ngOnInit(): void {
-    this.cartService.getProducts().subscribe(() => {});
-
     this.cartService.productsCart$
     .subscribe(products => this.products = products);
   }
 
   addProducts(id: number) {
+    this.cartService.routeCart = true;
+
     this.cartService.addProducts(id)
     .subscribe(() => {});
   }

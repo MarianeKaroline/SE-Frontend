@@ -19,7 +19,6 @@ export class SelectedComponent implements OnInit {
   id: number;
 
   constructor(private productService: ProductsService,
-              private appService: AppService,
               private route: ActivatedRoute,
               private cartService: CartService) { }
 
@@ -41,10 +40,5 @@ export class SelectedComponent implements OnInit {
       .subscribe(product => {
         console.log(product);
       })
-  }
-
-  showSideNav(id: number) {
-    this.appService.sidebarToggler(this.sidebarOpen);
-    this.addProducts(id);
   }
 }

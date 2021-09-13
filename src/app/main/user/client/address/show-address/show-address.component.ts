@@ -16,7 +16,7 @@ export class ShowAddressComponent implements OnInit {
               private cartService: CartService) { }
 
   ngOnInit(): void {
-    this.userService.showAddresses()
+    this.userService.getAddresses()
     .subscribe(address => {
       this.addresses = address;
     })

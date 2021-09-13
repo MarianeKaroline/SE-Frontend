@@ -1,3 +1,4 @@
+import { UserService } from './../user/user.service';
 import { StatusProduct } from './../../static_data/status-product.enum';
 import { ProductsService } from './../products/products.service';
 import { PaymentModel } from './models/payment.model';
@@ -6,64 +7,66 @@ import { Injectable, ViewChild } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { HttpClient } from '@angular/common/http';
-import { take, tap, switchMap, filter } from 'rxjs/operators';
+import { take, tap, switchMap, filter, map } from 'rxjs/operators';
 import { ProductCartModel } from './models/productCart.model';
 import { MatStepper } from '@angular/material/stepper';
 
 const apiUrl = environment.apiUrl;
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class CartService {
 
-  public stepper: MatStepper;
   private totalCart = new BehaviorSubject<TotalCartModel>(null);
   public totalCart$ = this.totalCart.asObservable();
+
+  private _added = new BehaviorSubject<boolean>(false);
+  public added$ = this._added.asObservable();
 
   private productsCart = new BehaviorSubject<ProductCartModel[]>([]);
   public productsCart$ = this.productsCart.asObservable();
 
-  private static _list: ProductCartModel[] = [];
-
+  public routeCart: boolean = false;
   private sessionId: string;
-  private productCart: ProductCartModel
-  private total: TotalCartModel;
+  public stepper: MatStepper;
+  private static _list: ProductCartModel[] = [];
+  private static count: number = 0;
 
 
-  constructor(private http: HttpClient,
-              private productService: ProductsService) {
-    let list = localStorage.getItem("itens");
-    let items = JSON.parse(list);
-    if (localStorage.getItem("itens") != null && localStorage.getItem("itens") != "") {
+  constructor(
+    private http: HttpClient,
+    private productService: ProductsService,
+    private userService: UserService
+  ) {
+    let items = JSON.parse(localStorage.getItem("itens"));
+
+    if (localStorage.getItem("itens") != null && localStorage.getItem("itens") != "")
       CartService._list = items
-    }
 
-    this.sessionId = localStorage.getItem('sessionId');
+    this.sessionId = userService.sessionId;
     productService.addList();
-
-    this.total = {
-      totalAmount: 0,
-      totalPrice: 0
-    }
+    this.passItems();
   }
 
+  /* ---- Public ---- */
   public getTotal() {
-    this.total.totalAmount = CartService._list
-    .filter(p => p.statusId === StatusProduct.active)
-    .reduce((sum, current) => sum + current.amount, 0);
+    let total: TotalCartModel = {
+      totalAmount: CartService._list
+      .filter(p => p.statusId === StatusProduct.active)
+      .reduce((sum, current) => sum + current.amount, 0),
 
-    this.total.totalPrice = CartService._list.filter(p => p.statusId === StatusProduct.active)
-    .reduce((sum, current) => sum + (current.amount * current.price), 0);
+      totalPrice: CartService._list
+      .filter(p => p.statusId === StatusProduct.active)
+      .reduce((sum, current) => sum + (current.amount * current.price), 0)
+    }
 
-    this.totalCart.next(this.total);
+    this.totalCart.next(total);
 
-    return this._total()
-      .pipe(
-        tap(null, err => {
-          this.totalCart.next(this.total);
-        })
-      );
+    return this.totalCart
+    .pipe(
+      map((total) => {
+        return total
+      })
+    );
   }
 
   public getProducts() {
@@ -80,41 +83,53 @@ export class CartService {
   public addProducts(id: number) {
     let index = CartService._list.findIndex(i => i.productId === id);
     let exist = index != -1;
+    let products = this.productService.getAll();
+    let prod = products.find(i => i.productId == id);
 
-    this.productService.products$.subscribe(product => {
+    if (exist) {
+      CartService._list[index].amount += 1
+    }
+    else {
+      let product: ProductCartModel = {
+        productId: prod.productId,
+        name: prod.name,
+        price: prod.price,
+        category: prod.category,
+        amount: 1,
+        image: prod.image,
+        statusId: StatusProduct.active
+      };
 
-      product.forEach(i => {
+      CartService._list.push(product);
+    }
 
-        let products: ProductCartModel = this.productCart;
-
-        if (i.productId == id) {
-          if (exist) {
-            CartService._list[index].amount += 1
-          }
-          else{
-            products.productId = i.productId,
-            products.name = i.name,
-            products.price = i.price,
-            products.category = i.category,
-            products.amount = 1,
-            products.image = i.image,
-            products.statusId = StatusProduct.active
-            CartService._list.push(products);
-          }
-        }
-      })
-    });
-
-    this.productsCart.next(CartService._list);
     window.localStorage.setItem('itens', JSON.stringify(CartService._list));
+    this.productsCart.next(CartService._list);
+    if (!this.routeCart) {
+      this._added.next(true);
+    }
 
-    return this._add(id)
+    if (this.sessionId.length == 11) {
+      return this._add(id)
+      .pipe(
+        switchMap(() => {
+          return this.getTotal();
+        }),
+        tap(null, err => {
+          CartService._list = CartService._list.filter(p => p.productId != id);
+          this.getTotal();
+          this.productsCart.next(CartService._list);
+        })
+      );
+    }
+
+    return this.productsCart
     .pipe(
-      switchMap(() => this.getTotal()),
-      tap(null, err => {
-        CartService._list = CartService._list.filter(p => p.productId != id);
-        this.getTotal();
-        this.productsCart.next(CartService._list);
+      switchMap(() => {
+        return this.getTotal();
+      }),
+      map((product) => {
+        return product
       })
     );
   }
@@ -124,13 +139,10 @@ export class CartService {
     const deleted = CartService._list[index];
 
     if (index != -1) {
-      if (CartService._list[index].amount == 1) {
+      if (CartService._list[index].amount == 1)
         CartService._list = CartService._list.filter(p => p.productId != id)
-      }
-      else {
+      else
         CartService._list[index].amount -= 1;
-      }
-
     }
     else {
       CartService._list = CartService._list.filter(p => p.productId != id)
@@ -139,12 +151,24 @@ export class CartService {
     this.productsCart.next(CartService._list);
     window.localStorage.setItem('itens', JSON.stringify(CartService._list));
 
-    return this._delete(id)
+    if (this.sessionId.length == 11) {
+      return this._delete(id)
+      .pipe(
+        switchMap(() => this.getTotal()),
+        tap(null, err => {
+          CartService._list.push(deleted)
+          this.productsCart.next(CartService._list);
+        })
+      );
+    }
+
+    return this.productsCart
     .pipe(
-      switchMap(() => this.getTotal()),
-      tap(null, err => {
-        CartService._list.push(deleted)
-        this.productsCart.next(CartService._list);
+      switchMap(() => {
+        return this.getTotal();
+      }),
+      map((product) => {
+        return product
       })
     );
   }
@@ -155,17 +179,34 @@ export class CartService {
   }
 
   public getPayment() {
-    return this._payment();
-  }
-
-  private _total() {
     return this.http
-      .get<TotalCartModel>(`${apiUrl}/cart/total/${this.sessionId}`)
-      .pipe(
-        take(1)
-      );
+    .get<PaymentModel[]>(`${apiUrl}/cart/payment`)
+    .pipe(
+      take(1)
+    );
   }
 
+  public passItems() {
+    //fazer função privada de passar itens : productId - amount
+
+
+    // if (CartService.count == 0) {
+    //   this.userService.session$.subscribe(id => {
+    //     if (id != null && id.length == 11) {
+    //       console.log("oi");
+    //       CartService._list
+    //       .forEach(product => {
+
+    //       });
+    //     }
+    //   });
+    //   CartService.count++;
+    // }
+  }
+  /* ---- end Public --- */
+
+
+  /* ---- Private ---- */
   private _products() {
     return this.http
       .get<ProductCartModel[]>(`${apiUrl}/cart/${this.sessionId}`)
@@ -189,12 +230,5 @@ export class CartService {
         take(1)
       );
   }
-
-  private _payment() {
-    return this.http
-    .get<PaymentModel[]>(`${apiUrl}/cart/payment`)
-    .pipe(
-      take(1)
-    );
-  }
+  /* ---- end Private --- */
 }

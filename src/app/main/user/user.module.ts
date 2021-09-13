@@ -1,3 +1,4 @@
+import { UserService } from './user.service';
 import { AuthenticationComponent } from './authentication/authentication.component';
 import { CommonModule, registerLocaleData } from "@angular/common";
 import { HttpClientModule } from "@angular/common/http";
@@ -9,12 +10,12 @@ import { UserComponent } from "./user.component";
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatButtonModule } from '@angular/material/button';
-import { SignInComponent } from './client/sign-in/sign-in.component';
+import { SignInComponent } from './authentication/sign-in/sign-in.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import localePt from '@angular/common/locales/pt';
-import { SignUpComponent } from './client/sign-up/sign-up.component';
+import { SignUpComponent } from './authentication/sign-up/sign-up.component';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 
 

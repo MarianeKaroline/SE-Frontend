@@ -7,9 +7,7 @@ import { CategoriesModel } from './search/models/categories.model';
 
 const apiUrl = environment.apiUrl;
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class LayoutService {
   private category = new BehaviorSubject<CategoriesModel[]>([]);
   public category$ = this.category.asObservable();

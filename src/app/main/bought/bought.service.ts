@@ -1,3 +1,4 @@
+import { UserService } from './../user/user.service';
 import { take } from 'rxjs/operators';
 import { BuyModel } from './../cart/models/buy.model';
 import { PreviewBoughtModel } from './models/previewBought.model';
@@ -8,9 +9,7 @@ import { environment } from 'src/environments/environment';
 
 const apiUrl = environment.apiUrl;
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class BoughtService {
 
   public paymentId: number;
@@ -20,11 +19,12 @@ export class BoughtService {
 
   model: BuyModel;
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient,
+              private userService: UserService) {
     this.paymentId = +localStorage.getItem("paymentId");
     this.creditCardId = +localStorage.getItem("cardId");
     this.addressId = +localStorage.getItem("addressId");
-    this.sessionId = localStorage.getItem("sessionId");
+    this.sessionId = userService.sessionId;
   }
 
   public preview() {
