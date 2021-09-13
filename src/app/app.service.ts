@@ -1,3 +1,4 @@
+import { CartService } from './main/cart/cart.service';
 import { CookieService } from 'ngx-cookie-service';
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
@@ -13,7 +14,8 @@ export class AppService {
   public ip: string;
   public route: string;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient,
+              private cartService: CartService) { }
 
   public getIpAddress() {
     this.http

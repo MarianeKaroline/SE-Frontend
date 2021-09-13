@@ -12,7 +12,7 @@
 
     <div class="amount">
       <span class="next" (click)="addProducts(product.productId)"></span>
-      <span class="prev" (click)="deleteProducts(product.productId)"></span>
+      <span class="prev" (click)="delete(product.productId)"></span>
       <div id="box">
         <span>{{ product.amount }}</span>
       </div>
@@ -21,7 +21,7 @@
     <span class="spacer"></span>
 
     <span class="price">{{ product.price | currency: 'BRL' }}</span>
-    <i class="bi bi-x"></i>
+    <button class="btn-icon" mat-icon-button (click)="deleteProducts(product.productId)"><mat-icon class="mat-18">close</mat-icon></button>
   </div>
   <mat-divider></mat-divider>
 </div>

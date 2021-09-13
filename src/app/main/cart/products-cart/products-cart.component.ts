@@ -25,6 +25,11 @@ export class ProductsCartComponent implements OnInit {
     .subscribe(() => {});
   }
 
+  delete(id: number) {
+    this.cartService.delete(id)
+    .subscribe(() => {});
+  }
+
   deleteProducts(id: number) {
     this.cartService.deleteProducts(id)
     .subscribe(() => {});

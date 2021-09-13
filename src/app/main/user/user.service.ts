@@ -1,3 +1,4 @@
+import { CartService } from './../cart/cart.service';
 import { AppService } from 'src/app/app.service';
 import { CreditCardModel } from './models/credit-card.model';
 import { AddressModel } from './models/address.model';
@@ -15,14 +16,12 @@ const apiUrl = environment.apiUrl;
 
 @Injectable()
 export class UserService {
-
   public sessionId: string;
-  private _session = new BehaviorSubject<string>(null);
-  public session$ = this._session.asObservable();
 
   constructor(
     private http: HttpClient,
-    private appService: AppService
+    private appService: AppService,
+    private cartService: CartService
   ) {
     this.sessionId = localStorage.getItem('sessionId');
   }
@@ -32,9 +31,8 @@ export class UserService {
     this._signIn(model).subscribe(user => {
       this.sessionId = user.cpf;
       window.localStorage.setItem('sessionId', this.sessionId);
-      this._session.next(this.sessionId);
+      this.cartService.passItems();
     });
-
 
     return this._signIn(model);
   }
@@ -63,7 +61,7 @@ export class UserService {
 
   public LoggOut() {
     this.appService.getIpAddress();
-    return true;
+    this.cartService.removeList();
   }
   /* ---- end Public ---- */
 
