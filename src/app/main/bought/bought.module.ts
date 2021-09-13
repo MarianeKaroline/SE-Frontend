@@ -12,6 +12,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { NgxBarcodeModule } from 'ngx-barcode';
 import localePt from '@angular/common/locales/pt';
+import { ShowBoughtComponent } from './show-bought/show-bought.component';
+import { MatDividerModule } from '@angular/material/divider';
 
 registerLocaleData(localePt);
 
@@ -23,6 +25,10 @@ const routes: Routes = [
   {
     path: "confirmed",
     component: ConfirmedComponent
+  },
+  {
+    path: "order-history",
+    component: ShowBoughtComponent
   }
 ];
 
@@ -35,9 +41,15 @@ const routes: Routes = [
     NgxQRCodeModule,
     MatFormFieldModule,
     MatInputModule,
-    NgxBarcodeModule
+    NgxBarcodeModule,
+    MatDividerModule
   ],
-  declarations: [BoughtComponent, PreviewComponent, ConfirmedComponent],
+  declarations: [
+    BoughtComponent,
+    PreviewComponent,
+    ConfirmedComponent,
+    ShowBoughtComponent
+  ],
   exports:[RouterModule],
   providers: [{
     provide: LOCALE_ID,

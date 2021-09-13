@@ -27,7 +27,7 @@ export class ShowAddressComponent implements OnInit {
   }
 
   buy(id: number) {
-    window.localStorage.setItem("addressId", id.toString())
+    this.cartService.addressId = id;
 
     this.cartService.nextClicked();
   }

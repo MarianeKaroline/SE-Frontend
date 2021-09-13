@@ -17,6 +17,11 @@ import { MatInputModule } from '@angular/material/input';
 import localePt from '@angular/common/locales/pt';
 import { SignUpComponent } from './authentication/sign-up/sign-up.component';
 import {MatDatepickerModule} from '@angular/material/datepicker';
+import { ProfileComponent } from './client/profile/profile.component';
+import { AddressComponent } from '../user/client/address/address.component';
+import { ShowAddressComponent } from '../user/client/address/show-address/show-address.component';
+import { CardComponent } from '../user/client/card/card.component';
+import { ShowCardComponent } from '../user/client/card/show-card/show-card.component';
 
 
 registerLocaleData(localePt);
@@ -25,6 +30,10 @@ const routes: Routes = [
   {
     path: 'auth',
     component: AuthenticationComponent
+  },
+  {
+    path: 'profile',
+    component: ProfileComponent
   }
 ];
 
@@ -33,7 +42,12 @@ const routes: Routes = [
     UserComponent,
     AuthenticationComponent,
     SignInComponent,
-    SignUpComponent
+    SignUpComponent,
+    ProfileComponent,
+    ShowAddressComponent,
+    ShowCardComponent,
+    AddressComponent,
+    CardComponent
   ],
   imports: [
     RouterModule.forChild(routes),
@@ -49,7 +63,13 @@ const routes: Routes = [
     MatInputModule,
     MatDatepickerModule
   ],
-  exports: [RouterModule],
+  exports: [
+    RouterModule,
+    AddressComponent,
+    CardComponent,
+    ShowAddressComponent,
+    ShowCardComponent
+  ],
   providers: [{ provide: LOCALE_ID, useValue: 'pt-BR' }],
   bootstrap: [UserComponent],
 })

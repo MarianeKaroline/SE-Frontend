@@ -23,10 +23,13 @@ export class CartService {
   private productsCart = new BehaviorSubject<ProductCartModel[]>([]);
   public productsCart$ = this.productsCart.asObservable();
 
-  public routeCart: boolean = false;
-  private sessionId: string;
-  public stepper: MatStepper;
   private static _list: ProductCartModel[] = [];
+  private sessionId: string;
+  public routeCart: boolean = false;
+  public stepper: MatStepper;
+  public paymentId: number;
+  public creditCardId: number;
+  public addressId: number;
 
   constructor(
     private http: HttpClient,
@@ -76,41 +79,15 @@ export class CartService {
   }
 
   public addProducts(id: number) {
-    let index = CartService._list.findIndex((i) => i.productId === id);
-    let exist = index != -1;
-    let products = this.productService.getAll();
-    let prod = products.find((i) => i.productId == id);
-
-    if (exist) {
-      CartService._list[index].amount += 1;
-    } else {
-
-      let product: ProductCartModel = {
-        productId: prod.productId,
-        name: prod.name,
-        price: prod.price,
-        category: prod.category,
-        amount: 1,
-        image: prod.image,
-        statusId: StatusProduct.active,
-      };
-
-      CartService._list.push(product);
-    }
-
-    window.localStorage.setItem('itens', JSON.stringify(CartService._list));
-
-    this.productsCart.next(CartService._list);
+    this._addList(id);
 
     if (!this.routeCart) {
       this._added.next(true);
     }
 
+    this.getTotal();
     if (this.sessionId.length == 11) {
       return this._add(id).pipe(
-        switchMap(() => {
-          return this.getTotal();
-        }),
         tap(null, (err) => {
           CartService._list = CartService._list.filter(
             (p) => p.productId != id
@@ -122,9 +99,6 @@ export class CartService {
     }
 
     return this.productsCart.pipe(
-      switchMap(() => {
-        return this.getTotal();
-      }),
       map((product) => {
         return product;
       })
@@ -132,34 +106,24 @@ export class CartService {
   }
 
   public delete(id: number) {
-    let index = CartService._list.findIndex((i) => i.productId === id);
-    const deleted = CartService._list[index];
+    let product = CartService._list.find((i) => i.productId === id);
 
-    if (index != -1) {
-      if (CartService._list[index].amount == 1)
-        CartService._list = CartService._list.filter((p) => p.productId != id);
-      else CartService._list[index].amount -= 1;
-    } else {
-      CartService._list = CartService._list.filter((p) => p.productId != id);
-    }
+    this._remove(id, product);
 
     this.productsCart.next(CartService._list);
     window.localStorage.setItem('itens', JSON.stringify(CartService._list));
 
+    this.getTotal();
     if (this.sessionId.length == 11) {
       return this._delete(id).pipe(
-        switchMap(() => this.getTotal()),
         tap(null, (err) => {
-          CartService._list.push(deleted);
+          CartService._list.push(product);
           this.productsCart.next(CartService._list);
         })
       );
     }
 
     return this.productsCart.pipe(
-      switchMap(() => {
-        return this.getTotal();
-      }),
       map((product) => {
         return product;
       })
@@ -167,32 +131,27 @@ export class CartService {
   }
 
   public deleteProducts(id: number) {
-      let index = CartService._list.findIndex((i) => i.productId === id);
-      const deleted = CartService._list[index];
+    const product = CartService._list.find((i) => i.productId === id);
+    CartService._list = CartService._list.filter((p) => p.productId != id);
 
-      CartService._list = CartService._list.filter((p) => p.productId != id);
+    this.productsCart.next(CartService._list);
+    window.localStorage.setItem('itens', JSON.stringify(CartService._list));
 
-      this.productsCart.next(CartService._list);
-      window.localStorage.setItem('itens', JSON.stringify(CartService._list));
-
-      if (this.sessionId.length == 11) {
-        return this._deleteProducts(id).pipe(
-          switchMap(() => this.getTotal()),
-          tap(null, (err) => {
-            CartService._list.push(deleted);
-            this.productsCart.next(CartService._list);
-          })
-        );
-      }
-
-      return this.productsCart.pipe(
-        switchMap(() => {
-          return this.getTotal();
-        }),
-        map((product) => {
-          return product;
+    this.getTotal();
+    if (this.sessionId.length == 11) {
+      return this._deleteProducts(id).pipe(
+        tap(null, (err) => {
+          CartService._list.push(product);
+          this.productsCart.next(CartService._list);
         })
       );
+    }
+
+    return this.productsCart.pipe(
+      map((product) => {
+        return product;
+      })
+    );
   }
 
   public nextClicked() {
@@ -209,21 +168,14 @@ export class CartService {
   public passItems() {
     if (CartService._list.length > 0) {
       CartService._list.forEach((product) => {
-        this._passItems(product.productId, product.amount)
-        .subscribe(
-          (products) => (window.localStorage.setItem('itens', JSON.stringify(products)))
+        this._passItems(product.productId, product.amount).subscribe(
+          (products) =>
+            window.localStorage.setItem('itens', JSON.stringify(products))
         );
       });
+    } else {
+      this._products().subscribe((products) => (CartService._list = products));
     }
-    else {
-      this._products().subscribe(
-        products => CartService._list = products
-      );
-    }
-  }
-
-  public getList() {
-    return CartService._list;
   }
 
   public removeList() {
@@ -263,6 +215,43 @@ export class CartService {
     return this.http
       .delete(`${apiUrl}/cart/delete/${id}/${this.sessionId}`)
       .pipe(take(1));
+  }
+
+  private _addList(id: number) {
+    let exist = CartService._list.find((i) => i.productId === id);
+    let prod = this.productService.getAll().find((i) => i.productId == id);
+
+    if (exist != null) {
+      let index = CartService._list.findIndex((i) => i.productId === id);
+      CartService._list[index].amount += 1;
+    } else {
+      let product: ProductCartModel = {
+        productId: prod.productId,
+        name: prod.name,
+        price: prod.price,
+        category: prod.category,
+        amount: 1,
+        image: prod.image,
+        statusId: StatusProduct.active,
+      };
+      CartService._list.push(product);
+    }
+
+    window.localStorage.setItem('itens', JSON.stringify(CartService._list));
+
+    this.productsCart.next(CartService._list);
+  }
+
+  private _remove(id: number, product: ProductCartModel) {
+    let index = CartService._list.findIndex((i) => i.productId === id);
+
+    if (product != null) {
+      if (CartService._list[index].amount == 1)
+        CartService._list = CartService._list.filter((p) => p.productId != id);
+      else CartService._list[index].amount -= 1;
+    } else {
+      CartService._list = CartService._list.filter((p) => p.productId != id);
+    }
   }
   /* ---- end Private --- */
 }

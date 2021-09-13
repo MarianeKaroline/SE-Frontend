@@ -21,13 +21,13 @@
 
     <span class="spacer"></span>
 
-    <button mat-button [matMenuTriggerFor]="menu">Your account <mat-icon class="mat-18">arrow_drop_down</mat-icon>
+    <button class="btn-icon" mat-icon-button [matMenuTriggerFor]="menu"><mat-icon class="mat-18 user-icon">account_circle</mat-icon> <mat-icon class="mat-18">arrow_drop_down</mat-icon>
       </button>
 
     <mat-menu #menu="matMenu">
       <button mat-menu-item routerLink="/user/auth" *ngIf="sessionId.length != 11">Sign In | Sign Up</button>
+      <button mat-menu-item routerLink="/user/profile" *ngIf="sessionId.length == 11">Profile</button>
       <button mat-menu-item (click)="loggOut()" *ngIf="sessionId.length == 11">Sign Out</button>
-      <button mat-menu-item>Employee Area</button>
     </mat-menu>
   </div>
   <button mat-icon-button class="content-cart" routerLink="/cart" *ngIf="total">

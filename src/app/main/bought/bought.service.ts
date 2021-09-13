@@ -1,3 +1,5 @@
+import { BoughtModel } from './models/bought.model';
+import { CartService } from './../cart/cart.service';
 import { UserService } from './../user/user.service';
 import { take } from 'rxjs/operators';
 import { BuyModel } from './../cart/models/buy.model';
@@ -20,11 +22,12 @@ export class BoughtService {
   model: BuyModel;
 
   constructor(private http: HttpClient,
-              private userService: UserService) {
-    this.paymentId = +localStorage.getItem("paymentId");
-    this.creditCardId = +localStorage.getItem("cardId");
-    this.addressId = +localStorage.getItem("addressId");
-    this.sessionId = userService.sessionId;
+              private userService: UserService,
+              private cartService: CartService) {
+    this.paymentId = cartService.paymentId;
+    this.creditCardId = cartService.creditCardId;
+    this.addressId = cartService.addressId;
+    this.sessionId = this.userService.sessionId;
   }
 
   public preview() {
@@ -33,6 +36,10 @@ export class BoughtService {
 
   public addBought() {
     return this._addBought();
+  }
+
+  public show() {
+    return this._show();
   }
 
   private _preview() {
@@ -63,5 +70,13 @@ export class BoughtService {
     .pipe(
       take(1)
     );
+  }
+
+  private _show() {
+    return this.http
+    .get<BoughtModel[]>(`${apiUrl}/bought/boughts/${this.sessionId}`)
+    .pipe(
+      take(1)
+    )
   }
 }

@@ -1,3 +1,4 @@
+import { CartService } from './../../../../cart/cart.service';
 import { Router } from '@angular/router';
 import { ShowCardModel } from './../../../models/showCard.model';
 import { UserService } from './../../../user.service';
@@ -13,7 +14,8 @@ export class ShowCardComponent implements OnInit {
   cards: ShowCardModel[] = [];
 
   constructor(private userService: UserService,
-              private router: Router) { }
+              private router: Router,
+              private cartService: CartService) { }
 
   ngOnInit(): void {
     this.userService.GetCreditCards()
@@ -23,7 +25,7 @@ export class ShowCardComponent implements OnInit {
   }
 
   continue(id: number) {
-    window.localStorage.setItem("cardId", id.toString())
+    this.cartService.creditCardId = id;
 
     this.router.navigateByUrl('/bought/preview');
   }

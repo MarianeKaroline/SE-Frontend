@@ -42,7 +42,7 @@ export class CardComponent implements OnInit {
   addCard() {
     this.userService.addCreditCard(this.form.value)
     .subscribe(card => {
-      window.localStorage.setItem('cardId', card.toString())
+      this.cartService.creditCardId = +card;
     })
 
     this.cartService.nextClicked();

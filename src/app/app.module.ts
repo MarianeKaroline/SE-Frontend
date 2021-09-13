@@ -28,6 +28,7 @@ import { CreditCardDirectivesModule } from 'angular-cc-library';
 import { ProductsService } from './main/products/products.service';
 import { UserService } from './main/user/user.service';
 import {MatMenuModule} from '@angular/material/menu';
+import {MatDividerModule} from '@angular/material/divider';
 
 registerLocaleData(localePt);
 
@@ -91,7 +92,8 @@ const appRoutes: Routes = [
     CreditCardDirectivesModule,
     NgxQRCodeModule,
     NgxBarcodeModule,
-    MatMenuModule
+    MatMenuModule,
+    MatDividerModule
   ],
   providers: [
     { provide: LOCALE_ID, useValue: 'pt-BR' },

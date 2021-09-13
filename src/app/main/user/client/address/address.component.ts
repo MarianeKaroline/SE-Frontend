@@ -39,7 +39,7 @@ export class AddressComponent implements OnInit {
 
   addAddress() {
     this.userService.addAddress(this.form.value).subscribe((address) => {
-      window.localStorage.setItem('addressId', address.toString());
+      this.cartService.addressId = +address;
     });
 
     this.cartService.nextClicked();

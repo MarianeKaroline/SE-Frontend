@@ -31,7 +31,7 @@ export class PaymentComponent implements OnInit {
 
   pMethod(id: number) {
     this.paymentMethod = id;
-    window.localStorage.setItem("paymentId", id.toString())
+    this.cartService.paymentId = id;
 
     if (id == this.paymentEnum.pix || id == this.paymentEnum.bankSlip) {
       if (localStorage.getItem("cardId") != null) {
