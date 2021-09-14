@@ -1,7 +1,6 @@
 import { BoughtService } from './bought.service';
 import { LOCALE_ID, NgModule } from '@angular/core';
 import { CommonModule, registerLocaleData } from '@angular/common';
-import { BoughtComponent } from './bought.component';
 import { RouterModule, Routes } from '@angular/router';
 import { PreviewComponent } from './preview/preview.component';
 import { MatButtonModule } from '@angular/material/button';
@@ -45,7 +44,6 @@ const routes: Routes = [
     MatDividerModule
   ],
   declarations: [
-    BoughtComponent,
     PreviewComponent,
     ConfirmedComponent,
     ShowBoughtComponent

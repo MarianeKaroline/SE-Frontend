@@ -24,13 +24,15 @@ export class UserService {
     private cartService: CartService
   ) {
     this.sessionId = localStorage.getItem('sessionId');
+    this.cartService.getId(this.sessionId);
   }
 
   /* ---- Public ---- */
   public login(model: {email: string, password: string}) {
     this._signIn(model).subscribe(user => {
       this.sessionId = user.cpf;
-      window.localStorage.setItem('sessionId', this.sessionId);
+      window.localStorage.setItem('sessionId', user.cpf);
+      this.cartService.getId(this.sessionId);
       this.cartService.passItems();
     });
 
