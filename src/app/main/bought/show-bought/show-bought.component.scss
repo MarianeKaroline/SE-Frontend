@@ -1,5 +1,5 @@
 section {
-  height: calc(100vh - 8rem);
+  min-height: calc(100vh - 8rem);
 }
 
 h2 {
@@ -34,7 +34,7 @@ h2 {
 
 .content {
   padding: 50px;
-  height: 80%;
+  height: 60%;
 }
 
 .card {

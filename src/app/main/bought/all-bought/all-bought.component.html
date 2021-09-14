@@ -1,0 +1,46 @@
+<section>
+  <div class="container">
+    <div class="path">
+      <p routerLink="/user/profile">Your account</p>
+      <mat-icon class="mat-18 navigate">navigate_next</mat-icon>
+      <p class="active">Your orders</p>
+    </div>
+    <h2>Your orders</h2>
+    <div class="content" *ngFor="let bought of boughts">
+      <div class="card">
+        <div class="details">
+          <div class="date">
+            <span class="title">Pedido realizado</span>
+            <span>{{ bought.dateBought | date: "MMMM dd, y"}}</span>
+          </div>
+          <div class="total">
+            <span class="title">Total</span>
+            <span>{{ bought.totalPrice | currency: 'BRL' }}</span>
+          </div>
+          <div class="shipping">
+            <span class="title">Send to</span>
+            <span>{{ bought.clientName }}</span>
+          </div>
+
+          <span class="spacer"></span>
+
+          <div class="order">
+            <span class="title">Order nº {{ bought.boughtId }}</span>
+          </div>
+        </div>
+        <mat-divider></mat-divider>
+        <div class="items">
+          <span class="status">{{ status(bought.statusId) }}</span>
+          <div class="products" *ngFor="let item of bought.itens">
+            <div class="image">
+              <img src="../../../../assets/images/{{ item.image }}" alt="">
+            </div>
+            <span class="info">{{ item.productName }}</span>
+            <span class="info">{{ item.amount }}</span>
+          </div>
+      </div>
+
+      </div>
+    </div>
+  </div>
+</section>

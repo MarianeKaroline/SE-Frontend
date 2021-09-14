@@ -16,6 +16,7 @@ const apiUrl = environment.apiUrl;
 
 @Injectable()
 export class UserService {
+  public employee: boolean;
   public sessionId: string;
 
   constructor(
@@ -24,16 +25,24 @@ export class UserService {
     private cartService: CartService
   ) {
     this.sessionId = localStorage.getItem('sessionId');
-    this.cartService.getId(this.sessionId);
+    let aux = localStorage.getItem('employee');
+    if (aux != null) {
+      this.employee = JSON.parse(aux);
+      this.cartService.getId(this.sessionId);
+    }
   }
 
   /* ---- Public ---- */
   public login(model: {email: string, password: string}) {
     this._signIn(model).subscribe(user => {
       this.sessionId = user.cpf;
-      window.localStorage.setItem('sessionId', user.cpf);
       this.cartService.getId(this.sessionId);
-      this.cartService.passItems();
+      window.localStorage.setItem('sessionId', user.cpf);
+      this.employee = user.employee;
+      window.localStorage.setItem('employee', user.employee.toString());
+      if (!user.employee) {
+        this.cartService.passItems();
+      }
     });
 
     return this._signIn(model);

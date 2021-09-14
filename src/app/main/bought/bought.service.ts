@@ -42,6 +42,10 @@ export class BoughtService {
     return this._show();
   }
 
+  public getAll() {
+    return this._getAll();
+  }
+
   private _preview() {
     this.model = {
       paymentId: this.paymentId,
@@ -75,6 +79,14 @@ export class BoughtService {
   private _show() {
     return this.http
     .get<BoughtModel[]>(`${apiUrl}/bought/boughts/${this.sessionId}`)
+    .pipe(
+      take(1)
+    )
+  }
+
+  private _getAll() {
+    return this.http
+    .get<BoughtModel[]>(`${apiUrl}/bought/allboughts`)
     .pipe(
       take(1)
     )

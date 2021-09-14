@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { UserService } from '../../user.service';
 
 @Component({
@@ -9,10 +10,14 @@ import { UserService } from '../../user.service';
   encapsulation: ViewEncapsulation.None
 })
 export class SignInComponent implements OnInit {
+  employee: boolean;
   form: FormGroup;
 
-  constructor(private userService: UserService,
-              private formBuilder: FormBuilder) { }
+  constructor(
+    private router: Router,
+    private userService: UserService,
+    private formBuilder: FormBuilder
+  ) { }
 
   ngOnInit(): void {
     this.formConfig();
@@ -28,6 +33,10 @@ export class SignInComponent implements OnInit {
   login() {
     this.userService.login(this.form.value).subscribe()
 
+    this.employee = this.userService.employee;
+    if (this.employee) {
+      this.router.navigateByUrl("/user/employeer/profile");
+    }
     this.form.reset();
   }
 

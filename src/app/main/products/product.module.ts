@@ -1,5 +1,4 @@
 import { CartService } from './../cart/cart.service';
-import { ProductsService } from './products.service';
 import { MatIconModule } from '@angular/material/icon';
 import { SidebarComponent } from './category-itens/sidebar/sidebar.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -16,6 +15,7 @@ import { CommonModule } from '@angular/common';
 import localePt from '@angular/common/locales/pt';
 import { ProductsComponent } from './products.component';
 import { CategoryItensComponent } from './category-itens/category-itens.component';
+import {MatTooltipModule} from '@angular/material/tooltip';
 
 registerLocaleData(localePt);
 
@@ -47,7 +47,8 @@ const routes: Routes = [
     CommonModule,
     HttpClientModule,
     NgbModule,
-    MatIconModule
+    MatIconModule,
+    MatTooltipModule
   ],
   exports: [RouterModule],
   providers: [

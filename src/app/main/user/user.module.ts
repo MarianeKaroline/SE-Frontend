@@ -7,7 +7,6 @@ import { NgModule, LOCALE_ID } from "@angular/core";
 import { MatIconModule } from "@angular/material/icon";
 import { Routes, RouterModule } from "@angular/router";
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
-import { UserComponent } from "./user.component";
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatButtonModule } from '@angular/material/button';
@@ -26,6 +25,8 @@ import { AddressesComponent } from './client/address/addresses/addresses.compone
 import { NewAddressComponent } from './client/address/new-address/new-address.component';
 import { CardsComponent } from './client/card/cards/cards.component';
 import { NewCardComponent } from './client/card/new-card/new-card.component';
+import { LoginComponent } from './employee/login/login.component';
+import { EmployeeProfileComponent } from './employee/employee-profile/employee-profile.component';
 
 
 registerLocaleData(localePt);
@@ -54,12 +55,19 @@ const routes: Routes = [
   {
     path: 'new-card',
     component: NewCardComponent
+  },
+  {
+    path: 'employeer/sign-in',
+    component: LoginComponent
+  },
+  {
+    path: 'employeer/profile',
+    component: EmployeeProfileComponent
   }
 ];
 
 @NgModule({
   declarations: [
-    UserComponent,
     AuthenticationComponent,
     SignInComponent,
     SignUpComponent,
@@ -72,6 +80,8 @@ const routes: Routes = [
     NewAddressComponent,
     CardsComponent,
     NewCardComponent,
+    LoginComponent,
+    EmployeeProfileComponent,
   ],
   imports: [
     RouterModule.forChild(routes),
@@ -95,6 +105,6 @@ const routes: Routes = [
     ShowCardComponent
   ],
   providers: [{ provide: LOCALE_ID, useValue: 'pt-BR' }],
-  bootstrap: [UserComponent],
+  bootstrap: [],
 })
 export class UserModule { }

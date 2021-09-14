@@ -4,9 +4,8 @@
       <div class="nav_list">
         <a
           *ngFor="let category of categories; let i = index"
-          data-toggle="tooltip"
-          data-placement="right"
-          title="{{ category.description }}"
+          matTooltip="{{ category.description }}"
+          matTooltipPosition="right"
           [routerLink]="['/product/category', category.categoryEnum]"
           class="nav_link"
           (click)="redirect(category.categoryEnum)"

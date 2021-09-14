@@ -1,0 +1,19 @@
+<header>
+  <div class="container">
+    <a class="navbar-brand" routerLink="">
+      <img src="../../assets/logo/logo.svg" alt="logo-site" />
+    </a>
+
+    <div class="employee">
+      <span class="title">Employee</span>
+      <span *ngIf="!employee" routerLink="/user/employeer/sign-in">Sign In</span>
+      <span *ngIf="employee" routerLink="/user/employeer/profile">Profile</span>
+      <span>Join us</span>
+    </div>
+
+    <div class="useful">
+      <span class="title">Useful Links</span>
+      <span>Support</span>
+    </div>
+  </div>
+</header>

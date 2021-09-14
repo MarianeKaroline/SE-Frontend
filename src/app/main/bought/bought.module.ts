@@ -13,6 +13,7 @@ import { NgxBarcodeModule } from 'ngx-barcode';
 import localePt from '@angular/common/locales/pt';
 import { ShowBoughtComponent } from './show-bought/show-bought.component';
 import { MatDividerModule } from '@angular/material/divider';
+import { AllBoughtComponent } from './all-bought/all-bought.component';
 
 registerLocaleData(localePt);
 
@@ -28,6 +29,10 @@ const routes: Routes = [
   {
     path: "order-history",
     component: ShowBoughtComponent
+  },
+  {
+    path: "all-orders",
+    component: AllBoughtComponent
   }
 ];
 
@@ -46,7 +51,8 @@ const routes: Routes = [
   declarations: [
     PreviewComponent,
     ConfirmedComponent,
-    ShowBoughtComponent
+    ShowBoughtComponent,
+    AllBoughtComponent
   ],
   exports:[RouterModule],
   providers: [{

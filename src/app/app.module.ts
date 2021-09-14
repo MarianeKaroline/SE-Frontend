@@ -1,5 +1,6 @@
 import { LayoutModule } from './layout/layout.module';
 import { HeaderComponent } from './layout/header/header.component';
+import { FooterComponent } from './layout/footer/footer.component';
 import { Routes, RouterModule } from '@angular/router';
 import { NgModule, LOCALE_ID } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
@@ -29,6 +30,7 @@ import { ProductsService } from './main/products/products.service';
 import { UserService } from './main/user/user.service';
 import {MatMenuModule} from '@angular/material/menu';
 import {MatDividerModule} from '@angular/material/divider';
+import {MatTooltipModule} from '@angular/material/tooltip';
 
 registerLocaleData(localePt);
 
@@ -67,7 +69,8 @@ const appRoutes: Routes = [
   declarations: [
     AppComponent,
     HeaderComponent,
-    SidenavComponent
+    SidenavComponent,
+    FooterComponent
   ],
   imports: [
     BrowserModule,
@@ -93,7 +96,8 @@ const appRoutes: Routes = [
     NgxQRCodeModule,
     NgxBarcodeModule,
     MatMenuModule,
-    MatDividerModule
+    MatDividerModule,
+    MatTooltipModule
   ],
   providers: [
     { provide: LOCALE_ID, useValue: 'pt-BR' },

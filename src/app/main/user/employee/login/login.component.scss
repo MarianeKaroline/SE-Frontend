@@ -1,0 +1,18 @@
+section {
+  height: calc(100vh - 8rem);
+  display: flex;
+  align-items: center;
+}
+
+.container {
+  display: flex;
+  align-items: center;
+  max-width: 25%;
+  height: 60%;
+  background: #2020227c;
+  box-shadow: 0 4px 6px 0 hsla(0, 0%, 0%, 0.2);
+}
+
+app-sign-in {
+  width: 100%;
+}
