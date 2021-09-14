@@ -46,11 +46,38 @@
           </mat-step>
 
           <mat-step state="address" *ngIf="logged.length == 11" completed="false">
-            <app-address></app-address>
+            <app-address *ngIf="address"></app-address>
+            <button (click)="newAddress()" *ngIf="address" class="your-address" mat-button>See your addresses</button>
+            <app-show-address *ngIf="!address"></app-show-address>
+
+            <div class="back-1" *ngIf="address">
+              <button mat-icon-button matStepperPrevious class="btn-icon"><mat-icon class="mat-18">arrow_back</mat-icon></button>
+            </div>
+            <div class="back"  *ngIf="!address">
+              <mat-icon class="mat-18" (click)="newAddress()">arrow_back</mat-icon>
+            </div>
           </mat-step>
 
           <mat-step state="credit-card" *ngIf="logged.length == 11">
-            <app-payment></app-payment>
+
+            <app-payment *ngIf="paymentMethod === 0" (paymentType)="payment($event)"></app-payment>
+            <app-card *ngIf="paymentMethod == paymentEnum.creditCard && card"></app-card>
+            <button (click)="newCard()" *ngIf="paymentMethod == paymentEnum.creditCard && card" class="submit-btn your-address" mat-button>See your Cards</button>
+
+            <app-show-card *ngIf="!card"></app-show-card>
+
+            <div class="back" *ngIf="!card">
+              <mat-icon class="mat-18" (click)="newCard()">arrow_back</mat-icon>
+            </div>
+
+            <div class="back" *ngIf="paymentMethod == paymentEnum.creditCard && card">
+              <button mat-button matStepperPrevious><mat-icon class="mat-18">arrow_back</mat-icon></button>
+            </div>
+
+            <div class="back" *ngIf="paymentMethod == 0">
+              <button mat-button matStepperPrevious><mat-icon class="mat-18">arrow_back</mat-icon></button>
+            </div>
+
           </mat-step>
 
           <ng-template matStepperIcon="confirm">

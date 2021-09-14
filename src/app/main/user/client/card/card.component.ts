@@ -9,27 +9,20 @@ import { UserService } from '../../user.service';
   styleUrls: ['./card.component.scss']
 })
 export class CardComponent implements OnInit {
-  form: FormGroup;
-  card: boolean = true;
   sessionId: string;
-  flag: string;
-  creditCard: {
-    number: string;
-    valid: string;
-    cvv: string;
-    name: string;
-  };
-
-  constructor(private userService: UserService,
-              private formBuilder: FormBuilder,
-              private cartService: CartService) { }
+  form: FormGroup;
+  constructor(
+    private userService: UserService,
+    private formBuilder: FormBuilder,
+    private cartService: CartService
+  ) { }
 
   ngOnInit(): void {
     this.formConfig();
   }
 
   formConfig() {
-    this.sessionId = localStorage.getItem('sessionId');
+    this.sessionId = this.userService.sessionId;
     this.form = this.formBuilder.group({
       cardNumber: [null, [Validators.pattern('^[0-9]{16}$'), Validators.required]],
       name: [null, Validators.required],
@@ -46,10 +39,6 @@ export class CardComponent implements OnInit {
     })
 
     this.cartService.nextClicked();
-  }
-
-  newCard() {
-    this.card = !this.card;
   }
 
   get getControl() {

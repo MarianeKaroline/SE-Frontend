@@ -1,0 +1,25 @@
+<section>
+  <div class="container">
+    <div class="path">
+      <p routerLink="/user/profile">Your account</p>
+      <mat-icon class="mat-18 navigate">navigate_next</mat-icon>
+      <p class="active">Your credit cards</p>
+    </div>
+    <h2>Your credit cards</h2>
+    <div class="content">
+      <div class="card card-new" routerLink="/user/new-card">
+        <span>+ Add new credit card</span>
+      </div>
+      <div class="credit-card card" *ngFor="let card of cards">
+        <div class="face">
+          <h3 class="credit">Credit Card</h3>
+          <img src="../../../../assets/icons/chip.png" alt="" class="chip">
+          <h3 class="number">{{creditCardNumber(card.cardNumber)}}</h3>
+          <h5 class="valid"><span>Valid<br>thru</span><span>{{ card.shelfLife }}</span></h5>
+          <h5 class="cardHolder">{{ card.name }}</h5>
+          <img *ngIf="validate(card.cardNumber) != ''" src="../../../../assets/icons/{{ validate(card.cardNumber) }}.svg" alt="" class="flag">
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

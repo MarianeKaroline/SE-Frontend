@@ -10,7 +10,6 @@ import { UserService } from '../../../user.service';
 })
 export class ShowAddressComponent implements OnInit {
   addresses: ShowAddressModel[] = [];
-  address: boolean = false;
 
   constructor(private userService: UserService,
               private cartService: CartService) { }
@@ -20,10 +19,6 @@ export class ShowAddressComponent implements OnInit {
     .subscribe(address => {
       this.addresses = address;
     })
-  }
-
-  newAddress() {
-    this.address = !this.address;
   }
 
   buy(id: number) {

@@ -11,7 +11,6 @@ import { UserService } from '../../user.service';
 })
 export class AddressComponent implements OnInit {
   form: FormGroup;
-  address: boolean = true;
   addressId: number;
   sessionId: string;
 
@@ -26,7 +25,7 @@ export class AddressComponent implements OnInit {
   }
 
   formConfig() {
-    this.sessionId = localStorage.getItem('sessionId');
+    this.sessionId = this.userService.sessionId;
     this.form = this.formBuilder.group({
       postcode: [null, [Validators.pattern('^[0-9]{8}$'), Validators.required]],
       street: [null, Validators.required],
@@ -43,10 +42,6 @@ export class AddressComponent implements OnInit {
     });
 
     this.cartService.nextClicked();
-  }
-
-  newAddress() {
-    this.address = !this.address;
   }
 
 

@@ -1,3 +1,4 @@
+import { AddressComponent } from './client/address/address.component';
 import { UserService } from './user.service';
 import { AuthenticationComponent } from './authentication/authentication.component';
 import { CommonModule, registerLocaleData } from "@angular/common";
@@ -18,10 +19,13 @@ import localePt from '@angular/common/locales/pt';
 import { SignUpComponent } from './authentication/sign-up/sign-up.component';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import { ProfileComponent } from './client/profile/profile.component';
-import { AddressComponent } from '../user/client/address/address.component';
 import { ShowAddressComponent } from '../user/client/address/show-address/show-address.component';
 import { CardComponent } from '../user/client/card/card.component';
 import { ShowCardComponent } from '../user/client/card/show-card/show-card.component';
+import { AddressesComponent } from './client/address/addresses/addresses.component';
+import { NewAddressComponent } from './client/address/new-address/new-address.component';
+import { CardsComponent } from './client/card/cards/cards.component';
+import { NewCardComponent } from './client/card/new-card/new-card.component';
 
 
 registerLocaleData(localePt);
@@ -34,6 +38,22 @@ const routes: Routes = [
   {
     path: 'profile',
     component: ProfileComponent
+  },
+  {
+    path: 'addresses',
+    component: AddressesComponent
+  },
+  {
+    path: 'new-address',
+    component: NewAddressComponent
+  },
+  {
+    path: 'credit-cards',
+    component: CardsComponent
+  },
+  {
+    path: 'new-card',
+    component: NewCardComponent
   }
 ];
 
@@ -47,7 +67,11 @@ const routes: Routes = [
     ShowAddressComponent,
     ShowCardComponent,
     AddressComponent,
-    CardComponent
+    CardComponent,
+    AddressesComponent,
+    NewAddressComponent,
+    CardsComponent,
+    NewCardComponent,
   ],
   imports: [
     RouterModule.forChild(routes),

@@ -1,7 +1,7 @@
-<div *ngIf="addresses.length == 0 && !address">
+<div *ngIf="addresses.length == 0">
   You don't have any address
 </div>
-<div id="carouselExampleIndicators" class="carousel slide" data-bs-touch="false" data-bs-interval="false" data-bs-ride="carousel" *ngIf="!address">
+<div id="carouselExampleIndicators" class="carousel slide" data-bs-touch="false" data-bs-interval="false" data-bs-ride="carousel">
   <div class="carousel-inner">
     <div *ngFor="let item of addresses; let i = index;" [ngClass]="{ 'active' : i == 0 }" id="slide-{{ i+1 }}" class="carousel-item show-address">
       <h2>Address {{i + 1}}</h2>
@@ -61,8 +61,3 @@
   </button>
 </div>
 
-<div class="back"  *ngIf="!address">
-  <mat-icon class="mat-18" (click)="newAddress()">arrow_back</mat-icon>
-</div>
-
-<app-address *ngIf="address"></app-address>

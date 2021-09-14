@@ -1,5 +1,5 @@
-<form method="POST" [formGroup]="form" (ngSubmit)="addAddress()" *ngIf="address">
-  <h2 *ngIf="address">New Address</h2>
+<form method="POST" [formGroup]="form" (ngSubmit)="addAddress()">
+  <h2>New Address</h2>
 
   <div class="image-google">
     <img src="../../../../../assets/images/google-maps-1603435098.jpg" alt="">
@@ -47,12 +47,6 @@
   </div>
 
   <div class="button">
-    <button (click)="newAddress()" *ngIf="address" class="submit-btn your-address" mat-button>See your addresses</button>
     <button type="submit" class="submit-btn continue" mat-button [disabled]="form.invalid">Continue</button>
   </div>
 </form>
-<app-show-address *ngIf="!address"></app-show-address>
-
-<div class="back" *ngIf="address">
-  <button mat-button matStepperPrevious><mat-icon class="mat-18">arrow_back</mat-icon></button>
-</div>

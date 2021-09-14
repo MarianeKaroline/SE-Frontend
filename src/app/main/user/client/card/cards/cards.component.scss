@@ -1,0 +1,102 @@
+@import '../card.component.scss';
+
+section {
+  height: calc(100vh - 10rem);
+  margin-top: 2rem;
+}
+
+h2 {
+  color: #fff;
+  font-size: 2rem;
+}
+
+.container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.path {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  font-size: 14px;
+  font-weight: 300;
+  color: #fff;
+  margin-bottom: 1rem;
+}
+
+.path p {
+  cursor: pointer;
+  margin: 0;
+  padding: 0;
+}
+
+.path .active {
+  cursor: unset;
+  color: #FF6600;
+}
+
+.navigate {
+  margin: 0;
+}
+
+.content {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 30px;
+  padding: 30px;
+  justify-content: center;
+}
+
+.card {
+  width: 100%;
+  height: 200px;
+  background-color: transparent;
+  color: #fff;
+}
+
+.card-new {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent;
+  border: 2px dashed #fff;
+}
+
+.card-new span {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+img {
+  width: 10%;
+  align-self: center;
+  margin: 15px 0;
+}
+
+.name {
+  margin-top: 15px;
+  margin-bottom: 15px;
+  font-weight: 600;
+}
+
+span {
+  font-size: 16px;
+  margin-left: 20px;
+}
+
+mat-divider {
+  border-top-color: rgba(255,255,255,.12);
+}
+
+.credit-card {
+  width: 100%;
+}
+
+.valid span {
+  font-size: 8px;
+}

@@ -1,4 +1,4 @@
-<div *ngIf="cards.length == 0 && !card">
+<div *ngIf="cards.length == 0">
   You don't have any card
 </div>
 
@@ -73,8 +73,3 @@
     <span class="visually-hidden">Next</span>
   </button>
 </div>
-
-<div class="back" *ngIf="!card">
-  <mat-icon class="mat-18" (click)="newCard()">arrow_back</mat-icon>
-</div>
-<app-card *ngIf="card"></app-card>

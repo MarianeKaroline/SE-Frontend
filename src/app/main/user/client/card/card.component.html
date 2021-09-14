@@ -1,4 +1,4 @@
-<form method="POST" [formGroup]="form" (ngSubmit)="addCard()" *ngIf="card">
+<form method="POST" [formGroup]="form" (ngSubmit)="addCard()">
   <h2>New Card</h2>
 
   <div class="credit-card">
@@ -49,13 +49,6 @@
 
 
   <div class="button">
-    <button (click)="newCard()" *ngIf="card" class="submit-btn your-address" mat-button>See your Cards</button>
     <button type="submit" class="submit-btn continue" mat-button [disabled]="form.invalid">Continue</button>
   </div>
 </form>
-
-<app-show-card *ngIf="!card"></app-show-card>
-
-<div class="back" *ngIf="card">
-  <button mat-button matStepperPrevious><mat-icon class="mat-18">arrow_back</mat-icon></button>
-</div>

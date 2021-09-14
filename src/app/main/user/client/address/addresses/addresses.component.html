@@ -1,0 +1,24 @@
+<section>
+  <div class="container">
+    <div class="path">
+      <p routerLink="/user/profile">Your account</p>
+      <mat-icon class="mat-18 navigate">navigate_next</mat-icon>
+      <p class="active">Your addresses</p>
+    </div>
+    <h2>Your addresses</h2>
+    <div class="content">
+      <div class="card card-new" routerLink="/user/new-address">
+        <span>+ Add new address</span>
+      </div>
+      <div class="card" *ngFor="let address of addresses">
+        <mat-icon class="mat-18">location_on</mat-icon>
+        <mat-divider></mat-divider>
+        <span class="name">{{ address.clientName }}</span>
+        <span>{{ address.street }}, {{ address.number }}</span>
+        <span>{{ address.city }}, {{ address.state }} {{ address.cep }}</span>
+        <span>Brasil</span>
+        <span>Telefone: {{ address.clientPhone }}</span>
+      </div>
+    </div>
+  </div>
+</section>

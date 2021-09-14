@@ -23,7 +23,7 @@ span {
 
 .container {
   max-width: 90%;
-  height: 90%;
+  height: 95%;
   margin: 0;
   box-shadow: 0 4px 6px 0 hsla(0, 0%, 0%, 0.2);
 }
@@ -116,4 +116,24 @@ button {
   flex-direction: column;
   width: 100%;
   margin-top: 60px;
+}
+
+.your-address {
+  display: block;
+  width: 100%;
+  border: none;
+  outline: none;
+  font-size: 1rem;
+  letter-spacing: 1px;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  background-color: transparent;
+  border: 1px solid rgba(255,255,255,.2);
+}
+
+.btn-icon {
+  border: none;
+  width: unset;
+  margin-top: 10px;
 }

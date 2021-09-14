@@ -1,8 +1,9 @@
 import { Router } from '@angular/router';
 import { CartService } from './../cart.service';
 import { PaymentModel } from './../models/payment.model';
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, ViewEncapsulation } from '@angular/core';
 import { Payment } from 'src/app/static_data/payment.enum';
+import { UserService } from '../../user/user.service';
 
 @Component({
   selector: 'app-payment',
@@ -11,14 +12,20 @@ import { Payment } from 'src/app/static_data/payment.enum';
   encapsulation: ViewEncapsulation.None
 })
 export class PaymentComponent implements OnInit {
+  @Output() paymentType = new EventEmitter<number>();
   method: PaymentModel[] = [];
-  paymentMethod: number = 0;
+  paymentMethod: number;
   paymentEnum = Payment;
+  sessionId: string;
 
-  constructor(private cartService: CartService,
-              private router: Router) { }
+  constructor(
+    private cartService: CartService,
+    private router: Router,
+    private userService: UserService
+  ) { }
 
   ngOnInit(): void {
+    this.sessionId = this.userService.sessionId;
     this.payment();
   }
 
@@ -32,12 +39,9 @@ export class PaymentComponent implements OnInit {
   pMethod(id: number) {
     this.paymentMethod = id;
     this.cartService.paymentId = id;
+    this.paymentType.emit(id);
 
     if (id == this.paymentEnum.pix || id == this.paymentEnum.bankSlip) {
-      if (localStorage.getItem("cardId") != null) {
-        window.localStorage.removeItem("cardId")
-      }
-
       this.router.navigateByUrl('/bought/preview')
     }
   }

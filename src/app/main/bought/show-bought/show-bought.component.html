@@ -1,5 +1,10 @@
 <section>
   <div class="container">
+    <div class="path">
+      <p routerLink="/user/profile">Your account</p>
+      <mat-icon class="mat-18 navigate">navigate_next</mat-icon>
+      <p class="active">Your orders</p>
+    </div>
     <h2>Your orders</h2>
     <div class="content" *ngFor="let bought of boughts">
       <div class="card">

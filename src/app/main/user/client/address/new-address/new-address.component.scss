@@ -1,0 +1,38 @@
+section {
+  height: calc(100vh - 10rem);
+  margin-top: 2rem;
+}
+
+.container {
+  max-width: 90%;
+  height: 95%;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.content {
+  align-self: center;
+  width: 50%;
+  height: 100%;
+}
+
+.image-google {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.image-google img {
+  width: 80% !important;
+}
+
+.mat-form-field-underline {
+  background-color: rgba(255, 255, 255, 0.562);
+}
+
+.back {
+  margin: 0 0 2rem 2rem;
+  cursor: pointer;
+  color: #fff;
+}
