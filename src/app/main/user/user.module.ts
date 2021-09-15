@@ -27,6 +27,9 @@ import { CardsComponent } from './client/card/cards/cards.component';
 import { NewCardComponent } from './client/card/new-card/new-card.component';
 import { LoginComponent } from './employee/login/login.component';
 import { EmployeeProfileComponent } from './employee/employee-profile/employee-profile.component';
+import { EmployeersComponent } from './employee/employeers/employeers.component';
+import { NewEmployeeComponent } from './employee/new-employee/new-employee.component';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 
 registerLocaleData(localePt);
@@ -63,6 +66,14 @@ const routes: Routes = [
   {
     path: 'employeer/profile',
     component: EmployeeProfileComponent
+  },
+  {
+    path: 'employeer/get-employees',
+    component: EmployeersComponent
+  },
+  {
+    path: 'employeer/new-employee',
+    component: NewEmployeeComponent
   }
 ];
 
@@ -82,6 +93,8 @@ const routes: Routes = [
     NewCardComponent,
     LoginComponent,
     EmployeeProfileComponent,
+    EmployeersComponent,
+    NewEmployeeComponent,
   ],
   imports: [
     RouterModule.forChild(routes),
@@ -95,7 +108,8 @@ const routes: Routes = [
     MatButtonModule,
     MatFormFieldModule,
     MatInputModule,
-    MatDatepickerModule
+    MatDatepickerModule,
+    MatCheckboxModule
   ],
   exports: [
     RouterModule,

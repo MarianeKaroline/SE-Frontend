@@ -1,0 +1,40 @@
+<section>
+  <div class="container">
+    <div class="path">
+      <p routerLink="/user/employeer/profile">Employee profile</p>
+      <mat-icon class="mat-18 navigate">navigate_next</mat-icon>
+      <p class="active">All Employees</p>
+
+      <span class="spacer"></span>
+
+      <button  routerLink="/user/employeer/new-employee" class="new-employee" mat-raised-button>+ Add new employee</button>
+    </div>
+
+    <h2>All Employees</h2>
+
+    <div class="card" *ngFor="let employee of employees">
+      <div class="name">
+        <span class="title">Name</span>
+        <span>{{ employee.fullName }}</span>
+      </div>
+      <div class="cpf">
+        <span class="title">CPF</span>
+        <span>{{ employee.cpf }}</span>
+      </div>
+      <div class="email">
+        <span class="title">Email</span>
+        <span>{{ employee.email }}</span>
+      </div>
+      <div class="inventory">
+        <span class="title">Access inventory</span>
+        <mat-icon *ngIf="employee.accessInventory" class="mat-18 true">thumb_up</mat-icon>
+        <mat-icon *ngIf="!employee.accessInventory" class="mat-18 false">thumb_down</mat-icon>
+      </div>
+      <div class="register">
+        <span class="title">Access register employee</span>
+        <mat-icon *ngIf="employee.registerEmployee" class="mat-18 true">thumb_up</mat-icon>
+        <mat-icon *ngIf="!employee.registerEmployee" class="mat-18 false">thumb_down</mat-icon>
+      </div>
+    </div>
+  </div>
+</section>

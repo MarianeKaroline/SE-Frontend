@@ -1,5 +1,6 @@
 section {
   min-height: calc(100vh - 8rem);
+  display: flex;
 }
 
 h2 {
@@ -28,13 +29,9 @@ h2 {
   color: #FF6600;
 }
 
-.container {
-  height: 100%;
-}
-
 .content {
   padding: 50px;
-  height: 60%;
+  height: 5%;
 }
 
 .card {

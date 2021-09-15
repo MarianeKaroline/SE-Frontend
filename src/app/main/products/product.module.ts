@@ -1,5 +1,6 @@
 import { CartService } from './../cart/cart.service';
 import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
 import { SidebarComponent } from './category-itens/sidebar/sidebar.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AllComponent } from './all/all.component';
@@ -16,11 +17,16 @@ import localePt from '@angular/common/locales/pt';
 import { ProductsComponent } from './products.component';
 import { CategoryItensComponent } from './category-itens/category-itens.component';
 import {MatTooltipModule} from '@angular/material/tooltip';
+import { NewProductComponent } from './new-product/new-product.component';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 
 registerLocaleData(localePt);
 
 const routes: Routes = [
-  { path: "category",
+  {
+    path: "category",
     component: CategoryItensComponent,
     children: [
       {
@@ -29,7 +35,18 @@ const routes: Routes = [
       }
     ]
   },
-  { path: ':id', component: SelectedComponent },
+  {
+    path: "all-products",
+    component: AllComponent
+  },
+  {
+    path: "new-product",
+    component: NewProductComponent
+  },
+  {
+    path: ':id',
+    component: SelectedComponent
+  },
 ];
 
 @NgModule({
@@ -40,7 +57,8 @@ const routes: Routes = [
     ProductsComponent,
     AllComponent,
     CategoryItensComponent,
-    SidebarComponent
+    SidebarComponent,
+    NewProductComponent
   ],
   imports: [
     RouterModule.forChild(routes),
@@ -48,9 +66,17 @@ const routes: Routes = [
     HttpClientModule,
     NgbModule,
     MatIconModule,
-    MatTooltipModule
+    MatTooltipModule,
+    MatButtonModule,
+    ReactiveFormsModule,
+    MatInputModule,
+    MatFormFieldModule,
   ],
-  exports: [RouterModule],
+  exports: [
+    RouterModule,
+    MatInputModule,
+    MatFormFieldModule,
+  ],
   providers: [
     { provide: LOCALE_ID, useValue: 'pt-BR' },
     CartService

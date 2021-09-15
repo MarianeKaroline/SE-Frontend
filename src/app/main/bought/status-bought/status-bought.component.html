@@ -3,19 +3,21 @@
     <div class="path">
       <p routerLink="/user/employeer/profile">Employee profile</p>
       <mat-icon class="mat-18 navigate">navigate_next</mat-icon>
-      <p class="active">All orders</p>
+      <p routerLink="/bought/all-orders">All orders</p>
+      <mat-icon class="mat-18 navigate">navigate_next</mat-icon>
+      <p class="active">{{ status(id) }}</p>
 
       <span class="spacer"></span>
 
       <mat-form-field appearance="fill">
         <mat-label>Filter</mat-label>
         <mat-select>
-          <mat-option *ngFor="let status of statusBought; let i = index" routerLink="/bought/all-orders/{{ i + 1 }}"  value="{{status}}">{{ status }}</mat-option>
+          <mat-option *ngFor="let status of statusBought; let i = index" routerLink="/bought/all-orders/{{ i + 1 }}" value="{{status}}">{{ status }}</mat-option>
         </mat-select>
       </mat-form-field>
     </div>
-    <h2>All orders</h2>
-    <div class="content" *ngFor="let bought of boughts">
+    <h2>{{ status(id) }} Orders</h2>
+    <div class="content" *ngFor="let bought of orders">
       <div class="card">
         <div class="details">
           <div class="date">

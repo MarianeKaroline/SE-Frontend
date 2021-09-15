@@ -1,3 +1,4 @@
+import { AddNewProductModel } from './models/addNewProduct.model';
 import { ListProductsModel } from './models/list-products.model';
 import { ProductSelectedModel } from './models/ProductSelected.model';
 import { HttpClient } from '@angular/common/http';
@@ -17,7 +18,9 @@ export class ProductsService {
   private _products = new BehaviorSubject<ListProductsModel[]>([]);
   public products$ = this._products.asObservable();
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+    this.addList();
+  }
 
   public getBestSelling() {
     return this._bestSelling();
@@ -41,6 +44,10 @@ export class ProductsService {
       this._list = list;
       this._products.next(this._list);
     });
+  }
+
+  public add(model: AddNewProductModel) {
+    return this._add(model);
   }
 
   private _bestSelling() {
@@ -70,6 +77,14 @@ export class ProductsService {
   private _getAll() {
     return this.http
     .get<ListProductsModel[]>(`${apiUrl}/product/get/all`)
+    .pipe(
+      take(1)
+    );
+  }
+
+  private _add(model: AddNewProductModel) {
+    return this.http
+    .post<boolean>(`${apiUrl}/product/newproduct`, model)
     .pipe(
       take(1)
     );

@@ -1,3 +1,4 @@
+import { RegisteredModel } from './models/registered.model';
 import { CartService } from './../cart/cart.service';
 import { AppService } from 'src/app/app.service';
 import { CreditCardModel } from './models/credit-card.model';
@@ -48,7 +49,7 @@ export class UserService {
     return this._signIn(model);
   }
 
-  public register(model: SignUpModel) {
+  public signUp(model: SignUpModel) {
     return this._signUp(model);
   }
 
@@ -74,25 +75,33 @@ export class UserService {
     this.appService.getIpAddress();
     this.cartService.removeList();
   }
+
+  public getEmployees() {
+    return this._getEmployee();
+  }
+
+  public register(model: SignUpModel) {
+    return this._register(model);
+  }
   /* ---- end Public ---- */
 
 
   /* ---- Private ---- */
   private _signIn(model: {email: string, password: string}) {
     return this.http
-      .post<UserModel>(`${apiUrl}/user/signin`, model)
-      .pipe(
-        take(1)
-      )
+    .post<UserModel>(`${apiUrl}/user/signin`, model)
+    .pipe(
+      take(1)
+    );
   }
 
   private _signUp(model: SignUpModel)
   {
     return this.http
-      .post(`${apiUrl}/client/signup`, model)
-      .pipe(
-        take(1)
-      )
+    .post(`${apiUrl}/client/signup`, model)
+    .pipe(
+      take(1)
+    );
   }
 
   private _addAddress(model: AddressModel)
@@ -109,7 +118,7 @@ export class UserService {
     .get<ShowAddressModel[]>(`${apiUrl}/client/address/${this.sessionId}`)
     .pipe(
       take(1)
-    )
+    );
   }
 
   private _addCreditCard(model: CreditCardModel)
@@ -118,14 +127,31 @@ export class UserService {
     .post(`${apiUrl}/client/creditcard`, model)
     .pipe(
       take(1)
-    )
+    );
   }
 
   private _getCreditCards() {
-    return this.http.get<ShowCardModel[]>(`${apiUrl}/client/creditcard/${this.sessionId}`)
+    return this.http
+    .get<ShowCardModel[]>(`${apiUrl}/client/creditcard/${this.sessionId}`)
     .pipe(
       take(1)
-    )
+    );
+  }
+
+  private _getEmployee() {
+    return this.http
+    .get<RegisteredModel[]>(`${apiUrl}/employee/employees`)
+    .pipe(
+      take(1)
+    );
+  }
+
+  private _register(model: SignUpModel) {
+    return this.http
+    .post<boolean>(`${apiUrl}/employee/register`, model)
+    .pipe(
+      take(1)
+    );
   }
   /* ---- end Private ---- */
 }

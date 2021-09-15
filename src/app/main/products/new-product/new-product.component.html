@@ -1,0 +1,103 @@
+<section>
+  <div class="container">
+    <div class="path">
+      <p routerLink="/user/employeer/profile">Employee profile</p>
+      <mat-icon class="mat-18 navigate">navigate_next</mat-icon>
+      <p routerLink="/product/all-products">All products</p>
+      <mat-icon class="mat-18 navigate">navigate_next</mat-icon>
+      <p class="active">New product</p>
+    </div>
+
+    <div class="form">
+      <form method="POST" [formGroup]="form" (ngSubmit)="register()">
+        <h2>New product</h2>
+
+        <div class="input-group name-price">
+          <div class="name">
+            <mat-form-field appearance="legacy">
+              <mat-label>Name</mat-label>
+              <input matInput type="text" name="name" formControlName="name" />
+              <mat-error *ngIf="form.controls.name.invalid">{{
+                nameError()
+              }}</mat-error>
+            </mat-form-field>
+          </div>
+
+          <div class="price">
+            <mat-form-field appearance="legacy">
+              <mat-label>Price</mat-label>
+              <input
+                matInput
+                type="number"
+                name="price"
+                formControlName="price"
+              />
+              <mat-error *ngIf="form.controls.price.invalid">{{
+                priceError()
+              }}</mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div class="input-group">
+          <mat-form-field appearance="legacy">
+            <mat-label>Detail</mat-label>
+            <textarea matInput name="detail" formControlName="detail">
+            </textarea>
+            <mat-error *ngIf="form.controls.detail.invalid">{{
+              detailError()
+            }}</mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="input-group">
+          <mat-form-field appearance="legacy">
+            <mat-label>Amount</mat-label>
+            <input
+              matInput
+              type="number"
+              name="amount"
+              formControlName="amount"
+            />
+            <mat-error *ngIf="form.controls.amount.invalid">{{
+              amountError()
+            }}</mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="input-group">
+          <mat-form-field appearance="legacy">
+            <mat-label>Category</mat-label>
+            <input
+              matInput
+              type="text"
+              name="categoryId"
+              formControlName="categoryId"
+            />
+            <mat-error *ngIf="form.controls.categoryId.invalid">{{
+              categoryError()
+            }}</mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="input-group">
+            <input
+              type="file"
+              name="image"
+              formControlName="image"
+              (change)="fileChange($event)"
+            />
+        </div>
+
+        <button
+          type="submit"
+          class="submit-btn"
+          mat-button
+          [disabled]="form.invalid"
+        >
+          Sign Up
+        </button>
+      </form>
+    </div>
+  </div>
+</section>

@@ -1,27 +1,34 @@
-import { BoughtService } from './../bought.service';
+import { BoughtService } from '../bought.service';
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { BoughtModel } from '../models/bought.model';
 import { StatusBought } from 'src/app/static_data/status-bought.enum';
 
 @Component({
-  selector: 'app-all-bought',
-  templateUrl: './all-bought.component.html',
-  styleUrls: ['./all-bought.component.scss']
+  selector: 'app-status-bought',
+  templateUrl: './status-bought.component.html',
+  styleUrls: ['./status-bought.component.scss']
 })
-export class AllBoughtComponent implements OnInit {
-  boughts: BoughtModel[] = [];
+export class StatusBoughtComponent implements OnInit {
   statusBought : string[] = [
     "Pending Confirmation",
     "Pending Payment",
     "Confirmed",
     "Canceled"
   ]
+  orders: BoughtModel[] = [];
+  id: number;
 
-  constructor(private boughtService: BoughtService) { }
+  constructor(
+    private route: ActivatedRoute,
+    private boughtService: BoughtService
+  ) { }
 
   ngOnInit(): void {
-    this.boughtService.getAll()
-    .subscribe(i => this.boughts = i)
+    this.id = +this.route.snapshot.paramMap.get("id");
+
+    this.boughtService.getBoughtStatus(this.id)
+    .subscribe(orders => this.orders = orders);
   }
 
   status(id: number) {
@@ -38,4 +45,5 @@ export class AllBoughtComponent implements OnInit {
       return "Canceled"
     }
   }
+
 }

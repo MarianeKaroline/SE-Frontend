@@ -14,26 +14,32 @@ import localePt from '@angular/common/locales/pt';
 import { ShowBoughtComponent } from './show-bought/show-bought.component';
 import { MatDividerModule } from '@angular/material/divider';
 import { AllBoughtComponent } from './all-bought/all-bought.component';
+import { MatSelectModule } from '@angular/material/select';
+import { StatusBoughtComponent } from './status-bought/status-bought.component';
 
 registerLocaleData(localePt);
 
 const routes: Routes = [
   {
-    path: "preview",
-    component: PreviewComponent
+    path: 'preview',
+    component: PreviewComponent,
   },
   {
-    path: "confirmed",
-    component: ConfirmedComponent
+    path: 'confirmed',
+    component: ConfirmedComponent,
   },
   {
-    path: "order-history",
-    component: ShowBoughtComponent
+    path: 'order-history',
+    component: ShowBoughtComponent,
   },
   {
-    path: "all-orders",
+    path: 'all-orders',
     component: AllBoughtComponent
-  }
+  },
+  {
+    path: 'all-orders/:id',
+    component: StatusBoughtComponent
+  },
 ];
 
 @NgModule({
@@ -46,19 +52,23 @@ const routes: Routes = [
     MatFormFieldModule,
     MatInputModule,
     NgxBarcodeModule,
-    MatDividerModule
+    MatDividerModule,
+    MatSelectModule,
   ],
   declarations: [
     PreviewComponent,
     ConfirmedComponent,
     ShowBoughtComponent,
-    AllBoughtComponent
+    AllBoughtComponent,
+    StatusBoughtComponent,
   ],
-  exports:[RouterModule],
-  providers: [{
-    provide: LOCALE_ID,
-    useValue: 'pt-BR'
-  },
-  BoughtService]
+  exports: [RouterModule],
+  providers: [
+    {
+      provide: LOCALE_ID,
+      useValue: 'pt-BR',
+    },
+    BoughtService,
+  ],
 })
-export class BoughtModule { }
+export class BoughtModule {}

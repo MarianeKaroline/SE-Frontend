@@ -31,6 +31,8 @@ import { UserService } from './main/user/user.service';
 import {MatMenuModule} from '@angular/material/menu';
 import {MatDividerModule} from '@angular/material/divider';
 import {MatTooltipModule} from '@angular/material/tooltip';
+import { MatSelectModule } from '@angular/material/select';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 registerLocaleData(localePt);
 
@@ -97,7 +99,9 @@ const appRoutes: Routes = [
     NgxBarcodeModule,
     MatMenuModule,
     MatDividerModule,
-    MatTooltipModule
+    MatTooltipModule,
+    MatSelectModule,
+    MatCheckboxModule
   ],
   providers: [
     { provide: LOCALE_ID, useValue: 'pt-BR' },

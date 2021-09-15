@@ -1,14 +1,14 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UserService } from '../../user.service';
 
 @Component({
-  selector: 'app-sign-up',
-  templateUrl: './sign-up.component.html',
-  styleUrls: ['./sign-up.component.scss'],
+  selector: 'app-new-employee',
+  templateUrl: './new-employee.component.html',
+  styleUrls: ['./new-employee.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class SignUpComponent implements OnInit {
+export class NewEmployeeComponent implements OnInit {
   form: FormGroup;
 
   constructor(private userService: UserService,
@@ -26,14 +26,14 @@ export class SignUpComponent implements OnInit {
       birthDate: [null, Validators.required],
       email: [null, [Validators.email, Validators.required]],
       password: [null, Validators.required],
-      employee: [false],
+      employee: [true],
       accessInventory: [false],
       accessRegister: [false]
     });
   }
 
-  signUp() {
-    this.userService.signUp(this.form.value).subscribe(sub => {
+  register() {
+    this.userService.register(this.form.value).subscribe(sub => {
       console.log(sub);
     })
 
@@ -86,5 +86,4 @@ export class SignUpComponent implements OnInit {
   get getControl() {
     return this.form.controls;
   }
-
 }

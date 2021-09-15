@@ -1,0 +1,74 @@
+<section>
+  <div class="container">
+    <div class="path">
+      <p routerLink="/user/employeer/profile">Employee profile</p>
+      <mat-icon class="mat-18 navigate">navigate_next</mat-icon>
+      <p routerLink="/user/employeer/get-employees">All Employees</p>
+      <mat-icon class="mat-18 navigate">navigate_next</mat-icon>
+      <p class="active">New employee</p>
+    </div>
+
+    <div class="form">
+      <form method="POST" [formGroup]="form" (ngSubmit)="register()">
+        <h2>Register</h2>
+        <div class="input-group-signUp">
+          <mat-form-field appearance="legacy">
+            <mat-label>CPF</mat-label>
+            <input matInput type="text" name="cpf" formControlName="cpf">
+            <mat-error *ngIf="form.controls.cpf.invalid">{{cpfError()}}</mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="input-group-signUp">
+          <mat-form-field appearance="legacy">
+            <mat-label>Full Name</mat-label>
+            <input matInput type="text" name="fullName" formControlName="fullName">
+            <mat-error *ngIf="form.controls.fullName.invalid">{{fullNameError()}}</mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="input-group-signUp phone-email">
+          <div class="phone">
+            <mat-form-field appearance="legacy">
+              <mat-label>Phone</mat-label>
+              <input matInput type="text" name="phone" formControlName="phone">
+              <mat-error *ngIf="form.controls.phone.invalid">{{phoneError()}}</mat-error>
+            </mat-form-field>
+          </div>
+
+          <div class="email">
+            <mat-form-field appearance="legacy">
+              <mat-label>Email</mat-label>
+              <input matInput type="text" name="email" formControlName="email">
+              <mat-error *ngIf="form.controls.email.invalid">{{emailError()}}</mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div class="input-group-signUp">
+          <mat-form-field appearance="legacy">
+            <mat-label>Birth Date</mat-label>
+            <input matInput type="date" name="birthDate" formControlName="birthDate">
+            <mat-error *ngIf="form.controls.birthDate.invalid">{{birthDateError()}}</mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="input-group-signUp">
+          <mat-form-field appearance="legacy">
+            <mat-label>Password</mat-label>
+            <input matInput type="password" name="password" formControlName="password">
+            <mat-error *ngIf="form.controls.password.invalid">{{passwordError()}}</mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="input-group-access">
+          <mat-checkbox formControlName="accessInventory">Access Inventory</mat-checkbox>
+          <mat-checkbox formControlName="accessRegister">Access Register Employee</mat-checkbox>
+        </div>
+
+        <button type="submit" class="submit-btn" mat-button [disabled]="form.invalid">Sign Up</button>
+      </form>
+    </div>
+
+  </div>
+</section>

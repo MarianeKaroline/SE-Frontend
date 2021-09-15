@@ -1,3 +1,4 @@
+import { StatusBought } from './../../static_data/status-bought.enum';
 import { BoughtModel } from './models/bought.model';
 import { CartService } from './../cart/cart.service';
 import { UserService } from './../user/user.service';
@@ -46,6 +47,10 @@ export class BoughtService {
     return this._getAll();
   }
 
+  public getBoughtStatus(status: StatusBought) {
+    return this._getOrderStatus(status);
+  }
+
   private _preview() {
     this.model = {
       paymentId: this.paymentId,
@@ -89,6 +94,14 @@ export class BoughtService {
     .get<BoughtModel[]>(`${apiUrl}/bought/allboughts`)
     .pipe(
       take(1)
-    )
+    );
+  }
+
+  private _getOrderStatus(status: StatusBought) {
+    return this.http
+    .get<BoughtModel[]>(`${apiUrl}/bought/${status}`)
+    .pipe(
+      take(1)
+    );
   }
 }
