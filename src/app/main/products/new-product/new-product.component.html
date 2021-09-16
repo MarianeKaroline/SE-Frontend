@@ -70,7 +70,7 @@
             <mat-label>Category</mat-label>
             <input
               matInput
-              type="text"
+              type="number"
               name="categoryId"
               formControlName="categoryId"
             />
@@ -84,9 +84,9 @@
             <input
               type="file"
               name="image"
-              formControlName="image"
               (change)="fileChange($event)"
             />
+            <input type="hidden" name="fileHidden" formControlName="image"/>
         </div>
 
         <button

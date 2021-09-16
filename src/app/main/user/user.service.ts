@@ -74,6 +74,11 @@ export class UserService {
   public LoggOut() {
     this.appService.getIpAddress();
     this.cartService.removeList();
+
+    if (this.employee) {
+      this.employee = false;
+      window.localStorage.setItem('employee', this.employee.toString());
+    }
   }
 
   public getEmployees() {

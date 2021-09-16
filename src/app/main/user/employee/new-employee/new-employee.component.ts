@@ -1,3 +1,4 @@
+import { Router } from '@angular/router';
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UserService } from '../../user.service';
@@ -12,7 +13,8 @@ export class NewEmployeeComponent implements OnInit {
   form: FormGroup;
 
   constructor(private userService: UserService,
-              private formBuilder: FormBuilder) { }
+              private formBuilder: FormBuilder,
+              private router: Router) { }
 
   ngOnInit(): void {
     this.formConfig();
@@ -37,7 +39,7 @@ export class NewEmployeeComponent implements OnInit {
       console.log(sub);
     })
 
-    this.form.reset();
+    this.router.navigateByUrl('/user/employeer/get-employees')
   }
 
   /* Validations */

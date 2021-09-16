@@ -13,6 +13,7 @@ import { Observable } from 'rxjs';
 })
 export class HeaderComponent implements OnInit {
 
+  employee: boolean
   home: any;
   sessionId: string;
   total: Observable<number>;
@@ -31,6 +32,8 @@ export class HeaderComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.employee = this.userService.employee;
+
     this.total = this.cartService.getTotal()
     .pipe(
       map((total) => {

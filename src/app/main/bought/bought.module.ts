@@ -16,6 +16,8 @@ import { MatDividerModule } from '@angular/material/divider';
 import { AllBoughtComponent } from './all-bought/all-bought.component';
 import { MatSelectModule } from '@angular/material/select';
 import { StatusBoughtComponent } from './status-bought/status-bought.component';
+import { AuthGuard } from 'src/app/shared/guards/auth.guard';
+import { AuthEmployeeGuard } from 'src/app/shared/guards/auth-employee.guard';
 
 registerLocaleData(localePt);
 
@@ -23,22 +25,27 @@ const routes: Routes = [
   {
     path: 'preview',
     component: PreviewComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: 'confirmed',
     component: ConfirmedComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: 'order-history',
     component: ShowBoughtComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: 'all-orders',
-    component: AllBoughtComponent
+    component: AllBoughtComponent,
+    canActivate: [AuthEmployeeGuard]
   },
   {
     path: 'all-orders/:id',
-    component: StatusBoughtComponent
+    component: StatusBoughtComponent,
+    canActivate: [AuthEmployeeGuard]
   },
 ];
 

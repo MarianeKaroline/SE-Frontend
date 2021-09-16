@@ -1,3 +1,5 @@
+import { AuthEmployeeGuard } from './../../shared/guards/auth-employee.guard';
+import { AuthGuard } from './../../shared/guards/auth.guard';
 import { AddressComponent } from './client/address/address.component';
 import { UserService } from './user.service';
 import { AuthenticationComponent } from './authentication/authentication.component';
@@ -41,23 +43,28 @@ const routes: Routes = [
   },
   {
     path: 'profile',
-    component: ProfileComponent
+    component: ProfileComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: 'addresses',
-    component: AddressesComponent
+    component: AddressesComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: 'new-address',
-    component: NewAddressComponent
+    component: NewAddressComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: 'credit-cards',
-    component: CardsComponent
+    component: CardsComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: 'new-card',
-    component: NewCardComponent
+    component: NewCardComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: 'employeer/sign-in',
@@ -65,15 +72,18 @@ const routes: Routes = [
   },
   {
     path: 'employeer/profile',
-    component: EmployeeProfileComponent
+    component: EmployeeProfileComponent,
+    canActivate: [AuthEmployeeGuard]
   },
   {
     path: 'employeer/get-employees',
-    component: EmployeersComponent
+    component: EmployeersComponent,
+    canActivate: [AuthEmployeeGuard]
   },
   {
     path: 'employeer/new-employee',
-    component: NewEmployeeComponent
+    component: NewEmployeeComponent,
+    canActivate: [AuthEmployeeGuard]
   }
 ];
 

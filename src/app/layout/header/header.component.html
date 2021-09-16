@@ -21,7 +21,7 @@
 
     <span class="spacer"></span>
 
-    <button class="btn-icon" mat-icon-button [matMenuTriggerFor]="menu"><mat-icon class="mat-18 user-icon">account_circle</mat-icon> <mat-icon class="mat-18">arrow_drop_down</mat-icon>
+    <button *ngIf="!employee" class="btn-icon" mat-icon-button [matMenuTriggerFor]="menu"><mat-icon class="mat-18 user-icon">account_circle</mat-icon> <mat-icon class="mat-18">arrow_drop_down</mat-icon>
       </button>
 
     <mat-menu #menu="matMenu">

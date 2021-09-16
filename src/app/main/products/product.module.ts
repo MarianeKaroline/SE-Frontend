@@ -21,6 +21,7 @@ import { NewProductComponent } from './new-product/new-product.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { AuthEmployeeGuard } from 'src/app/shared/guards/auth-employee.guard';
 
 registerLocaleData(localePt);
 
@@ -37,11 +38,13 @@ const routes: Routes = [
   },
   {
     path: "all-products",
-    component: AllComponent
+    component: AllComponent,
+    canActivate: [AuthEmployeeGuard]
   },
   {
     path: "new-product",
-    component: NewProductComponent
+    component: NewProductComponent,
+    canActivate: [AuthEmployeeGuard]
   },
   {
     path: ':id',

@@ -184,17 +184,23 @@ export class CartService {
     if (CartService._list.length > 0) {
       CartService._list.forEach((product) => {
         this._passItems(product.productId, product.amount).subscribe(
-          (products) =>
+          (products) =>{
+            CartService._list = products;
             window.localStorage.setItem('itens', JSON.stringify(products))
+          }
         );
       });
     } else {
-      this._products().subscribe((products) => (CartService._list = products));
+      this._products().subscribe((products) => {
+        CartService._list = products;
+        window.localStorage.setItem('itens', JSON.stringify(products))
+      });
     }
   }
 
   public removeList() {
     CartService._list = [];
+    window.localStorage.setItem('itens', JSON.stringify(CartService._list ))
   }
   /* ---- end Public --- */
 

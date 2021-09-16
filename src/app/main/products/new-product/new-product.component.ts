@@ -1,3 +1,4 @@
+import { UploadImageService } from './../../../shared/upload-image.service';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -10,10 +11,14 @@ import { ProductsService } from '../products.service';
 })
 export class NewProductComponent implements OnInit {
   form: FormGroup;
+  fileToUpload: File = null;
+  fileName = '';
+  file: any;
 
   constructor(private productsService: ProductsService,
               private formBuilder: FormBuilder,
-              private router: Router) { }
+              private router: Router,
+              private upload: UploadImageService) { }
 
   ngOnInit(): void {
     this.formConfig();
@@ -29,22 +34,25 @@ export class NewProductComponent implements OnInit {
       ranking: [0],
       available: [true],
       rating: [0],
-      image: [null, Validators.required]
+      image: [this.fileName, Validators.required]
     });
   }
 
   register() {
+    console.log(this.form.value)
     this.productsService.add(this.form.value)
     .subscribe(product => console.log(product));
+
+    this.upload.postFile(this.file)
+    .subscribe(file => console.log(file));
 
     this.router.navigateByUrl('/product/all-products');
   }
 
   fileChange(event) {
-    if (event.target.files && event.target.files.length > 0) {
-      const file = event.target.files[0];
-      this.form.controls['image'].setValue(file ? file.name : '');
-      console.log(this.form.get('image').value);
+    if (event.target.files && event.target.files[0]) {
+      this.file = event.target.files[0];
+      this.form.controls['image'].setValue(this.file ? this.file.name : '');
     }
   }
 
