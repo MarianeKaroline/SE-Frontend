@@ -27,6 +27,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { AuthEmployeeGuard } from 'src/app/shared/guards/auth-employee.guard';
 import { AppService } from 'src/app/app.service';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 registerLocaleData(localePt);
 
@@ -79,6 +80,7 @@ const routes: Routes = [
     ReactiveFormsModule,
     MatInputModule,
     MatFormFieldModule,
+    MatSnackBarModule
   ],
   exports: [
     RouterModule,

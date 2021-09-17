@@ -1,0 +1,42 @@
+<form method="POST" [formGroup]="form" (ngSubmit)="sendMessage()">
+  <h2>Single Experience Assistant</h2>
+
+  <div class="input-group">
+    <mat-form-field appearance="legacy">
+      <mat-label>Name</mat-label>
+      <input matInput type="text" name="name" formControlName="name">
+      <mat-error *ngIf="getControl.name.invalid">{{getNameMessage()}}</mat-error>
+    </mat-form-field>
+  </div>
+
+  <div class="street-number">
+    <div class="input-group street">
+      <mat-form-field appearance="legacy">
+        <mat-label>Email</mat-label>
+        <input matInput type="text" name="email" formControlName="from">
+        <mat-error *ngIf="getControl.from.invalid">{{getEmailMessage()}}</mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="input-group number">
+      <mat-form-field appearance="legacy">
+        <mat-label>Subject</mat-label>
+        <input matInput type="text" name="messageSubject" formControlName="messageSubject">
+        <mat-error *ngIf="getControl.messageSubject.invalid">{{getSubjectMessage()}}</mat-error>
+      </mat-form-field>
+    </div>
+  </div>
+
+  <div class="input-group">
+    <mat-form-field appearance="legacy">
+      <mat-label>Message</mat-label>
+      <textarea matInput type="text" name="messageBody" formControlName="messageBody"></textarea>
+      <mat-error *ngIf="getControl.messageBody.invalid">{{getMessage()}}</mat-error>
+    </mat-form-field>
+  </div>
+
+  <div class="button">
+    <button type="submit" class="submit-btn continue" mat-button [disabled]="form.invalid">Continue</button>
+  </div>
+</form>
+

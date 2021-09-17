@@ -30,6 +30,7 @@ export class UserService {
     if (aux != null) {
       this.employee = JSON.parse(aux);
       this.cartService.setSessionId(this.sessionId);
+      this.cartService.setVerifyEmployee(this.employee);
     }
   }
 
@@ -37,13 +38,16 @@ export class UserService {
   public login(model: {email: string, password: string}) {
     this._signIn(model).subscribe(user => {
       this.sessionId = user.cpf;
-      this.cartService.setSessionId(this.sessionId);
-      window.localStorage.setItem('sessionId', user.cpf);
       this.employee = user.employee;
-      window.localStorage.setItem('employee', user.employee.toString());
+      this.cartService.setSessionId(this.sessionId);
+      this.cartService.setVerifyEmployee(this.employee);
+
       if (!user.employee) {
         this.cartService.passItems();
       }
+
+      window.localStorage.setItem('sessionId', user.cpf);
+      window.localStorage.setItem('employee', user.employee.toString());
     });
 
     return this._signIn(model);

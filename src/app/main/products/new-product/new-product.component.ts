@@ -39,12 +39,11 @@ export class NewProductComponent implements OnInit {
   }
 
   register() {
-    console.log(this.form.value)
     this.productsService.add(this.form.value)
-    .subscribe(product => console.log(product));
+      .subscribe(product => console.log(product));
 
     this.upload.postFile(this.file)
-    .subscribe(file => console.log(file));
+      .subscribe(file => console.log(file));
 
     this.router.navigateByUrl('/product/all-products');
   }

@@ -37,7 +37,6 @@ export class HeaderComponent implements OnInit {
     this.cartService.total$
     .subscribe(amount => {
       this.total = amount.totalAmount != null ? amount.totalAmount : 0;
-      console.log(amount);
     });
 
     this.sessionId = this.userService.sessionId;

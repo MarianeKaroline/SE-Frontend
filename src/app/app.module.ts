@@ -37,6 +37,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { CartService } from './main/cart/cart.service';
 import { LayoutService } from './layout/layout.service';
 import { BoughtService } from './main/bought/bought.service';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 registerLocaleData(localePt);
 
@@ -64,6 +65,10 @@ const appRoutes: Routes = [
   {
     path: 'bought',
     loadChildren: () => import('./main/bought/bought.module').then(m => m.BoughtModule)
+  },
+  {
+    path: 'assistant',
+    loadChildren: () => import('./main/assistant/assistant.module').then(m => m.AssistantModule)
   },
   {
     path: '**',
@@ -105,7 +110,8 @@ const appRoutes: Routes = [
     MatDividerModule,
     MatTooltipModule,
     MatSelectModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    MatSnackBarModule
   ],
   providers: [
     { provide: LOCALE_ID, useValue: 'pt-BR' },

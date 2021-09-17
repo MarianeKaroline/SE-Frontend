@@ -24,11 +24,13 @@ export class CartComponent implements OnInit {
   constructor(private cartService: CartService, private userService: UserService) {}
 
   ngOnInit(): void {
-    this.cartService.total$
-      .subscribe(total => this.total = total);
+    this.cartService.setSubjectAdded(false);
 
     this.cartService.products$
       .subscribe(products => this.products = products);
+
+    this.cartService.total$
+      .subscribe(total => this.total = total);
 
     this.logged = this.userService.sessionId;
   }

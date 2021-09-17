@@ -6,8 +6,8 @@ import { ProductsService } from './../products/products.service';
 import { ProductCartModel } from './models/productCart.model';
 import { take, tap, map, switchMap } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from "@angular/core";
-import { environment } from "src/environments/environment";
+import { Injectable } from '@angular/core';
+import { environment } from 'src/environments/environment';
 import { BehaviorSubject } from 'rxjs';
 
 const apiUrl = environment.apiUrl;
@@ -15,7 +15,7 @@ const apiUrl = environment.apiUrl;
 @Injectable()
 export class CartService {
   private static sessionId: string;
-  public paymentId: number;
+  private static verifyEmployee: boolean;
 
   private static _products = new BehaviorSubject<ProductCartModel[]>([]);
   public products$ = CartService._products.asObservable();
@@ -35,14 +35,17 @@ export class CartService {
     price: 0,
     category: {
       categoryEnum: 0,
-      description: null
+      description: null,
     },
     amount: 0,
     image: null,
     statusId: 0,
-  }
+  };
 
-  constructor(private http: HttpClient, private productsService: ProductsService) {
+  constructor(
+    private http: HttpClient,
+    private productsService: ProductsService
+  ) {
     let items = JSON.parse(localStorage.getItem('items'));
 
     if (items == null || items == []) {
@@ -54,18 +57,25 @@ export class CartService {
     this._getTotal();
   }
 
-/* ------------------ Public  ------------------ */
+  /* ------------------ Public  ------------------ */
 
   public setSessionId(id: string) {
     CartService.sessionId = id;
   }
 
+  public setVerifyEmployee(verify: boolean) {
+    CartService.verifyEmployee = verify;
+  }
+
+  public getVerifyEmployee() {
+    return CartService.verifyEmployee;
+  }
+
   public getProducts() {
-    this._getProducts()
-      .subscribe(products => {
-        CartService._products.next(products);
-        this._localList(products);
-      });
+    this._getProducts().subscribe((products) => {
+      CartService._products.next(products);
+      this._localList(products);
+    });
   }
 
   public addProduct(productId: number) {
@@ -74,17 +84,16 @@ export class CartService {
     this._addToList(productId);
     this._getTotal();
 
-    this._added.next(true);
+    this.setSubjectAdded(true);
 
     if (CartService.sessionId.length == 11) {
-      return this._addProduct(productId)
-        .pipe(
-          tap(null, err => {
-            list = list.filter(p => p.productId != productId);
-            CartService._products.next(list);
-            this._localList(list);
-          })
-        );
+      return this._addProduct(productId).pipe(
+        tap(null, (err) => {
+          list = list.filter((p) => p.productId != productId);
+          this._next(list);
+          this._localList(list);
+        })
+      );
     }
 
     return this._added.pipe(
@@ -96,17 +105,16 @@ export class CartService {
 
   public removeProduct(productId: number) {
     let list = CartService._products.value;
-    let product = list.find(p => p.productId == productId);
+    let product = list.find((p) => p.productId == productId);
 
     this._removeToList(productId);
     this._getTotal();
 
     if (CartService.sessionId.length == 11) {
-      return this._removeProduct(productId)
-      .pipe(
-        tap(null, err => {
+      return this._removeProduct(productId).pipe(
+        tap(null, (err) => {
           list.push(product);
-          CartService._products.next(list);
+          this._next(list);
           this._localList(list);
         })
       );
@@ -123,20 +131,19 @@ export class CartService {
 
   public removeProducts(productId: number) {
     let list = CartService._products.value;
-    let product = list.find(p => p.productId == productId);
+    let product = list.find((p) => p.productId == productId);
 
-    list = list.filter(p => p.productId != productId);
+    list = list.filter((p) => p.productId != productId);
 
-    CartService._products.next(list);
+    this._next(list);
     this._localList(list);
     this._getTotal();
 
     if (CartService.sessionId.length == 11) {
-      return this._removeProducts(productId)
-      .pipe(
-        tap(null, err => {
+      return this._removeProducts(productId).pipe(
+        tap(null, (err) => {
           list.push(product);
-          CartService._products.next(list);
+          this._next(list);
           this._localList(list);
         })
       );
@@ -154,79 +161,76 @@ export class CartService {
   public payment() {
     return this.http
       .get<PaymentModel[]>(`${apiUrl}/cart/payment`)
-      .pipe(
-        take(1)
-      );
+      .pipe(take(1));
   }
 
   public passItems() {
     let list = CartService._products.value;
 
     if (list.length > 0) {
-      list.forEach(p => {
-        this._passItems(p.productId, p.amount)
-          .subscribe(products => {
-            CartService._products.next(products);
-            this._localList(products);
-          });
-      });
-    } else {
-      this._getProducts()
-        .subscribe(products => {
-          CartService._products.next(products);
+      list.forEach((p) => {
+        this._passItems(p.productId, p.amount).subscribe((products) => {
+          this._next(list);
           this._localList(products);
         });
+      });
+    } else {
+      this._getProducts().subscribe((products) => {
+        this._next(list);
+        this._localList(products);
+      });
     }
   }
 
   public removeList() {
-    CartService._products.next([]);
+    this._next([]);
     this._localList([]);
   }
 
+  public setSubjectAdded(added: boolean) {
+    this._added.next(added);
+  }
 
-/* ------------------ Public  ------------------ */
+  /* ------------------ Public  ------------------ */
 
-/* ------------------ Private ------------------ */
+  /* ------------------ Private ------------------ */
 
   private _getProducts() {
     return this.http
       .get<ProductCartModel[]>(`${apiUrl}/cart/${CartService.sessionId}`)
-      .pipe(
-        take(1)
-      );
+      .pipe(take(1));
   }
 
   private _addProduct(productId: number) {
     return this.http
-      .post<boolean>(`${apiUrl}/cart/${productId}/${CartService.sessionId}`, null)
-      .pipe(
-        take(1)
-      );
+      .post<boolean>(
+        `${apiUrl}/cart/${productId}/${CartService.sessionId}`,
+        null
+      )
+      .pipe(take(1));
   }
 
   private _removeProduct(productId: number) {
     return this.http
       .delete<boolean>(`${apiUrl}/cart/${productId}/${CartService.sessionId}`)
-      .pipe(
-        take(1)
-      );
+      .pipe(take(1));
   }
 
   private _removeProducts(productId: number) {
     return this.http
-      .delete<boolean>(`${apiUrl}/cart/delete/${productId}/${CartService.sessionId}`)
-      .pipe(
-        take(1)
-      );
+      .delete<boolean>(
+        `${apiUrl}/cart/delete/${productId}/${CartService.sessionId}`
+      )
+      .pipe(take(1));
   }
 
   private _passItems(productId: number, amount: number) {
     return this.http
-      .post<ProductCartModel[]>(`${apiUrl}/cart/${productId}/${amount}/${CartService.sessionId}`, null)
-      .pipe(
-        take(1)
-      );
+      .post<ProductCartModel[]>(
+        `${apiUrl}/cart/${productId}/${amount}/${CartService.sessionId}`,
+        null
+      )
+      .pipe(take(1));
   }
 
   private _localList(list: ProductCartModel[]) {
@@ -234,50 +238,50 @@ export class CartService {
   }
 
   private _addToList(productId: number) {
-    let product = this.productsService.getAll().find(p => p.productId == productId);
+    let product = this.productsService
+      .getAll()
+      .find((p) => p.productId == productId);
     let list = CartService._products.value;
-    let exist = list.find(p => p.productId == productId);
+    let exist = list.find((p) => p.productId == productId);
 
     if (exist != null) {
-      let index = list.findIndex(p => p.productId == productId);
+      let index = list.findIndex((p) => p.productId == productId);
       list[index].amount += 1;
-    }
-    else {
+    } else {
       list.push(this._modelProducts(product));
     }
 
-    CartService._products.next(list);
+    this._next(list);
     this._localList(list);
   }
 
   private _modelProducts(product: ListProductsModel) {
-    return this.productCart = {
+    return (this.productCart = {
       productId: product.productId,
       name: product.name,
       price: product.price,
       category: {
         categoryEnum: product.category.categoryEnum,
-        description: product.category.description
+        description: product.category.description,
       },
       amount: 1,
       image: product.image,
       statusId: StatusProduct.active,
-    }
+    });
   }
 
   private _removeToList(productId: number) {
     let list = CartService._products.value;
-    let product = list.find(p => p.productId == productId);
+    let product = list.find((p) => p.productId == productId);
 
     if (product.amount > 1) {
-      let index = list.findIndex(p => p.productId == productId);
-      list[index].amount -=1
-    }
-    else {
-      list = list.filter(p => p.productId != productId);
+      let index = list.findIndex((p) => p.productId == productId);
+      list[index].amount -= 1;
+    } else {
+      list = list.filter((p) => p.productId != productId);
     }
 
-    CartService._products.next(list);
+    this._next(list);
     this._localList(list);
   }
 
@@ -285,10 +289,10 @@ export class CartService {
     let list = CartService._products.value;
     let total = this._modelTotal();
 
-    list.forEach(t => {
+    list.forEach((t) => {
       total.totalAmount += t.amount;
-      total.totalPrice += (t.amount * t.price);
-    })
+      total.totalPrice += t.amount * t.price;
+    });
 
     CartService._total.next(total);
   }
@@ -296,7 +300,11 @@ export class CartService {
   private _modelTotal() {
     return {
       totalAmount: 0,
-      totalPrice: 0
-    }
+      totalPrice: 0,
+    };
+  }
+
+  private _next(list: ProductCartModel[]) {
+    CartService._products.next(list);
   }
 }

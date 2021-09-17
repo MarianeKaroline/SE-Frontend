@@ -37,7 +37,6 @@ export class SidenavComponent implements OnInit {
     this.cartService.total$
       .subscribe(total => {
         this.total = total;
-        console.log("sidenav", total)
       })
   }
 

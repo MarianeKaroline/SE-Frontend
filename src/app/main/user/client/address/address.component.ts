@@ -1,5 +1,4 @@
 import { BoughtService } from './../../../bought/bought.service';
-import { CartService } from './../../../cart/cart.service';
 import { Component, OnInit, Output, ViewEncapsulation, EventEmitter } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { UserService } from '../../user.service';

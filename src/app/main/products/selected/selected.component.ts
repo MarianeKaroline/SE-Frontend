@@ -4,6 +4,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ProductsService } from '../products.service';
 import { CartService } from '../../cart/cart.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 
 @Component({
@@ -18,9 +19,12 @@ export class SelectedComponent implements OnInit {
   details: string[];
   id: number;
 
-  constructor(private productService: ProductsService,
-              private route: ActivatedRoute,
-              private cartService: CartService) { }
+  constructor(
+    private productService: ProductsService,
+    private route: ActivatedRoute,
+    private cartService: CartService,
+    private snackBar: MatSnackBar
+  ) { }
 
   ngOnInit(): void {
     this.id = +this.route.snapshot.paramMap.get("id");
@@ -35,10 +39,16 @@ export class SelectedComponent implements OnInit {
       });
   }
 
-  addProducts(id: number) {
-    this.cartService.addProduct(id)
-      .subscribe(product => {
-        console.log(product);
-      })
+  addProduct(id: number) {
+    if (!this.cartService.getVerifyEmployee()) {
+      this.cartService.addProduct(id)
+        .subscribe(product => console.log(product));
+    }
+    else {
+      this.snackBar.open("you cant add products to cart", "close", {
+        horizontalPosition: 'center',
+        verticalPosition: 'bottom'
+      });
+    }
   }
 }
