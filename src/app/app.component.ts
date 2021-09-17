@@ -11,15 +11,9 @@ import { distinctUntilChanged, map, switchMap, tap } from 'rxjs/operators';
 })
 export class AppComponent implements OnInit {
   sidebarOpen = false;
-  count: number = 0;
 
-  constructor(
-    private appService: AppService,
-    private cartService: CartService
-  ) {
-    this.cartService.added$.subscribe(open => {
-      this.sidebarOpen = open;
-    });
+  constructor(private appService: AppService, private cartService: CartService) {
+    this.cartService.added$.subscribe(open => this.sidebarOpen = open);
   }
 
   ngOnInit() {

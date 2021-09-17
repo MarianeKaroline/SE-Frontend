@@ -7,7 +7,6 @@ import { BuyModel } from './../cart/models/buy.model';
 import { PreviewBoughtModel } from './models/previewBought.model';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
 const apiUrl = environment.apiUrl;
@@ -15,19 +14,14 @@ const apiUrl = environment.apiUrl;
 @Injectable()
 export class BoughtService {
 
-  public paymentId: number;
-  public creditCardId: number;
-  public addressId: number;
+  private static paymentId: number;
+  private static creditCardId: number;
+  private static addressId: number;
   public sessionId: string;
 
   model: BuyModel;
 
-  constructor(private http: HttpClient,
-              private userService: UserService,
-              private cartService: CartService) {
-    this.paymentId = cartService.paymentId;
-    this.creditCardId = cartService.creditCardId;
-    this.addressId = cartService.addressId;
+  constructor(private http: HttpClient, private userService: UserService) {
     this.sessionId = this.userService.sessionId;
   }
 
@@ -51,11 +45,23 @@ export class BoughtService {
     return this._getOrderStatus(status);
   }
 
+  public setPaymentId(paymentId: number) {
+    BoughtService.paymentId = paymentId;
+  }
+
+  public setCreditCardId(creditCardId: number) {
+    BoughtService.creditCardId = creditCardId;
+  }
+
+  public setAddressId(addressId: number) {
+    BoughtService.addressId = addressId
+  }
+
   private _preview() {
     this.model = {
-      paymentId: this.paymentId,
-      creditCardId: this.creditCardId,
-      addressId: this.addressId,
+      paymentId: BoughtService.paymentId,
+      creditCardId: BoughtService.creditCardId,
+      addressId: BoughtService.addressId,
       sessionId: this.sessionId
     };
 
@@ -68,9 +74,9 @@ export class BoughtService {
 
   private _addBought() {
     this.model = {
-      paymentId: this.paymentId,
-      creditCardId: this.creditCardId,
-      addressId: this.addressId,
+      paymentId: BoughtService.paymentId,
+      creditCardId: BoughtService.creditCardId,
+      addressId: BoughtService.addressId,
       sessionId: this.sessionId
     };
 

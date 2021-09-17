@@ -15,4 +15,8 @@ export class FooterComponent implements OnInit {
     this.employee = this.userService.employee;
   }
 
+  loggOut() {
+    this.userService.LoggOut();
+  }
+
 }

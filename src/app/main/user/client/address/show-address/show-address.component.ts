@@ -1,5 +1,6 @@
+import { BoughtService } from './../../../../bought/bought.service';
 import { CartService } from './../../../../cart/cart.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { ShowAddressModel } from '../../../models/showAddress.model';
 import { UserService } from '../../../user.service';
 
@@ -9,10 +10,12 @@ import { UserService } from '../../../user.service';
   styleUrls: ['./show-address.component.scss']
 })
 export class ShowAddressComponent implements OnInit {
+  @Output() event = new EventEmitter<boolean>();
   addresses: ShowAddressModel[] = [];
 
   constructor(private userService: UserService,
-              private cartService: CartService) { }
+              private cartService: CartService,
+              private boughtService: BoughtService) { }
 
   ngOnInit(): void {
     this.userService.getAddresses()
@@ -22,8 +25,8 @@ export class ShowAddressComponent implements OnInit {
   }
 
   buy(id: number) {
-    this.cartService.addressId = id;
+    this.boughtService.setAddressId(id);
 
-    this.cartService.nextClicked();
+    this.event.emit(true);
   }
 }

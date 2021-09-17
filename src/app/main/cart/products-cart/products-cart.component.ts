@@ -1,5 +1,4 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { AppService } from 'src/app/app.service';
+import { Component, OnInit } from '@angular/core';
 import { CartService } from '../cart.service';
 import { ProductCartModel } from '../models/productCart.model';
 
@@ -14,25 +13,23 @@ export class ProductsCartComponent implements OnInit {
   constructor(private cartService: CartService) { }
 
   ngOnInit(): void {
-    this.cartService.productsCart$
-    .subscribe(products => this.products = products);
+    this.cartService.products$
+      .subscribe(products => this.products = products);
   }
 
   addProducts(id: number) {
-    this.cartService.routeCart = true;
-
-    this.cartService.addProducts(id)
-    .subscribe(() => {});
+    this.cartService.addProduct(id)
+      .subscribe(bool => console.log(bool));
   }
 
   delete(id: number) {
-    this.cartService.delete(id)
-    .subscribe(() => {});
+    this.cartService.removeProduct(id)
+      .subscribe(bool => console.log(bool));
   }
 
   deleteProducts(id: number) {
-    this.cartService.deleteProducts(id)
-    .subscribe(() => {});
+    this.cartService.removeProducts(id)
+      .subscribe(bool => console.log(bool));
   }
 
 }

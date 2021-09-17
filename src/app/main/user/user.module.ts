@@ -1,3 +1,4 @@
+import { CartService } from './../cart/cart.service';
 import { AuthEmployeeGuard } from './../../shared/guards/auth-employee.guard';
 import { AuthGuard } from './../../shared/guards/auth.guard';
 import { AddressComponent } from './client/address/address.component';
@@ -32,6 +33,10 @@ import { EmployeeProfileComponent } from './employee/employee-profile/employee-p
 import { EmployeersComponent } from './employee/employeers/employeers.component';
 import { NewEmployeeComponent } from './employee/new-employee/new-employee.component';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { LayoutService } from 'src/app/layout/layout.service';
+import { BoughtService } from '../bought/bought.service';
+import { ProductsService } from '../products/products.service';
+import { AppService } from 'src/app/app.service';
 
 
 registerLocaleData(localePt);
@@ -128,7 +133,15 @@ const routes: Routes = [
     ShowAddressComponent,
     ShowCardComponent
   ],
-  providers: [{ provide: LOCALE_ID, useValue: 'pt-BR' }],
+  providers: [
+    { provide: LOCALE_ID, useValue: 'pt-BR' },
+    CartService,
+    UserService,
+    BoughtService,
+    LayoutService,
+    ProductsService,
+    AppService
+  ],
   bootstrap: [],
 })
 export class UserModule { }

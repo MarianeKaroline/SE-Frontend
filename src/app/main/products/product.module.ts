@@ -1,3 +1,7 @@
+import { ProductsService } from './products.service';
+import { LayoutService } from './../../layout/layout.service';
+import { BoughtService } from './../bought/bought.service';
+import { UserService } from 'src/app/main/user/user.service';
 import { CartService } from './../cart/cart.service';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
@@ -22,6 +26,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { AuthEmployeeGuard } from 'src/app/shared/guards/auth-employee.guard';
+import { AppService } from 'src/app/app.service';
 
 registerLocaleData(localePt);
 
@@ -82,7 +87,12 @@ const routes: Routes = [
   ],
   providers: [
     { provide: LOCALE_ID, useValue: 'pt-BR' },
-    CartService
+    CartService,
+    UserService,
+    BoughtService,
+    LayoutService,
+    ProductsService,
+    AppService
   ],
   bootstrap: [ProductsComponent],
 })

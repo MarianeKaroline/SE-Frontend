@@ -8,7 +8,7 @@
       <span class="title">Employee</span>
       <span *ngIf="!employee" routerLink="/user/employeer/sign-in">Sign In</span>
       <span *ngIf="employee" routerLink="/user/employeer/profile">Profile</span>
-      <span *ngIf="employee" routerLink="/user/employeer/profile">Sign Out</span>
+      <span *ngIf="employee" (click)="loggOut()">Sign Out</span>
       <span>Join us</span>
     </div>
 

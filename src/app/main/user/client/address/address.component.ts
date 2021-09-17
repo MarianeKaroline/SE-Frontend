@@ -1,5 +1,6 @@
+import { BoughtService } from './../../../bought/bought.service';
 import { CartService } from './../../../cart/cart.service';
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, Output, ViewEncapsulation, EventEmitter } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { UserService } from '../../user.service';
 
@@ -10,6 +11,7 @@ import { UserService } from '../../user.service';
   encapsulation: ViewEncapsulation.None,
 })
 export class AddressComponent implements OnInit {
+  @Output() event = new EventEmitter<boolean>();
   form: FormGroup;
   addressId: number;
   sessionId: string;
@@ -17,7 +19,7 @@ export class AddressComponent implements OnInit {
   constructor(
     private userService: UserService,
     private formBuilder: FormBuilder,
-    private cartService: CartService
+    private boughtService: BoughtService
   ) {}
 
   ngOnInit(): void {
@@ -38,10 +40,10 @@ export class AddressComponent implements OnInit {
 
   addAddress() {
     this.userService.addAddress(this.form.value).subscribe((address) => {
-      this.cartService.addressId = +address;
+      this.boughtService.setAddressId(address);
     });
 
-    this.cartService.nextClicked();
+    this.event.emit(true);
   }
 
 

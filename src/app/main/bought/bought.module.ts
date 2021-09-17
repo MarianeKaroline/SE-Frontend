@@ -18,6 +18,11 @@ import { MatSelectModule } from '@angular/material/select';
 import { StatusBoughtComponent } from './status-bought/status-bought.component';
 import { AuthGuard } from 'src/app/shared/guards/auth.guard';
 import { AuthEmployeeGuard } from 'src/app/shared/guards/auth-employee.guard';
+import { LayoutService } from 'src/app/layout/layout.service';
+import { CartService } from '../cart/cart.service';
+import { ProductsService } from '../products/products.service';
+import { UserService } from '../user/user.service';
+import { AppService } from 'src/app/app.service';
 
 registerLocaleData(localePt);
 
@@ -75,7 +80,12 @@ const routes: Routes = [
       provide: LOCALE_ID,
       useValue: 'pt-BR',
     },
+    CartService,
+    UserService,
     BoughtService,
+    LayoutService,
+    ProductsService,
+    AppService
   ],
 })
 export class BoughtModule {}

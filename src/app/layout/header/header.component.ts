@@ -16,7 +16,7 @@ export class HeaderComponent implements OnInit {
   employee: boolean
   home: any;
   sessionId: string;
-  total: Observable<number>;
+  total: number;
 
   constructor(
     private router: Router,
@@ -34,12 +34,11 @@ export class HeaderComponent implements OnInit {
   ngOnInit(): void {
     this.employee = this.userService.employee;
 
-    this.total = this.cartService.getTotal()
-    .pipe(
-      map((total) => {
-        return total.totalAmount
-      })
-    );
+    this.cartService.total$
+    .subscribe(amount => {
+      this.total = amount.totalAmount != null ? amount.totalAmount : 0;
+      console.log(amount);
+    });
 
     this.sessionId = this.userService.sessionId;
   }

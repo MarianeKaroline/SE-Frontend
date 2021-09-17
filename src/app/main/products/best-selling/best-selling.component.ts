@@ -2,7 +2,6 @@ import { CartService } from './../../cart/cart.service';
 import { BestSellingModel } from './../models/bestSelling.model';
 import { ProductsService } from './../products.service';
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { AppService } from 'src/app/app.service';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -16,12 +15,7 @@ export class BestSellingComponent implements OnInit, OnDestroy {
 
   private subscriptions: Subscription[] = [];
 
-  constructor(
-    private productService: ProductsService,
-    private cartService: CartService
-  ) {
-    this.subscriptions.push(this.cartService.getTotal().subscribe());
-  }
+  constructor(private productService: ProductsService, private cartService: CartService) {}
 
   ngOnInit(): void {
     this.onBestSelling();
@@ -41,9 +35,7 @@ export class BestSellingComponent implements OnInit, OnDestroy {
   }
 
   addProducts(id: number) {
-    this.subscriptions.push(this.cartService.addProducts(id)
-      .subscribe(product => {
-        console.log(product);
-      }));
+    this.subscriptions.push(this.cartService.addProduct(id)
+      .subscribe(product => console.log(product)));
   }
 }

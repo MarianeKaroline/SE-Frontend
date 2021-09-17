@@ -36,7 +36,7 @@ export class SelectedComponent implements OnInit {
   }
 
   addProducts(id: number) {
-    this.cartService.addProducts(id)
+    this.cartService.addProduct(id)
       .subscribe(product => {
         console.log(product);
       })

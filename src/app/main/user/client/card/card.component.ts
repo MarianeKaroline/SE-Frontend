@@ -1,7 +1,9 @@
+import { BoughtService } from './../../../bought/bought.service';
 import { CartService } from './../../../cart/cart.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { UserService } from '../../user.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-card',
@@ -9,12 +11,15 @@ import { UserService } from '../../user.service';
   styleUrls: ['./card.component.scss']
 })
 export class CardComponent implements OnInit {
+  @Output() event = new EventEmitter<boolean>();
   sessionId: string;
   form: FormGroup;
+
   constructor(
     private userService: UserService,
     private formBuilder: FormBuilder,
-    private cartService: CartService
+    private router: Router,
+    private boughtService: BoughtService
   ) { }
 
   ngOnInit(): void {
@@ -35,10 +40,10 @@ export class CardComponent implements OnInit {
   addCard() {
     this.userService.addCreditCard(this.form.value)
     .subscribe(card => {
-      this.cartService.creditCardId = +card;
+      this.boughtService.setCreditCardId(card);
     })
 
-    this.cartService.nextClicked();
+    this.router.navigateByUrl('/bought/preview');
   }
 
   get getControl() {

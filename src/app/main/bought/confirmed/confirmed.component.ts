@@ -27,10 +27,7 @@ export class ConfirmedComponent implements OnInit {
       this.preview = preview;
     })
 
-    this.cartService.getTotal()
-    .subscribe(() => {});
-
-    this.cartService.totalCart$
+    this.cartService.total$
     .subscribe(total => this.total = total)
   }
 

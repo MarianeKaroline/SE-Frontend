@@ -29,7 +29,7 @@ export class UserService {
     let aux = localStorage.getItem('employee');
     if (aux != null) {
       this.employee = JSON.parse(aux);
-      this.cartService.getId(this.sessionId);
+      this.cartService.setSessionId(this.sessionId);
     }
   }
 
@@ -37,7 +37,7 @@ export class UserService {
   public login(model: {email: string, password: string}) {
     this._signIn(model).subscribe(user => {
       this.sessionId = user.cpf;
-      this.cartService.getId(this.sessionId);
+      this.cartService.setSessionId(this.sessionId);
       window.localStorage.setItem('sessionId', user.cpf);
       this.employee = user.employee;
       window.localStorage.setItem('employee', user.employee.toString());
@@ -112,7 +112,7 @@ export class UserService {
   private _addAddress(model: AddressModel)
   {
     return this.http
-    .post(`${apiUrl}/client/address`, model)
+    .post<number>(`${apiUrl}/client/address`, model)
     .pipe(
       take(1)
     )
@@ -129,7 +129,7 @@ export class UserService {
   private _addCreditCard(model: CreditCardModel)
   {
     return this.http
-    .post(`${apiUrl}/client/creditcard`, model)
+    .post<number>(`${apiUrl}/client/creditcard`, model)
     .pipe(
       take(1)
     );

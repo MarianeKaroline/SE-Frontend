@@ -30,13 +30,15 @@ export class SidenavComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.cartService.getProducts().subscribe;
 
-    this.cartService.productsCart$
+    this.cartService.products$
       .subscribe(products => this.products = products);
 
-    this.cartService.totalCart$
-      .subscribe(total => this.total = total)
+    this.cartService.total$
+      .subscribe(total => {
+        this.total = total;
+        console.log("sidenav", total)
+      })
   }
 
 }

@@ -1,3 +1,4 @@
+import { AppService } from 'src/app/app.service';
 import { LayoutModule } from './layout/layout.module';
 import { HeaderComponent } from './layout/header/header.component';
 import { FooterComponent } from './layout/footer/footer.component';
@@ -33,6 +34,9 @@ import {MatDividerModule} from '@angular/material/divider';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import { MatSelectModule } from '@angular/material/select';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { CartService } from './main/cart/cart.service';
+import { LayoutService } from './layout/layout.service';
+import { BoughtService } from './main/bought/bought.service';
 
 registerLocaleData(localePt);
 
@@ -106,8 +110,12 @@ const appRoutes: Routes = [
   providers: [
     { provide: LOCALE_ID, useValue: 'pt-BR' },
     CookieService,
+    CartService,
+    UserService,
+    BoughtService,
+    LayoutService,
     ProductsService,
-    UserService
+    AppService
   ],
   bootstrap: [AppComponent],
 })

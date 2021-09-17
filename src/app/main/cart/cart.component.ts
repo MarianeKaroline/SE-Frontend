@@ -21,29 +21,26 @@ export class CartComponent implements OnInit {
   total: TotalCartModel;
   logged: string;
 
-  constructor(
-    private cartService: CartService,
-    private userService: UserService
-  ) { }
+  constructor(private cartService: CartService, private userService: UserService) {}
 
   ngOnInit(): void {
-    this.cartService.getTotal()
-    .subscribe(() => {});
+    this.cartService.total$
+      .subscribe(total => this.total = total);
 
-    this.cartService.totalCart$
-    .subscribe(total => this.total = total)
-
-    this.cartService.getProducts();
-
-    this.cartService.productsCart$
-    .subscribe(products => this.products = products);
+    this.cartService.products$
+      .subscribe(products => this.products = products);
 
     this.logged = this.userService.sessionId;
   }
 
   nextClicked() {
-    this.cartService.stepper = this.stepper;
-    this.cartService.nextClicked();
+    this.stepper.selected.completed = true;
+    this.stepper.next();
+  }
+
+  nextStepper(step: boolean) {
+    this.stepper.selected.completed = step;
+    this.stepper.next();
   }
 
   newAddress() {

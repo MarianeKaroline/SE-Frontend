@@ -20,15 +20,12 @@ export class PreviewComponent implements OnInit {
 
   ngOnInit(): void {
     this.boughtService.preview()
-    .subscribe(preview => {
-      this.preview = preview;
-    })
+      .subscribe(preview => {
+        this.preview = preview;
+      });
 
-    this.cartService.getTotal()
-    .subscribe(() => {});
-
-    this.cartService.totalCart$
-    .subscribe(total => this.total = total)
+    this.cartService.total$
+      .subscribe(total => this.total = total);
   }
 
   confirm() {

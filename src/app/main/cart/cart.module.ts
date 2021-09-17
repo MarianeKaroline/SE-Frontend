@@ -1,3 +1,7 @@
+import { AppService } from 'src/app/app.service';
+import { AppModule } from './../../app.module';
+import { UserService } from 'src/app/main/user/user.service';
+import { BoughtService } from './../bought/bought.service';
 import { LayoutService } from './../../layout/layout.service';
 import { CartService } from './cart.service';
 import { MatIconModule } from '@angular/material/icon';
@@ -19,6 +23,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import { PaymentComponent } from './payment/payment.component';
 import { UserModule } from '../user/user.module';
+import { ProductsService } from '../products/products.service';
 
 registerLocaleData(localePt);
 
@@ -63,7 +68,12 @@ const routes: Routes = [
       provide: STEPPER_GLOBAL_OPTIONS,
       useValue: {displayDefaultIndicatorType: false}
     },
-    CartService
+    CartService,
+    UserService,
+    BoughtService,
+    LayoutService,
+    ProductsService,
+    AppService
   ],
   bootstrap: [CartComponent],
 })

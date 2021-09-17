@@ -1,3 +1,4 @@
+import { BoughtService } from './../../bought/bought.service';
 import { Router } from '@angular/router';
 import { CartService } from './../cart.service';
 import { PaymentModel } from './../models/payment.model';
@@ -21,7 +22,8 @@ export class PaymentComponent implements OnInit {
   constructor(
     private cartService: CartService,
     private router: Router,
-    private userService: UserService
+    private userService: UserService,
+    private boughtService: BoughtService
   ) { }
 
   ngOnInit(): void {
@@ -30,7 +32,7 @@ export class PaymentComponent implements OnInit {
   }
 
   payment() {
-    this.cartService.getPayment()
+    this.cartService.payment()
     .subscribe(method => {
       this.method = method
     });
@@ -38,7 +40,7 @@ export class PaymentComponent implements OnInit {
 
   pMethod(id: number) {
     this.paymentMethod = id;
-    this.cartService.paymentId = id;
+    this.boughtService.setPaymentId(id);
     this.paymentType.emit(id);
 
     if (id == this.paymentEnum.pix || id == this.paymentEnum.bankSlip) {

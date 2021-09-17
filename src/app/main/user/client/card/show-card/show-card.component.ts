@@ -1,8 +1,9 @@
+import { BoughtService } from './../../../../bought/bought.service';
 import { CartService } from './../../../../cart/cart.service';
 import { Router } from '@angular/router';
 import { ShowCardModel } from './../../../models/showCard.model';
 import { UserService } from './../../../user.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 
 @Component({
   selector: 'app-show-card',
@@ -10,12 +11,13 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./show-card.component.scss']
 })
 export class ShowCardComponent implements OnInit {
+  @Output() event = new EventEmitter<boolean>();
   card: boolean = false;
   cards: ShowCardModel[] = [];
 
   constructor(private userService: UserService,
               private router: Router,
-              private cartService: CartService) { }
+              private boughtService: BoughtService) { }
 
   ngOnInit(): void {
     this.userService.GetCreditCards()
@@ -25,7 +27,7 @@ export class ShowCardComponent implements OnInit {
   }
 
   continue(id: number) {
-    this.cartService.creditCardId = id;
+    this.boughtService.setCreditCardId(id);
 
     this.router.navigateByUrl('/bought/preview');
   }

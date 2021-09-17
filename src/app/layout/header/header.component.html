@@ -30,8 +30,8 @@
       <button mat-menu-item (click)="loggOut()" *ngIf="sessionId.length == 11">Sign Out</button>
     </mat-menu>
   </div>
-  <button mat-icon-button class="content-cart" routerLink="/cart" *ngIf="total">
-    <span class="cart-basket">{{ total | async }}</span>
+  <button mat-icon-button class="content-cart" routerLink="/cart" *ngIf="total != null">
+    <span class="cart-basket">{{ total }}</span>
     <mat-icon class="mat-18 cart">shopping_cart</mat-icon>
   </button>
 </nav>
