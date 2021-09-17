@@ -1,14 +1,21 @@
 import { CartService } from './../../cart/cart.service';
 import { BestSellingModel } from './../models/bestSelling.model';
 import { ProductsService } from './../products.service';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { SwiperComponent } from "swiper/angular";
+
+import SwiperCore, { Autoplay, Pagination, Navigation } from "swiper";
+
+// install Swiper modules
+SwiperCore.use([Autoplay, Pagination, Navigation]);
 
 @Component({
   selector: 'app-best-selling',
   templateUrl: './best-selling.component.html',
-  styleUrls: ['./best-selling.component.scss']
+  styleUrls: ['./best-selling.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class BestSellingComponent implements OnInit, OnDestroy {
   sidebarOpen=false;

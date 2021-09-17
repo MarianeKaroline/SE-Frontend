@@ -1,4 +1,38 @@
-<section class="h-100-8">
+<section>
+  <div class="container">
+    <swiper
+      [spaceBetween]="30"
+      [centeredSlides]="true"
+      [autoplay]="{
+        delay: 7000,
+        disableOnInteraction: false
+      }"
+      [pagination]="{
+        clickable: true
+      }"
+      [navigation]="true"
+      class="mySwiper"
+    >
+      <ng-template swiperSlide *ngFor="let product of products; let i = index">
+        <div class="background-category">{{ product.category.description }}</div>
+        <span class="name">{{ product.name }}</span>
+        <span class="price">{{ product.price | currency: "BRL" }}</span>
+        <div class="button">
+          <button class="btn btn-lg" routerLink="/product/{{ product.productId }}">
+            More details
+          </button>
+          <button class="btn btn-lg add" (click)="addProduct(product.productId)">
+            Add to cart
+          </button>
+        </div>
+
+        <img class="image" src="../../../../assets/images/{{ product.image }}" alt=""/>
+        </ng-template>
+    </swiper>
+  </div>
+</section>
+
+<!-- <section class="h-100-8">
   <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
     <div class="carousel-indicators">
       <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
@@ -35,4 +69,4 @@
       <span class="visually-hidden">Next</span>
     </button>
   </div>
-</section>
+</section> -->

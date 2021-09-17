@@ -38,6 +38,7 @@ import { CartService } from './main/cart/cart.service';
 import { LayoutService } from './layout/layout.service';
 import { BoughtService } from './main/bought/bought.service';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { SwiperModule } from 'swiper/angular';
 
 registerLocaleData(localePt);
 
@@ -111,7 +112,8 @@ const appRoutes: Routes = [
     MatTooltipModule,
     MatSelectModule,
     MatCheckboxModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    SwiperModule
   ],
   providers: [
     { provide: LOCALE_ID, useValue: 'pt-BR' },

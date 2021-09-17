@@ -1,48 +1,42 @@
+@import "~swiper/css";
+@import "~swiper/css/pagination";
+@import "~swiper/css/navigation";
+
 section {
-    display: block;
-    justify-content: center;
-    align-items: center;
-    color: #fff;
+  display: block;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
 }
 
 section::before {
-    content: "";
-    position: absolute;
-    width: 250px;
-    height: 250px;
-    border: 15px solid #ff6600;
-    background: transparent;
-    border-radius: 50%;
-    transform: translate(1420px, 550px);
-}
-
-.h-100-8 {
-  height: calc(100vh - 8rem);
-}
-
-.d-flex {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  content: "";
+  position: absolute;
+  width: 250px;
+  height: 250px;
+  border: 15px solid #ff6600;
+  background: transparent;
+  border-radius: 50%;
+  transform: translate(1420px, 550px);
 }
 
 .container{
-    display: flex;
-    align-items: center;
-    max-width: 100%;
-    padding: 0;
-    margin: 0;
+  display: flex;
+  align-items: center;
+  max-width: 100%;
+  padding: 0;
+  margin: 0;
 }
 
 .background-category {
-    color: #000;
-    text-align: center;
-    letter-spacing: 5px;
-    opacity: 0.1;
-    font-weight: 600;
-    text-transform: uppercase;
-    font-size: 25vh;
-    z-index: -1;
+  color: #000;
+  text-align: center;
+  letter-spacing: 5px;
+  opacity: 0.1;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 25vh;
+  z-index: -1;
 }
 
 .button {
@@ -94,9 +88,29 @@ section::before {
     bottom: 120px;
 }
 
-.carousel-control-prev,
-.carousel-control-next {
-  width: 6% !important;
+.swiper {
+  width: 100%;
+  height: calc(100vh - 8rem);
+}
+
+.swiper-slide {
+  text-align: center;
+  font-size: 18px;
+  background: transparent;
+
+  /* Center slide text vertically */
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  -webkit-align-items: center;
+  align-items: center;
 }
 
 
