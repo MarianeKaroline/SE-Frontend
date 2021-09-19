@@ -4,7 +4,7 @@ import { ProductSelectedModel } from './models/ProductSelected.model';
 import { HttpClient } from '@angular/common/http';
 import { environment } from './../../../environments/environment';
 import { BehaviorSubject } from 'rxjs';
-import { take } from 'rxjs/operators';
+import { take, tap } from 'rxjs/operators';
 import { Injectable } from "@angular/core";
 import { BestSellingModel } from "./models/bestSelling.model";
 import { CategoryModel } from './models/category.model';
@@ -40,14 +40,27 @@ export class ProductsService {
 
   public addList() {
     this._getAll()
-    .subscribe(list => {
-      this._list = list;
-      this._products.next(this._list);
-    });
+      .subscribe(list => {
+        this._list = list;
+        this._products.next(this._list);
+      });
   }
 
   public add(model: AddNewProductModel) {
     return this._add(model);
+  }
+
+  // public editAvailable(productId: number, available: boolean) {
+  //   this._editAvailable(productId, available)
+  // }
+
+  public editAvailable(productId: number, available: boolean) {
+    return this.http
+      .put<boolean>(`${apiUrl}/product/${productId}/${available}`, null)
+      .pipe(
+        tap(() => this.addList()),
+        take(1)
+      );
   }
 
   private _bestSelling() {

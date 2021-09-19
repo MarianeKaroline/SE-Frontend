@@ -1,14 +1,14 @@
-section {
+.show-bought {
   min-height: calc(100vh - 8rem);
   display: flex;
 }
 
-h2 {
+.show-bought h2 {
   color: #fff;
   font-size: 2rem;
 }
 
-.path {
+.show-bought .path {
   display: flex;
   align-items: center;
   flex-direction: row;
@@ -18,23 +18,23 @@ h2 {
   margin-bottom: 1rem;
 }
 
-.path p {
+.show-bought .path p {
   cursor: pointer;
   margin: 0;
   padding: 0;
 }
 
-.path .active {
+.show-bought .path .active {
   cursor: unset;
   color: #FF6600;
 }
 
-.content {
+.show-bought .content {
   padding: 50px;
-  height: 5%;
+  height: 7%;
 }
 
-.card {
+.show-bought .card {
   width: 100%;
   height: 100%;
   background-color: transparent;
@@ -44,67 +44,90 @@ h2 {
   color: rgba(255, 255, 255, 0.479);
 }
 
-.details,
-.products {
+.show-bought .details,
+.show-bought .products {
   display: flex;
   flex-direction: row;
 }
 
-.details {
+.show-bought .details {
   margin: 30px 0;
   padding-left: 30px;
   height: 10%;
 }
 
-.items {
+.show-bought .items {
   margin: 20px 0;
-  height: 90%;
+  height: 80%;
   padding-left: 30px;
 }
 
-.products {
+.show-bought .products {
   height: 45%;
   align-items: center;
+  justify-content: space-between;
 }
 
-.date, .total, .shipping, .order {
+.show-bought .date,
+.show-bought .total,
+.show-bought .shipping,
+.show-bought .order {
   margin-right: 50px;
   display: flex;
   flex-direction: column;
 }
 
-.image {
-  width: 20%;
+.column-1 {
+  display: flex;
+  flex-direction: row;
+  height: 100%;
+  width: 50%;
+  align-items: center;
+}
+
+.show-bought .image {
+  width: 45%;
   height: 60%;
 }
 
-.image img {
+.show-bought .image img {
   height: 100%;
 }
 
-.spacer {
+.show-bought .spacer {
   flex: 1 1 auto;
 }
 
-mat-divider {
+.show-bought mat-divider {
   border-top-color: rgba(255, 255, 255, 0.253);
 }
 
-.title {
+.show-bought .title {
   color: rgba(255, 255, 255, 0.747);
   font-weight: 300;
   text-transform: uppercase;
   letter-spacing: 1px;
 }
 
-.status {
+.show-bought .status {
   color: rgba(255, 255, 255, 0.747);
   font-size: 20px;
   font-weight: 500;
 }
 
-.info {
+.show-bought .info {
   font-size: 1.5rem;
   color: rgba(255, 255, 255, 0.747);
   font-weight: 500;
+}
+
+.show-bought .action {
+  margin-right: 2rem;
+}
+
+.show-bought .action .rate-action {
+  background-color: #FF6600;
+  color: #fff;
+  font-weight: 400;
+  padding: 8px;
 }

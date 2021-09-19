@@ -1,3 +1,4 @@
+import { Router } from '@angular/router';
 import { BoughtService } from './../bought.service';
 import { Component, OnInit } from '@angular/core';
 import { BoughtModel } from '../models/bought.model';
@@ -16,8 +17,9 @@ export class AllBoughtComponent implements OnInit {
     "Confirmed",
     "Canceled"
   ]
+  statusEnum = StatusBought;
 
-  constructor(private boughtService: BoughtService) { }
+  constructor(private boughtService: BoughtService, private router: Router) { }
 
   ngOnInit(): void {
     this.boughtService.getAll()
@@ -37,5 +39,13 @@ export class AllBoughtComponent implements OnInit {
     else {
       return "Canceled"
     }
+  }
+
+  updateStatus(boughtId: number, status: StatusBought) {
+    this.boughtService.putStatus(boughtId, status)
+      .subscribe(res => console.log(res));
+
+    this.router.navigateByUrl('/', {skipLocationChange: true})
+    .then(() => this.router.navigate(['/bought/all-orders']));
   }
 }

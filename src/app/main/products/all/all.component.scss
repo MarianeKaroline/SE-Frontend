@@ -95,7 +95,17 @@ span {
 .amount,
 .category,
 .ranking,
-.available {
+.available,
+.action {
   display: flex;
   flex-direction: column;
+}
+
+.action {
+  margin-top: 20px;
+}
+
+.action button {
+  background-color: #FF6600;
+  color: #fff;
 }

@@ -1,3 +1,4 @@
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { BoughtService } from './bought.service';
 import { LOCALE_ID, NgModule } from '@angular/core';
 import { CommonModule, registerLocaleData } from '@angular/common';
@@ -66,6 +67,7 @@ const routes: Routes = [
     NgxBarcodeModule,
     MatDividerModule,
     MatSelectModule,
+    MatTooltipModule
   ],
   declarations: [
     PreviewComponent,

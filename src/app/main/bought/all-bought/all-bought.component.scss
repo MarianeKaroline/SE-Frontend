@@ -1,1 +1,142 @@
-@import '../show-bought/show-bought.component.scss';
+.all-bought {
+  min-height: calc(100vh - 8rem);
+  display: flex;
+}
+
+.all-bought h2 {
+  color: #fff;
+  font-size: 2rem;
+}
+
+.all-bought .path {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  font-size: 14px;
+  font-weight: 300;
+  color: #fff;
+  margin-bottom: 1rem;
+}
+
+.all-bought .path p {
+  cursor: pointer;
+  margin: 0;
+  padding: 0;
+}
+
+.all-bought .path .active {
+  cursor: unset;
+  color: #FF6600;
+}
+
+.all-bought .content {
+  padding: 50px;
+  height: 7%;
+}
+
+.all-bought .card {
+  width: 100%;
+  height: 100%;
+  background-color: transparent;
+  box-shadow: 0 4px 6px 0 hsla(0, 0%, 0%, 0.2);
+  display: flex;
+  flex-direction: column;
+  color: rgba(255, 255, 255, 0.479);
+}
+
+.all-bought .details,
+.all-bought .products {
+  display: flex;
+  flex-direction: row;
+}
+
+.all-bought .details {
+  margin: 30px 0;
+  padding-left: 30px;
+  height: 10%;
+}
+
+.all-bought .items {
+  margin: 20px 0;
+  height: 80%;
+  padding-left: 30px;
+}
+
+.all-bought .products {
+  height: 45%;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.all-bought .date,
+.all-bought .total,
+.all-bought .shipping,
+.all-bought .order {
+  margin-right: 50px;
+  display: flex;
+  flex-direction: column;
+}
+
+.column-1 {
+  display: flex;
+  flex-direction: row;
+  height: 100%;
+  width: 50%;
+  align-items: center;
+}
+
+.all-bought .image {
+  width: 45%;
+  height: 60%;
+}
+
+.all-bought .image img {
+  height: 100%;
+}
+
+.all-bought .total-amount {
+  margin-right: 10rem;
+}
+
+.all-bought .spacer {
+  flex: 1 1 auto;
+}
+
+.all-bought .confirm {
+  margin-right: 1rem;
+}
+
+.all-bought mat-divider {
+  border-top-color: rgba(255, 255, 255, 0.253);
+}
+
+.all-bought .title {
+  color: rgba(255, 255, 255, 0.747);
+  font-weight: 300;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.all-bought .status {
+  color: rgba(255, 255, 255, 0.747);
+  font-size: 20px;
+  font-weight: 500;
+}
+
+.all-bought .info {
+  font-size: 1.5rem;
+  color: rgba(255, 255, 255, 0.747);
+  font-weight: 500;
+}
+
+.all-bought .action {
+  margin-right: 2rem;
+}
+
+.all-bought .action .rate-action {
+  background-color: #FF6600;
+  color: #fff;
+  font-weight: 400;
+  padding: 8px;
+}
+

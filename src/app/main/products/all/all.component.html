@@ -40,6 +40,11 @@
         <span class="title">Available</span>
         <span>{{ product.available }}</span>
       </div>
+      <div class="action">
+        <span class="title">Actions</span>
+        <button mat-raised-button (click)="editAvailable(product.productId, true)" *ngIf="!product.available">Active product</button>
+        <button mat-raised-button (click)="editAvailable(product.productId, false)" *ngIf="product.available">Desactive product</button>
+      </div>
     </div>
   </div>
 </section>

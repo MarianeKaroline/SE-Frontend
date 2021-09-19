@@ -2,12 +2,13 @@ import { StatusBought } from './../../static_data/status-bought.enum';
 import { BoughtModel } from './models/bought.model';
 import { CartService } from './../cart/cart.service';
 import { UserService } from './../user/user.service';
-import { take } from 'rxjs/operators';
+import { take, tap } from 'rxjs/operators';
 import { BuyModel } from './../cart/models/buy.model';
 import { PreviewBoughtModel } from './models/previewBought.model';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
+import { BehaviorSubject } from 'rxjs';
 
 const apiUrl = environment.apiUrl;
 
@@ -43,6 +44,22 @@ export class BoughtService {
 
   public getAll() {
     return this._getAll();
+  }
+
+  public rating(productId: number, rating: number) {
+    return this.http
+      .put<boolean>(`${apiUrl}/product/${productId}/${rating}`, null)
+      .pipe(
+        take(1)
+      );
+  }
+
+  public putStatus(boughtId: number, status: StatusBought) {
+    return this.http
+      .put<StatusBought>(`${apiUrl}/bought/${boughtId}/${status}`, null)
+      .pipe(
+        take(1)
+      );
   }
 
   public getBoughtStatus(status: StatusBought) {
@@ -85,33 +102,33 @@ export class BoughtService {
     };
 
     return this.http
-    .post(`${apiUrl}/bought/addbought`, this.model)
-    .pipe(
-      take(1)
-    );
+      .post(`${apiUrl}/bought/addbought`, this.model)
+      .pipe(
+        take(1)
+      );
   }
 
   private _show() {
     return this.http
-    .get<BoughtModel[]>(`${apiUrl}/bought/boughts/${this.sessionId}`)
-    .pipe(
-      take(1)
-    )
+      .get<BoughtModel[]>(`${apiUrl}/bought/boughts/${this.sessionId}`)
+      .pipe(
+        take(1)
+      );
   }
 
   private _getAll() {
     return this.http
-    .get<BoughtModel[]>(`${apiUrl}/bought/allboughts`)
-    .pipe(
-      take(1)
-    );
+      .get<BoughtModel[]>(`${apiUrl}/bought/allboughts`)
+      .pipe(
+        take(1)
+      );
   }
 
   private _getOrderStatus(status: StatusBought) {
     return this.http
-    .get<BoughtModel[]>(`${apiUrl}/bought/${status}`)
-    .pipe(
-      take(1)
-    );
+      .get<BoughtModel[]>(`${apiUrl}/bought/${status}`)
+      .pipe(
+        take(1)
+      );
   }
 }

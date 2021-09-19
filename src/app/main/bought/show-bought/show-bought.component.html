@@ -1,4 +1,4 @@
-<section>
+<section class="show-bought">
   <div class="container">
     <div class="path">
       <p routerLink="/user/profile">Your account</p>
@@ -32,11 +32,27 @@
         <div class="items">
           <span class="status">{{ status(bought.statusId) }}</span>
           <div class="products" *ngFor="let item of bought.itens">
-            <div class="image">
-              <img src="../../../../assets/images/{{ item.image }}" alt="">
+            <div class="column-1">
+              <div class="image">
+                <img src="../../../../assets/images/{{ item.image }}" alt="">
+              </div>
+              <span class="info">{{ item.productName }}</span>
             </div>
-            <span class="info">{{ item.productName }}</span>
-            <span class="info">{{ item.amount }}</span>
+            <div class="total-amount">
+              <span class="info">{{ item.amount }}x</span>
+            </div>
+            <div class="action">
+              <button class="rate-action" mat-raised-button (click)="rating(item.productId)" *ngIf="productId != item.productId">Rate this product</button>
+
+              <div class="rating" *ngIf="productId == item.productId">
+                <button mat-icon-button [style]="starColor" *ngFor="let ratingId of ratingArr; index as i" [id]="'star_'+i" (click)="onClick(i+1)" [matTooltip]="ratingId+1" matTooltipPosition="above">
+                  <mat-icon>
+                    {{showIcon(i)}}
+                  </mat-icon>
+                </button>
+                <button mat-button (click)="rate()">Rate</button>
+              </div>
+            </div>
           </div>
       </div>
 
