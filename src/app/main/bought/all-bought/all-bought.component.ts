@@ -22,8 +22,8 @@ export class AllBoughtComponent implements OnInit {
   constructor(private boughtService: BoughtService, private router: Router) { }
 
   ngOnInit(): void {
-    this.boughtService.getAll()
-    .subscribe(i => this.boughts = i)
+    this.boughtService.allBought$
+      .subscribe(i => this.boughts = i)
   }
 
   status(id: number) {
@@ -44,8 +44,5 @@ export class AllBoughtComponent implements OnInit {
   updateStatus(boughtId: number, status: StatusBought) {
     this.boughtService.putStatus(boughtId, status)
       .subscribe(res => console.log(res));
-
-    this.router.navigateByUrl('/', {skipLocationChange: true})
-    .then(() => this.router.navigate(['/bought/all-orders']));
   }
 }

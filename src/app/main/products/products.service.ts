@@ -50,10 +50,6 @@ export class ProductsService {
     return this._add(model);
   }
 
-  // public editAvailable(productId: number, available: boolean) {
-  //   this._editAvailable(productId, available)
-  // }
-
   public editAvailable(productId: number, available: boolean) {
     return this.http
       .put<boolean>(`${apiUrl}/product/${productId}/${available}`, null)

@@ -15,6 +15,9 @@ const apiUrl = environment.apiUrl;
 @Injectable()
 export class BoughtService {
 
+  private _allBought = new BehaviorSubject<BoughtModel[]>([]);
+  public allBought$ = this._allBought.asObservable();
+
   private static paymentId: number;
   private static creditCardId: number;
   private static addressId: number;
@@ -28,6 +31,7 @@ export class BoughtService {
     private cartService: CartService
   ) {
     this.userService.sessionId.subscribe(res => this.sessionId = res);
+    this.getAll();
   }
 
   public preview() {
@@ -43,7 +47,12 @@ export class BoughtService {
   }
 
   public getAll() {
-    return this._getAll();
+    this.http
+      .get<BoughtModel[]>(`${apiUrl}/bought/allboughts`)
+      .pipe(
+        take(1)
+      )
+      .subscribe(res => this._allBought.next(res));
   }
 
   public rating(productId: number, rating: number) {
@@ -58,6 +67,7 @@ export class BoughtService {
     return this.http
       .put<StatusBought>(`${apiUrl}/bought/${boughtId}/${status}`, null)
       .pipe(
+        tap(() => this.getAll()),
         take(1)
       );
   }
@@ -111,14 +121,6 @@ export class BoughtService {
   private _show() {
     return this.http
       .get<BoughtModel[]>(`${apiUrl}/bought/boughts/${this.sessionId}`)
-      .pipe(
-        take(1)
-      );
-  }
-
-  private _getAll() {
-    return this.http
-      .get<BoughtModel[]>(`${apiUrl}/bought/allboughts`)
       .pipe(
         take(1)
       );
