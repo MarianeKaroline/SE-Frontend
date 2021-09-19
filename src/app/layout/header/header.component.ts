@@ -32,14 +32,14 @@ export class HeaderComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.employee = this.userService.employee;
 
     this.cartService.total$
     .subscribe(amount => {
       this.total = amount.totalAmount != null ? amount.totalAmount : 0;
     });
 
-    this.sessionId = this.userService.sessionId;
+    this.userService.employee.subscribe(res => this.employee = res);
+    this.userService.sessionId.subscribe(res => this.sessionId = res);
   }
 
   loggOut() {

@@ -27,7 +27,7 @@ export class CardComponent implements OnInit {
   }
 
   formConfig() {
-    this.sessionId = this.userService.sessionId;
+    this.userService.sessionId.subscribe(res => this.sessionId = res);
     this.form = this.formBuilder.group({
       cardNumber: [null, [Validators.pattern('^[0-9]{16}$'), Validators.required]],
       name: [null, Validators.required],

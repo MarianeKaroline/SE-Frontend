@@ -29,6 +29,7 @@ import { AuthEmployeeGuard } from 'src/app/shared/guards/auth-employee.guard';
 import { AppService } from 'src/app/app.service';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { SwiperModule } from 'swiper/angular';
+import { MatTabsModule } from '@angular/material/tabs';
 
 registerLocaleData(localePt);
 
@@ -75,13 +76,14 @@ const routes: Routes = [
     CommonModule,
     HttpClientModule,
     NgbModule,
+    ReactiveFormsModule,
     MatIconModule,
     MatTooltipModule,
     MatButtonModule,
-    ReactiveFormsModule,
     MatInputModule,
     MatFormFieldModule,
     MatSnackBarModule,
+    MatTabsModule,
     SwiperModule
   ],
   exports: [

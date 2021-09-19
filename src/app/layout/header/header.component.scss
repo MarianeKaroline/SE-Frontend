@@ -2,9 +2,10 @@
 @import "~bootstrap-icons/font/bootstrap-icons.css";
 
 nav {
-  background-color: #28282B;
+  background-color: transparent;
   color: #fff;
   height: 8rem;
+  z-index: 1;
 }
 
 img {
@@ -128,4 +129,14 @@ input {
 .user-icon {
   font-size: 2.5rem;
   margin-right: 15px;
+}
+
+.img-icon {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  height: 56px;
+  width: 56px;
+  border-radius: 50%;
+  margin: 0;
 }

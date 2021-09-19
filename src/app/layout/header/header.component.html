@@ -21,8 +21,8 @@
 
     <span class="spacer"></span>
 
-    <button *ngIf="!employee" class="btn-icon" mat-icon-button [matMenuTriggerFor]="menu"><mat-icon class="mat-18 user-icon">account_circle</mat-icon> <mat-icon class="mat-18">arrow_drop_down</mat-icon>
-      </button>
+    <button *ngIf="!employee && sessionId.length != 11" class="btn-icon" mat-icon-button [matMenuTriggerFor]="menu"><mat-icon class="mat-18 user-icon">account_circle</mat-icon> <mat-icon class="mat-18">arrow_drop_down</mat-icon></button>
+    <button *ngIf="!employee && sessionId.length == 11" class="btn-icon" mat-fab [matMenuTriggerFor]="menu"><img class="user-icon img-icon" src="../../../assets/images/profile/selfie-perfeita.jpg" alt=""></button>
 
     <mat-menu #menu="matMenu">
       <button mat-menu-item routerLink="/user/auth" *ngIf="sessionId.length != 11">Sign In | Sign Up</button>

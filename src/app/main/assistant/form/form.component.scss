@@ -59,3 +59,20 @@ mat-icon {
   border-radius: 5px;
   cursor: pointer;
 }
+
+.spinner {
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: #2020228f;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.spinner ::ng-deep .mat-progress-spinner circle, .mat-spinner circle {
+  stroke: #FF6600;
+}

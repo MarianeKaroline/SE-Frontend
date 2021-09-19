@@ -46,6 +46,7 @@
           </mat-step>
 
           <mat-step state="address" *ngIf="logged.length == 11" completed="false">
+
             <app-address (event)="nextStepper($event)" *ngIf="address"></app-address>
             <button (click)="newAddress()" *ngIf="address" class="your-address" mat-button>See your addresses</button>
             <app-show-address (event)="nextStepper($event)" *ngIf="!address"></app-show-address>

@@ -2,7 +2,60 @@
   You don't have any card
 </div>
 
-<div id="carouselCard" class="carousel slide" data-bs-touch="false" data-bs-interval="false" data-bs-ride="carousel" *ngIf="!card">
+<div class="show-credit-card content">
+  <swiper [spaceBetween]="30" [pagination]="{
+        clickable: true
+      }" class="mySwiper slide">
+    <ng-template swiperSlide *ngFor="let item of cards; let i = index" class="show-card">
+      <h2>Card {{i+1}}</h2>
+
+      <div class="credit-card">
+        <div class="face">
+          <h3 class="credit">Credit Card</h3>
+          <img src="../../../../assets/icons/chip.png" alt="" class="chip" />
+          <h3 class="number">{{ creditCardNumber(item.cardNumber) }}</h3>
+          <h5 class="valid">
+            <span>Valid<br />thru</span><span>{{ item.shelfLife }}</span>
+          </h5>
+          <h5 class="cardHolder">{{ item.name }}</h5>
+          <img *ngIf="validate(item.cardNumber) != ''"
+            src="../../../../assets/icons/{{ validate(item.cardNumber) }}.svg" alt="" class="flag" />
+        </div>
+      </div>
+
+      <div class="input-group">
+        <mat-form-field appearance="legacy">
+          <mat-label>Card Number</mat-label>
+          <input value="{{ item.cardNumber }}" matInput type="text" name="cardNumber" />
+        </mat-form-field>
+      </div>
+
+      <div class="input-group">
+        <mat-form-field appearance="legacy">
+          <mat-label>Name</mat-label>
+          <input value="{{ item.name }}" matInput type="text" name="name" />
+        </mat-form-field>
+      </div>
+
+      <div class="shelfLife-cvv">
+        <div class="input-group shelfLife">
+          <mat-form-field appearance="legacy">
+            <mat-label>Shelf Life</mat-label>
+            <input value="{{ item.shelfLife }}" matInput name="shelfLife" />
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="button">
+        <button type="submit" class="submit-btn continue" mat-button (click)="continue(item.creditCardId)">
+          Continue
+        </button>
+      </div>
+    </ng-template>
+  </swiper>
+</div>
+
+<!-- <div id="carouselCard" class="carousel slide" data-bs-touch="false" data-bs-interval="false" data-bs-ride="carousel" *ngIf="!card">
   <div class="carousel-inner">
     <div *ngFor="let item of cards; let i = index" [ngClass]="{ active: i == 0 }" id="slide-{{ i + 1 }}" class="carousel-item show-card">
       <h2>Card {{i+1}}</h2>
@@ -72,4 +125,4 @@
     <span class="carousel-control-next-icon" aria-hidden="true"></span>
     <span class="visually-hidden">Next</span>
   </button>
-</div>
+</div> -->

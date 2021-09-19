@@ -10,16 +10,10 @@ section {
 }
 
 .pix {
-  margin-top: 30px;
-  padding: 20px;
   position: relative;
   display: flex;
   align-items: flex-start;
   flex-direction: column;
-  height: 35%;
-  width: 100%;
-  border-radius: 10px;
-  background-color: #202022;
 }
 
 .pix p {
@@ -39,16 +33,10 @@ ngx-qrcode {
 }
 
 .billet {
-  margin-top: 30px;
-  padding: 20px;
   position: relative;
   display: flex;
   justify-content: center;
   flex-direction: column;
-  height: 18%;
-  width: 100%;
-  border-radius: 10px;
-  background-color: #202022;
 }
 
 ngx-barcode {

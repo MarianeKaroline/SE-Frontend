@@ -17,37 +17,45 @@ const apiUrl = environment.apiUrl;
 
 @Injectable()
 export class UserService {
-  public employee: boolean;
-  public sessionId: string;
+  private static _employee = new BehaviorSubject<boolean>(false);
+  public employee = UserService._employee.asObservable();
+
+  private static _sessionId = new BehaviorSubject<string>(null);
+  public sessionId = UserService._sessionId.asObservable();
 
   constructor(
     private http: HttpClient,
     private appService: AppService,
     private cartService: CartService
   ) {
-    this.sessionId = localStorage.getItem('sessionId');
+    UserService._sessionId.next(localStorage.getItem('sessionId'));
     let aux = localStorage.getItem('employee');
     if (aux != null) {
-      this.employee = JSON.parse(aux);
-      this.cartService.setSessionId(this.sessionId);
-      this.cartService.setVerifyEmployee(this.employee);
+      UserService._employee.next(JSON.parse(aux));
+
+      this.cartService.setSessionId(localStorage.getItem('sessionId'));
+      this.cartService.setVerifyEmployee(JSON.parse(aux));
     }
   }
 
   /* ---- Public ---- */
   public login(model: {email: string, password: string}) {
-    this._signIn(model).subscribe(user => {
-      this.sessionId = user.cpf;
-      this.employee = user.employee;
-      this.cartService.setSessionId(this.sessionId);
-      this.cartService.setVerifyEmployee(this.employee);
+    this._signIn(model)
+    .subscribe(user => {
+      if (user != null) {
+        UserService._sessionId.next(user.cpf);
+        UserService._employee.next(user.employee);
 
-      if (!user.employee) {
-        this.cartService.passItems();
+        this.cartService.setSessionId(user.cpf);
+        this.cartService.setVerifyEmployee(user.employee);
+
+        if (!user.employee) {
+          this.cartService.passItems();
+        }
+
+        window.localStorage.setItem('sessionId', user.cpf);
+        window.localStorage.setItem('employee', user.employee.toString());
       }
-
-      window.localStorage.setItem('sessionId', user.cpf);
-      window.localStorage.setItem('employee', user.employee.toString());
     });
 
     return this._signIn(model);
@@ -79,9 +87,13 @@ export class UserService {
     this.appService.getIpAddress();
     this.cartService.removeList();
 
+    this.appService.getIp().subscribe((res: any) => {
+      UserService._sessionId.next(res.ip);
+    });
+
     if (this.employee) {
-      this.employee = false;
-      window.localStorage.setItem('employee', this.employee.toString());
+      UserService._employee.next(false);
+      window.localStorage.setItem('employee', "false");
     }
   }
 
@@ -91,6 +103,14 @@ export class UserService {
 
   public register(model: SignUpModel) {
     return this._register(model);
+  }
+
+  public getEmployee() {
+    return UserService._employee.value;
+  }
+
+  public getSessionId() {
+    return UserService._sessionId.value;
   }
   /* ---- end Public ---- */
 
@@ -124,7 +144,7 @@ export class UserService {
 
   private _getAddresses() {
     return this.http
-    .get<ShowAddressModel[]>(`${apiUrl}/client/address/${this.sessionId}`)
+    .get<ShowAddressModel[]>(`${apiUrl}/client/address/${UserService._sessionId.value}`)
     .pipe(
       take(1)
     );
@@ -141,7 +161,7 @@ export class UserService {
 
   private _getCreditCards() {
     return this.http
-    .get<ShowCardModel[]>(`${apiUrl}/client/creditcard/${this.sessionId}`)
+    .get<ShowCardModel[]>(`${apiUrl}/client/creditcard/${UserService._sessionId.value}`)
     .pipe(
       take(1)
     );

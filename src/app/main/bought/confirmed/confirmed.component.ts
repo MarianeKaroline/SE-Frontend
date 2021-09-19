@@ -24,11 +24,15 @@ export class ConfirmedComponent implements OnInit {
   ngOnInit(): void {
     this.boughtService.preview()
     .subscribe(preview => {
+      this.cartService.removeList();
       this.preview = preview;
-    })
+    });
 
     this.cartService.total$
     .subscribe(total => this.total = total)
+
+    this.boughtService.addBought()
+    .subscribe(() => {});
   }
 
 }

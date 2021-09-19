@@ -19,6 +19,8 @@ import { MatCheckboxModule } from "@angular/material/checkbox";
 import { MatDatepickerModule } from "@angular/material/datepicker";
 import { MatGridListModule } from "@angular/material/grid-list";
 import { MatIconModule } from "@angular/material/icon";
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatDialogModule } from "@angular/material/dialog";
 
 const routes: Routes = [
   {
@@ -44,7 +46,9 @@ const routes: Routes = [
     MatFormFieldModule,
     MatInputModule,
     MatDatepickerModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    MatProgressSpinnerModule,
+    MatDialogModule
   ],
   exports: [
     RouterModule,

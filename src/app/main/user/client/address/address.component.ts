@@ -26,7 +26,7 @@ export class AddressComponent implements OnInit {
   }
 
   formConfig() {
-    this.sessionId = this.userService.sessionId;
+    this.userService.sessionId.subscribe(res => this.sessionId = res);
     this.form = this.formBuilder.group({
       postcode: [null, [Validators.pattern('^[0-9]{8}$'), Validators.required]],
       street: [null, Validators.required],

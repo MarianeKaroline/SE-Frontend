@@ -1,6 +1,10 @@
+import { tap } from 'rxjs/operators';
+import { SuccessDialog } from './../../../shared/dialogs/success/success.dialog';
+import { BehaviorSubject } from 'rxjs';
 import { AssistantService } from './../assistant.service';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, FormGroupDirective, Validators } from '@angular/forms';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-form',
@@ -8,9 +12,16 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./form.component.scss']
 })
 export class FormComponent implements OnInit {
+  @ViewChild(FormGroupDirective) formDirective: FormGroupDirective;
+  private _spinner = new BehaviorSubject<boolean>(false);
+  public spinner = this._spinner.asObservable();
   form: FormGroup;
 
-  constructor(private formBuilder: FormBuilder, private assistantService: AssistantService) { }
+  constructor(
+    private formBuilder: FormBuilder,
+    private assistantService: AssistantService,
+    public dialog: MatDialog
+  ) { }
 
   ngOnInit(): void {
     this.formConfig();
@@ -27,8 +38,29 @@ export class FormComponent implements OnInit {
   }
 
   sendMessage() {
-    this.assistantService.sendEmail(this.form.value).
-      subscribe(bool => console.log(bool));
+    this._spinner.next(true);
+
+    this.assistantService.sendEmail(this.form.value)
+      .pipe(
+        tap(() => {
+          this._spinner.next(false);
+          const dialogRef = this.dialog.open(SuccessDialog, {
+            width: '250px',
+            disableClose: false
+          });
+
+          dialogRef.afterClosed();
+        })
+      )
+      .subscribe();
+
+    this.formDirective.resetForm();
+    this.form.reset();
+
+    Object.keys(this.form.controls).forEach(key => {
+      this.form.get(key).setErrors(null) ;
+    });
+
   }
 
   /* Validations */

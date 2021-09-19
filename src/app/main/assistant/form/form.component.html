@@ -38,5 +38,8 @@
   <div class="button">
     <button type="submit" class="submit-btn continue" mat-button [disabled]="form.invalid">Continue</button>
   </div>
+  <div *ngIf="spinner | async" style="margin-left:10px" class="spinner">
+    <mat-spinner [diameter]="100"></mat-spinner>
+  </div>
 </form>
 

@@ -12,7 +12,7 @@ export class FooterComponent implements OnInit {
   constructor(private userService: UserService) { }
 
   ngOnInit(): void {
-    this.employee = this.userService.employee;
+    this.userService.employee.subscribe(res => this.employee = res);
   }
 
   loggOut() {

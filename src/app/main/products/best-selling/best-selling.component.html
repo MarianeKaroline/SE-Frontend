@@ -1,72 +1,35 @@
-<section>
-  <div class="container">
+<section class="section">
+  <div class="container-carousel">
     <swiper
       [spaceBetween]="30"
       [centeredSlides]="true"
       [autoplay]="{
-        delay: 7000,
+        delay: 6000,
         disableOnInteraction: false
       }"
       [pagination]="{
         clickable: true
       }"
       [navigation]="true"
-      class="mySwiper"
+      class="mySwiper best-selling"
     >
       <ng-template swiperSlide *ngFor="let product of products; let i = index">
         <div class="background-category">{{ product.category.description }}</div>
-        <span class="name">{{ product.name }}</span>
-        <span class="price">{{ product.price | currency: "BRL" }}</span>
-        <div class="button">
-          <button class="btn btn-lg" routerLink="/product/{{ product.productId }}">
+        <span class="name-carousel">{{ product.name }}</span>
+        <span class="price-carousel">{{ product.price | currency: "BRL" }}</span>
+        <div class="button-carousel">
+          <button mat-button class="btn-carousel" routerLink="/product/{{ product.productId }}">
             More details
           </button>
-          <button class="btn btn-lg add" (click)="addProduct(product.productId)">
+          <button mat-button class="btn-carousel add-carousel" (click)="addProduct(product.productId)">
             Add to cart
           </button>
         </div>
 
-        <img class="image" src="../../../../assets/images/{{ product.image }}" alt=""/>
+        <img class="image-carousel" src="../../../../assets/images/{{ product.image }}" alt=""/>
         </ng-template>
     </swiper>
   </div>
 </section>
 
-<!-- <section class="h-100-8">
-  <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
-    <div class="carousel-indicators">
-      <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-      <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
-      <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
-      <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="3" aria-label="Slide 3"></button>
-      <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="4" aria-label="Slide 3"></button>
-    </div>
-    <div class="carousel-inner">
-      <div *ngFor="let product of products; let i = index;" id="slide-{{ i+1 }}" [ngClass]="{ 'active' : i==0  }" class="carousel-item">
-        <div class="container h-100-8">
-          <div class="h-100-8 d-block w-100">
-            <div class="d-flex h-100-8 w-100">
-              <div class="background-category">{{ product.category.description }}</div>
-              <span class="name">{{ product.name }}</span>
-              <span class="price">{{ product.price | currency: 'BRL' }}</span>
-              <div class="button">
-                <button class="btn btn-lg" routerLink="/product/{{ product.productId }}">More details</button>
-                <button class="btn btn-lg add" (click)="addProduct(product.productId)">Add to cart</button>
-              </div>
 
-              <img class="image" src="../../../../assets/images/{{ product.image }}" alt="">
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
-      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-      <span class="visually-hidden">Previous</span>
-    </button>
-    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
-      <span class="carousel-control-next-icon" aria-hidden="true"></span>
-      <span class="visually-hidden">Next</span>
-    </button>
-  </div>
-</section> -->

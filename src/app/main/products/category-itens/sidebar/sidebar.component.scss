@@ -4,15 +4,13 @@
   position: fixed;
   top: 7rem;
   width: 68px;
-  height: 100vh;
-  background-color: #28282B;
+  background-color: transparent;
   padding: .5rem 1rem 0 0;
   transition: .5s;
   z-index: 100;
 }
 
 .nav {
-  height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;

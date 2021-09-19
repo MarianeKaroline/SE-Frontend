@@ -27,7 +27,7 @@ export class PaymentComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.sessionId = this.userService.sessionId;
+    this.userService.sessionId.subscribe(res => this.sessionId = res);
     this.payment();
   }
 

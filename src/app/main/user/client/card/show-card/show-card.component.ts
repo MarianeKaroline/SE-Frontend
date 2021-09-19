@@ -3,12 +3,20 @@ import { CartService } from './../../../../cart/cart.service';
 import { Router } from '@angular/router';
 import { ShowCardModel } from './../../../models/showCard.model';
 import { UserService } from './../../../user.service';
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, ViewEncapsulation } from '@angular/core';
+import { SwiperComponent } from "swiper/angular";
+
+// import Swiper core and required modules
+import SwiperCore, { Pagination } from "swiper";
+
+// install Swiper modules
+SwiperCore.use([Pagination]);
 
 @Component({
   selector: 'app-show-card',
   templateUrl: './show-card.component.html',
-  styleUrls: ['./show-card.component.scss']
+  styleUrls: ['./show-card.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class ShowCardComponent implements OnInit {
   @Output() event = new EventEmitter<boolean>();

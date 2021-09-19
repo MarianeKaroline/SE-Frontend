@@ -1,0 +1,8 @@
+<h1 mat-dialog-title><mat-icon class="mat-18">error_outline</mat-icon></h1>
+<div mat-dialog-content>
+  <p>Are you sure?</p>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick(true)">Yes, delete it!</button>
+  <button mat-button (click)="onNoClick(false)" cdkFocusInitial>Cancel</button>
+</div>

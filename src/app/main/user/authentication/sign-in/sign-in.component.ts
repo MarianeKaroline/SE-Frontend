@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { UserService } from '../../user.service';
 
@@ -16,7 +17,8 @@ export class SignInComponent implements OnInit {
   constructor(
     private router: Router,
     private userService: UserService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private _snackBar: MatSnackBar
   ) { }
 
   ngOnInit(): void {
@@ -31,13 +33,23 @@ export class SignInComponent implements OnInit {
   }
 
   login() {
-    this.userService.login(this.form.value).subscribe()
+    this.userService.login(this.form.value)
+    .subscribe(res => {
+      if (res == null) {
+        this._snackBar.open("User doesn't exist", "close", {
+          horizontalPosition: 'left',
+          verticalPosition: 'bottom'
+        });
+        this.router.navigateByUrl("/user/auth");
+      }
+    })
 
-    this.employee = this.userService.employee;
+    this.userService.employee.subscribe(res => this.employee = res);
     if (this.employee) {
       this.router.navigateByUrl("/user/employeer/profile");
     }
-    this.form.reset();
+
+    this.router.navigateByUrl("/");
   }
 
   /* Validations */

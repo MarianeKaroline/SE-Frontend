@@ -1,10 +1,11 @@
 import { TotalCartModel } from './models/totalCart.model';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { CartService } from './cart.service';
 import { ProductCartModel } from './models/productCart.model';
 import { MatStepper } from '@angular/material/stepper';
 import { Payment } from 'src/app/static_data/payment.enum';
 import { UserService } from '../user/user.service';
+
 
 @Component({
   selector: 'app-cart',
@@ -32,7 +33,8 @@ export class CartComponent implements OnInit {
     this.cartService.total$
       .subscribe(total => this.total = total);
 
-    this.logged = this.userService.sessionId;
+
+      this.userService.sessionId.subscribe(res => this.logged = res);
   }
 
   nextClicked() {
@@ -56,4 +58,7 @@ export class CartComponent implements OnInit {
   payment(event) {
     this.paymentMethod = event;
   }
+
+
+
 }

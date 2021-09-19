@@ -1,59 +1,57 @@
 <app-sidebar></app-sidebar>
-<section>
+<section class="selected">
   <div class="container" *ngIf="selected">
-    <div class="galery">
-      <div class="images image-1 active">
-        <img
-          src="../../../../assets/images/{{ selected.image }}"
-          alt=""
-        />
-      </div>
-    </div>
-
     <div class="image">
-      <img
-        src="../../../../assets/images/{{ selected.image }}"
-        alt=""
-      />
+      <img src="../../../../assets/images/{{ selected.image }}" alt="" />
     </div>
 
     <div class="containt">
-      <span class="name">{{ selected.name }}</span>
-
-      <div class="rater">
-        <ng-template #t let-fill="fill">
-          <span class="star" [class.full]="fill === 100">
-            <span class="span half" [style.width.%]="fill">&starf;</span>&starf;
-          </span>
-        </ng-template>
-
-        <ngb-rating
-          [rate]="selected.rating"
-          [starTemplate]="t"
-          [readonly]="true"
-          [max]="5"
-        ></ngb-rating>
+      <div class="cat">
+        <span class="category">{{ selected.category.description }}</span>
       </div>
 
-      <div class="box-price">
-        <span class="name-price"
-          >por
-          <span class="price">{{
-            selected.price | currency: "BRL"
-          }}</span></span
-        >
+      <span class="name">{{ selected.name }}</span>
+
+      <div class="columns">
+        <div class="box-price">
+          <span class="name-price">por
+            <span class="price">{{
+              selected.price | currency: "BRL"
+              }}</span></span>
+        </div>
+
+        <div class="rater">
+          <ng-template #t let-fill="fill">
+            <span class="star" [class.full]="fill === 100">
+              <span class="span half" [style.width.%]="fill">&starf;</span>&starf;
+            </span>
+          </ng-template>
+
+          <ngb-rating [rate]="selected.rating" [starTemplate]="t" [readonly]="true" [max]="5"></ngb-rating>
+        </div>
       </div>
 
       <div class="content-detail">
-        <span *ngFor="let detail of details" class="detail">{{ detail }}</span>
+        <mat-tab-group mat-align-tabs="start">
+          <mat-tab label="Description">
+            Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the
+            industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and
+            scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into
+            electronic typesetting, remaining essentially unchanged
+          </mat-tab>
+          <mat-tab label="Details">
+            <span *ngFor="let detail of details" class="detail">{{ detail }}</span>
+          </mat-tab>
+        </mat-tab-group>
+      </div>
+
+      <span class="title-color">Colors</span>
+      <div class="color">
+        <div class="choose" style="background-image: linear-gradient(to bottom, #77b2ae, #90beba, #a8c9c7, #c0d5d3, #d8e1e0);"></div>
+        <div class="choose" style="background-image: linear-gradient(to bottom, #f7f7f7, #e8e8e9, #d8d9db, #c9cacd, #babbc0);"></div>
       </div>
 
       <button class="btn btn-lg" (click)="addProduct(selected.productId)">Add to cart</button>
     </div>
-  </div>
-
-  <div class="continue">
-    <span class="more">See more</span>
-    <hr />
   </div>
 </section>

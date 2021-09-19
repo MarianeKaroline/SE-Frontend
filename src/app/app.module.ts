@@ -39,6 +39,11 @@ import { LayoutService } from './layout/layout.service';
 import { BoughtService } from './main/bought/bought.service';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { SwiperModule } from 'swiper/angular';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatBadgeModule } from '@angular/material/badge';
+import { MatDialogModule } from '@angular/material/dialog';
+import { SharedModule } from './shared/shared.module';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 registerLocaleData(localePt);
 
@@ -113,7 +118,12 @@ const appRoutes: Routes = [
     MatSelectModule,
     MatCheckboxModule,
     MatSnackBarModule,
-    SwiperModule
+    SwiperModule,
+    MatTabsModule,
+    MatBadgeModule,
+    MatDialogModule,
+    SharedModule,
+    MatProgressSpinnerModule
   ],
   providers: [
     { provide: LOCALE_ID, useValue: 'pt-BR' },

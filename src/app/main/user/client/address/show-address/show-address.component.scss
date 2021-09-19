@@ -1,19 +1,19 @@
+@import "~swiper/css";
+@import "~swiper/css/pagination";
 @import '../address.component.scss';
-.image-google {
+
+.show-addresses .image-google {
   display: flex;
   justify-content: center;
+  margin-bottom: 3rem;
 }
 
-.image-google img {
-  width: 80%;
-}
-
-.show-address {
+.show-addresses .show-address {
   width: 100%;
   height: 100%;
 }
 
-.show-address h2 {
+.show-addresses .show-address h2 {
   font-size: 1.5rem;
   text-align: center;
   letter-spacing: 1px;
@@ -21,19 +21,43 @@
   color: #fff;
 }
 
-.back {
-  margin-top: 4rem;
+.show-addresses .swiper {
+  width: 100%;
+  height: 100%;
 }
 
-.back mat-icon {
-  font-size: 1.5rem;
-  cursor: pointer;
+.show-addresses .swiper-slide {
+  text-align: center;
+  font-size: 18px;
+  background: transparent;
+
+  /* Center slide text vertically */
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  -webkit-align-items: center;
+  align-items: center;
+
+  display: block;
 }
 
-.carousel-control-prev,
-.carousel-control-next {
-  top: 115px;
-  bottom: unset;
-  display: unset;
-  width: 7%;
+.show-addresses .ng-template {
+  display: flex;
+  flex-direction: column;
+}
+
+.show-addresses .swiper-pagination {
+  bottom: unset !important;
+  top: 210px;
+}
+
+.show-addresses .swiper-pagination-bullet {
+  background: #e9ecef;
 }

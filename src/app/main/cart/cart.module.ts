@@ -1,3 +1,4 @@
+import { DeleteDialog } from 'src/app/shared/dialogs/delete/delete.dialog';
 import { AppService } from 'src/app/app.service';
 import { AppModule } from './../../app.module';
 import { UserService } from 'src/app/main/user/user.service';
@@ -24,6 +25,7 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
 import { PaymentComponent } from './payment/payment.component';
 import { UserModule } from '../user/user.module';
 import { ProductsService } from '../products/products.service';
+import { MatDialogModule } from '@angular/material/dialog';
 
 registerLocaleData(localePt);
 
@@ -56,7 +58,8 @@ const routes: Routes = [
     MatInputModule,
     ReactiveFormsModule,
     MatDatepickerModule,
-    UserModule
+    UserModule,
+    MatDialogModule
   ],
   exports: [RouterModule],
   providers: [
@@ -76,5 +79,6 @@ const routes: Routes = [
     AppService
   ],
   bootstrap: [CartComponent],
+  entryComponents: [DeleteDialog]
 })
 export class CartModule {}

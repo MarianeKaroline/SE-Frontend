@@ -11,6 +11,7 @@ import { BoughtService } from '../main/bought/bought.service';
 import { ProductsService } from '../main/products/products.service';
 import { UserService } from '../main/user/user.service';
 import { AppService } from '../app.service';
+import { MatBadgeModule } from '@angular/material/badge';
 
 const routes: Routes = [
   { path: 'categories', component: SearchComponent },
@@ -25,7 +26,8 @@ const routes: Routes = [
     CommonModule,
     HttpClientModule,
     MatTooltipModule,
-    MatMenuModule
+    MatMenuModule,
+    MatBadgeModule
   ],
   exports: [RouterModule],
   providers: [

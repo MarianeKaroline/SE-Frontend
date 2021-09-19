@@ -21,8 +21,12 @@ export class BoughtService {
 
   model: BuyModel;
 
-  constructor(private http: HttpClient, private userService: UserService) {
-    this.sessionId = this.userService.sessionId;
+  constructor(
+    private http: HttpClient,
+    private userService: UserService,
+    private cartService: CartService
+  ) {
+    this.userService.sessionId.subscribe(res => this.sessionId = res);
   }
 
   public preview() {

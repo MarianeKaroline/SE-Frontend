@@ -1,21 +1,22 @@
+@import "~swiper/css";
+@import "~swiper/css/pagination";
 @import '../card.component.scss';
 
-
-.show-card {
+.show-credit-card .show-card {
   width: 100%;
   height: 100%;
 }
 
-.credit-card {
-  width: 85%;
-  left: 32px;
+.show-credit-card .credit-card {
+  width: 100%;
+  margin-bottom: 4rem;
 }
 
-.credit-card .face .flag {
+.show-credit-card .credit-card .face .flag {
   max-width: 45px;
 }
 
-.show-card h2 {
+.show-credit-card .show-card h2 {
   font-size: 1.5rem;
   text-align: center;
   letter-spacing: 1px;
@@ -23,19 +24,43 @@
   color: #fff;
 }
 
-.back {
-  margin-top: 3rem;
+.show-credit-card .swiper {
+  width: 100%;
+  height: 100%;
 }
 
-.back mat-icon {
-  font-size: 1.5rem;
-  cursor: pointer;
+.show-credit-card .swiper-slide {
+  text-align: center;
+  font-size: 18px;
+  background: transparent;
+
+  /* Center slide text vertically */
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  -webkit-align-items: center;
+  align-items: center;
+
+  display: block;
 }
 
-.carousel-control-prev,
-.carousel-control-next {
-  top: 150px;
-  bottom: unset;
-  display: unset;
-  width: 7%;
+.show-credit-card .ng-template {
+  display: flex;
+  flex-direction: column;
+}
+
+.show-credit-card .swiper-pagination {
+  bottom: unset !important;
+  top: 280px;
+}
+
+.show-credit-card .swiper-pagination-bullet {
+  background: #e9ecef;
 }

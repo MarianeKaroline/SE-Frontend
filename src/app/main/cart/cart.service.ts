@@ -183,8 +183,9 @@ export class CartService {
   }
 
   public removeList() {
-    this._next([]);
     this._localList([]);
+    this._next([]);
+    this._getTotal();
   }
 
   public setSubjectAdded(added: boolean) {

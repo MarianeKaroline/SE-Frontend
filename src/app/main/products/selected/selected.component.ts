@@ -1,6 +1,6 @@
 import { AppService } from './../../../app.service';
 import { ProductSelectedModel } from './../models/ProductSelected.model';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ProductsService } from '../products.service';
 import { CartService } from '../../cart/cart.service';
@@ -10,7 +10,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 @Component({
   selector: 'app-selected',
   templateUrl: './selected.component.html',
-  styleUrls: ['./selected.component.scss']
+  styleUrls: ['./selected.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class SelectedComponent implements OnInit {
 

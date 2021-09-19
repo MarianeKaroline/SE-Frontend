@@ -29,9 +29,6 @@ export class PreviewComponent implements OnInit {
   }
 
   confirm() {
-    this.boughtService.addBought()
-    .subscribe(() => {});
-
     this.router.navigateByUrl('/bought/confirmed');
   }
 

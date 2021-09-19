@@ -37,6 +37,7 @@ import { LayoutService } from 'src/app/layout/layout.service';
 import { BoughtService } from '../bought/bought.service';
 import { ProductsService } from '../products/products.service';
 import { AppService } from 'src/app/app.service';
+import { SwiperModule } from "swiper/angular";
 
 
 registerLocaleData(localePt);
@@ -124,7 +125,8 @@ const routes: Routes = [
     MatFormFieldModule,
     MatInputModule,
     MatDatepickerModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    SwiperModule
   ],
   exports: [
     RouterModule,
