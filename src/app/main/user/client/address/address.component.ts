@@ -1,7 +1,8 @@
 import { BoughtService } from './../../../bought/bought.service';
-import { Component, OnInit, Output, ViewEncapsulation, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, ViewEncapsulation, EventEmitter, OnDestroy } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { UserService } from '../../user.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-address',
@@ -9,7 +10,8 @@ import { UserService } from '../../user.service';
   styleUrls: ['./address.component.scss'],
   encapsulation: ViewEncapsulation.None,
 })
-export class AddressComponent implements OnInit {
+export class AddressComponent implements OnInit, OnDestroy {
+  private subscriptions: Subscription[] = [];
   @Output() event = new EventEmitter<boolean>();
   form: FormGroup;
   addressId: number;
@@ -25,8 +27,15 @@ export class AddressComponent implements OnInit {
     this.formConfig();
   }
 
+  ngOnDestroy(): void {
+    this.subscriptions.forEach((subscription) => {
+      subscription.unsubscribe();
+    });
+  }
+
   formConfig() {
-    this.userService.sessionId.subscribe(res => this.sessionId = res);
+    this.subscriptions.push(this.userService.sessionId.subscribe(res => this.sessionId = res));
+
     this.form = this.formBuilder.group({
       postcode: [null, [Validators.pattern('^[0-9]{8}$'), Validators.required]],
       street: [null, Validators.required],
@@ -38,9 +47,10 @@ export class AddressComponent implements OnInit {
   }
 
   addAddress() {
-    this.userService.addAddress(this.form.value).subscribe((address) => {
-      this.boughtService.setAddressId(address);
-    });
+    this.subscriptions.push(this.userService.addAddress(this.form.value)
+      .subscribe((address) => {
+        this.boughtService.setAddressId(address);
+      }));
 
     this.event.emit(true);
   }

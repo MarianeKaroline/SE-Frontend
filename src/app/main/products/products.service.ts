@@ -3,16 +3,17 @@ import { ListProductsModel } from './models/list-products.model';
 import { ProductSelectedModel } from './models/ProductSelected.model';
 import { HttpClient } from '@angular/common/http';
 import { environment } from './../../../environments/environment';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Subscription } from 'rxjs';
 import { take, tap } from 'rxjs/operators';
-import { Injectable } from "@angular/core";
+import { Injectable, OnDestroy } from "@angular/core";
 import { BestSellingModel } from "./models/bestSelling.model";
 import { CategoryModel } from './models/category.model';
 
 const apiUrl = environment.apiUrl;
 
 @Injectable()
-export class ProductsService {
+export class ProductsService implements OnDestroy {
+  private subscriptions: Subscription[] = [];
   private _list: ListProductsModel[] = [];
 
   private _products = new BehaviorSubject<ListProductsModel[]>([]);
@@ -25,17 +26,23 @@ export class ProductsService {
     this.addList();
   }
 
+  ngOnDestroy(): void {
+    this.subscriptions.forEach((subscription) => {
+      subscription.unsubscribe();
+    });
+  }
+
   public getBestSelling() {
     return this._bestSelling();
   }
 
   public getProductCategory(id: number) {
-    this.http
+    this.subscriptions.push(this.http
       .get<CategoryModel[]>(`${apiUrl}/product/category/${id}`)
       .pipe(
         take(1)
       )
-      .subscribe(res => this._categoryProducts.next(res));
+      .subscribe(res => this._categoryProducts.next(res)));
   }
 
   public getSelected(id: number) {
@@ -47,11 +54,11 @@ export class ProductsService {
   }
 
   public addList() {
-    this._getAll()
+    this.subscriptions.push(this._getAll()
       .subscribe(list => {
         this._list = list;
         this._products.next(this._list);
-      });
+      }));
   }
 
   public add(model: AddNewProductModel) {

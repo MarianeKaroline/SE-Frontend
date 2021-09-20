@@ -2,9 +2,10 @@ import { BoughtService } from './../../bought/bought.service';
 import { Router } from '@angular/router';
 import { CartService } from './../cart.service';
 import { PaymentModel } from './../models/payment.model';
-import { Component, EventEmitter, OnInit, Output, ViewEncapsulation } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, ViewEncapsulation, OnDestroy } from '@angular/core';
 import { Payment } from 'src/app/static_data/payment.enum';
 import { UserService } from '../../user/user.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-payment',
@@ -12,8 +13,10 @@ import { UserService } from '../../user/user.service';
   styleUrls: ['./payment.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class PaymentComponent implements OnInit {
+export class PaymentComponent implements OnInit, OnDestroy {
   @Output() paymentType = new EventEmitter<number>();
+
+  private subscriptions: Subscription[] = [];
   method: PaymentModel[] = [];
   paymentMethod: number;
   paymentEnum = Payment;
@@ -27,15 +30,22 @@ export class PaymentComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.userService.sessionId.subscribe(res => this.sessionId = res);
+    this.subscriptions.push(this.userService.sessionId
+      .subscribe(res => this.sessionId = res));
     this.payment();
   }
 
-  payment() {
-    this.cartService.payment()
-    .subscribe(method => {
-      this.method = method
+  ngOnDestroy(): void {
+    this.subscriptions.forEach((subscription) => {
+      subscription.unsubscribe();
     });
+  }
+
+  payment() {
+    this.subscriptions.push(this.cartService.payment()
+      .subscribe(method => {
+        this.method = method
+      }));
   }
 
   pMethod(id: number) {

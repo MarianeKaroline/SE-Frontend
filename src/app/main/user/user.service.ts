@@ -8,15 +8,17 @@ import { ShowCardModel } from './models/showCard.model';
 import { ShowAddressModel } from './models/showAddress.model';
 import { take } from 'rxjs/operators';
 import { UserModel } from './models/user.model';
-import { Injectable } from "@angular/core";
+import { Injectable, OnDestroy } from "@angular/core";
 import { environment } from "src/environments/environment";
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Subscription } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 
 const apiUrl = environment.apiUrl;
 
 @Injectable()
-export class UserService {
+export class UserService implements OnDestroy {
+  private subscriptions: Subscription[] = [];
+
   private static _employee = new BehaviorSubject<boolean>(false);
   public employee = UserService._employee.asObservable();
 
@@ -38,9 +40,15 @@ export class UserService {
     }
   }
 
+  ngOnDestroy(): void {
+    this.subscriptions.forEach((subscription) => {
+      subscription.unsubscribe();
+    });
+  }
+
   /* ---- Public ---- */
   public login(model: {email: string, password: string}) {
-    this._signIn(model)
+    this.subscriptions.push(this._signIn(model)
     .subscribe(user => {
       if (user != null) {
         UserService._sessionId.next(user.cpf);
@@ -56,7 +64,7 @@ export class UserService {
         window.localStorage.setItem('sessionId', user.cpf);
         window.localStorage.setItem('employee', user.employee.toString());
       }
-    });
+    }));
 
     return this._signIn(model);
   }
@@ -87,9 +95,9 @@ export class UserService {
     this.appService.getIpAddress();
     this.cartService.removeList();
 
-    this.appService.getIp().subscribe((res: any) => {
+    this.subscriptions.push(this.appService.getIp().subscribe((res: any) => {
       UserService._sessionId.next(res.ip);
-    });
+    }));
 
     if (this.employee) {
       UserService._employee.next(false);

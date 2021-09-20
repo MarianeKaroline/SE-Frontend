@@ -1,7 +1,8 @@
 import { CartService } from './main/cart/cart.service';
-import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit, OnDestroy } from '@angular/core';
 import { AppService } from './app.service';
 import { distinctUntilChanged, map, switchMap, tap } from 'rxjs/operators';
+import { Subscription } from 'rxjs';
 
 
 @Component({
@@ -9,16 +10,23 @@ import { distinctUntilChanged, map, switchMap, tap } from 'rxjs/operators';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, OnDestroy {
+  private subscriptions: Subscription[] = [];
   sidebarOpen = false;
 
   constructor(private appService: AppService, private cartService: CartService) {
-    this.cartService.added$.subscribe(open => this.sidebarOpen = open);
+    this.subscriptions.push(this.cartService.added$.subscribe(open => this.sidebarOpen = open));
   }
 
   ngOnInit() {
     if (localStorage.getItem('sessionId') == null)
       this.appService.getIpAddress();
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.forEach((subscription) => {
+      subscription.unsubscribe();
+    });
   }
 
   sidebarToggler() {

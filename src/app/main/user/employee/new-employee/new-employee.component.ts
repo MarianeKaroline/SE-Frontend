@@ -1,7 +1,8 @@
 import { Router } from '@angular/router';
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UserService } from '../../user.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-new-employee',
@@ -9,7 +10,8 @@ import { UserService } from '../../user.service';
   styleUrls: ['./new-employee.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class NewEmployeeComponent implements OnInit {
+export class NewEmployeeComponent implements OnInit, OnDestroy {
+  private subscriptions: Subscription[] = [];
   form: FormGroup;
 
   constructor(private userService: UserService,
@@ -18,6 +20,12 @@ export class NewEmployeeComponent implements OnInit {
 
   ngOnInit(): void {
     this.formConfig();
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.forEach((subscription) => {
+      subscription.unsubscribe();
+    });
   }
 
   formConfig() {
@@ -35,9 +43,8 @@ export class NewEmployeeComponent implements OnInit {
   }
 
   register() {
-    this.userService.register(this.form.value).subscribe(sub => {
-      console.log(sub);
-    })
+    this.subscriptions.push(this.userService.register(this.form.value)
+      .subscribe(sub => console.log(sub)));
 
     this.router.navigateByUrl('/user/employeer/get-employees')
   }

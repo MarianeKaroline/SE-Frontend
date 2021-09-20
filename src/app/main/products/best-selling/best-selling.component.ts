@@ -1,3 +1,4 @@
+import { UserService } from 'src/app/main/user/user.service';
 import { CartService } from './../../cart/cart.service';
 import { BestSellingModel } from './../models/bestSelling.model';
 import { ProductsService } from './../products.service';
@@ -26,6 +27,7 @@ export class BestSellingComponent implements OnInit, OnDestroy {
   constructor(
     private productService: ProductsService,
     private cartService: CartService,
+    private userService: UserService,
     private snackBar: MatSnackBar
   ) {}
 
@@ -33,7 +35,7 @@ export class BestSellingComponent implements OnInit, OnDestroy {
     this.onBestSelling();
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     this.subscriptions.forEach((subscription) => {
       subscription.unsubscribe();
     });
@@ -47,7 +49,7 @@ export class BestSellingComponent implements OnInit, OnDestroy {
   }
 
   addProduct(id: number) {
-    if (!this.cartService.getVerifyEmployee()) {
+    if (this.cartService.getVerifyEmployee() == false) {
       this.subscriptions.push(this.cartService.addProduct(id)
         .subscribe(product => console.log(product)));
     }

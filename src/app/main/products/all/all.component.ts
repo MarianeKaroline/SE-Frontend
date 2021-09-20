@@ -1,26 +1,34 @@
 import { Router } from '@angular/router';
 import { ProductsService } from './../products.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ListProductsModel } from '../models/list-products.model';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-all',
   templateUrl: './all.component.html',
   styleUrls: ['./all.component.scss']
 })
-export class AllComponent implements OnInit {
+export class AllComponent implements OnInit, OnDestroy {
+  private subscriptions: Subscription[] = [];
   products: ListProductsModel[] = [];
 
   constructor(private productsService: ProductsService, private router: Router) { }
 
   ngOnInit(): void {
-    this.productsService.products$
-      .subscribe(res => this.products = res);
+    this.subscriptions.push(this.productsService.products$
+      .subscribe(res => this.products = res));
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.forEach((subscription) => {
+      subscription.unsubscribe();
+    });
   }
 
   editAvailable(productId: number, available: boolean) {
-    this.productsService.editAvailable(productId, available)
-      .subscribe(res => console.log(res));
+    this.subscriptions.push(this.productsService.editAvailable(productId, available)
+      .subscribe(res => console.log(res)));
 
     this.router.navigateByUrl('/', {skipLocationChange: true})
       .then(() => this.router.navigate(['/product/all-products']));

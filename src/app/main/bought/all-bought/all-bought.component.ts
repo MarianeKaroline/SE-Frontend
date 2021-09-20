@@ -1,15 +1,17 @@
 import { Router } from '@angular/router';
 import { BoughtService } from './../bought.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { BoughtModel } from '../models/bought.model';
 import { StatusBought } from 'src/app/static_data/status-bought.enum';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-all-bought',
   templateUrl: './all-bought.component.html',
   styleUrls: ['./all-bought.component.scss']
 })
-export class AllBoughtComponent implements OnInit {
+export class AllBoughtComponent implements OnInit, OnDestroy {
+  private subscriptions: Subscription[] = [];
   boughts: BoughtModel[] = [];
   statusBought : string[] = [
     "Pending Confirmation",
@@ -19,12 +21,19 @@ export class AllBoughtComponent implements OnInit {
   ]
   statusEnum = StatusBought;
 
-  constructor(private boughtService: BoughtService, private router: Router) { }
+  constructor(private boughtService: BoughtService) { }
 
   ngOnInit(): void {
     this.boughtService.getAll();
-    this.boughtService.allBought$
-      .subscribe(i => this.boughts = i)
+
+    this.subscriptions.push(this.boughtService.allBought$
+      .subscribe(i => this.boughts = i));
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.forEach((subscription) => {
+      subscription.unsubscribe();
+    });
   }
 
   status(id: number) {
@@ -43,7 +52,7 @@ export class AllBoughtComponent implements OnInit {
   }
 
   updateStatus(boughtId: number, status: StatusBought) {
-    this.boughtService.putStatus(boughtId, status)
-      .subscribe(res => console.log(res));
+    this.subscriptions.push(this.boughtService.putStatus(boughtId, status)
+      .subscribe(res => console.log(res)));
   }
 }

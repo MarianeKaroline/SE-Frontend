@@ -1,5 +1,6 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, OnDestroy } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { Subscription } from 'rxjs';
 import { UserService } from '../../user.service';
 
 @Component({
@@ -8,7 +9,8 @@ import { UserService } from '../../user.service';
   styleUrls: ['./sign-up.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class SignUpComponent implements OnInit {
+export class SignUpComponent implements OnInit, OnDestroy {
+  private subscriptions: Subscription[] = [];
   form: FormGroup;
 
   constructor(private userService: UserService,
@@ -16,6 +18,12 @@ export class SignUpComponent implements OnInit {
 
   ngOnInit(): void {
     this.formConfig();
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.forEach((subscription) => {
+      subscription.unsubscribe();
+    });
   }
 
   formConfig() {
@@ -33,9 +41,9 @@ export class SignUpComponent implements OnInit {
   }
 
   signUp() {
-    this.userService.signUp(this.form.value).subscribe(sub => {
+    this.subscriptions.push(this.userService.signUp(this.form.value).subscribe(sub => {
       console.log(sub);
-    })
+    }));
 
     this.form.reset();
   }

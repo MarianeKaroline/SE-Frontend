@@ -6,14 +6,15 @@ import { take, tap } from 'rxjs/operators';
 import { BuyModel } from './../cart/models/buy.model';
 import { PreviewBoughtModel } from './models/previewBought.model';
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 import { environment } from 'src/environments/environment';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Subscription } from 'rxjs';
 
 const apiUrl = environment.apiUrl;
 
 @Injectable()
-export class BoughtService {
+export class BoughtService implements OnDestroy {
+  private subscriptions: Subscription[] = [];
 
   private _allBought = new BehaviorSubject<BoughtModel[]>([]);
   public allBought$ = this._allBought.asObservable();
@@ -30,7 +31,13 @@ export class BoughtService {
     private userService: UserService,
     private cartService: CartService
   ) {
-    this.userService.sessionId.subscribe(res => this.sessionId = res);
+    this.subscriptions.push(this.userService.sessionId.subscribe(res => this.sessionId = res));
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.forEach((subscription) => {
+      subscription.unsubscribe();
+    });
   }
 
   public preview() {
@@ -46,12 +53,12 @@ export class BoughtService {
   }
 
   public getAll() {
-    this.http
+    this.subscriptions.push(this.http
       .get<BoughtModel[]>(`${apiUrl}/bought/allboughts`)
       .pipe(
         take(1)
       )
-      .subscribe(res => this._allBought.next(res));
+      .subscribe(res => this._allBought.next(res)));
   }
 
   public rating(productId: number, rating: number) {
@@ -122,13 +129,13 @@ export class BoughtService {
   }
 
   public getOrderStatus(status: StatusBought) {
-    this.http
+    this.subscriptions.push(this.http
       .get<BoughtModel[]>(`${apiUrl}/bought/${status}`)
       .pipe(
         take(1)
       )
       .subscribe(res => {
         this._allBought.next(res);
-      });
+      }));
   }
 }

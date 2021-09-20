@@ -1,18 +1,19 @@
 import { UserService } from './../../main/user/user.service';
 import { CartService } from './../../main/cart/cart.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { filter, map } from 'rxjs/operators';
 import { TotalCartModel } from 'src/app/main/cart/models/totalCart.model';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss']
 })
-export class HeaderComponent implements OnInit {
+export class HeaderComponent implements OnInit, OnDestroy {
 
+  private subscriptions: Subscription[] = [];
   employee: boolean
   home: any;
   sessionId: string;
@@ -23,23 +24,30 @@ export class HeaderComponent implements OnInit {
     private cartService: CartService,
     private userService: UserService
   ) {
-    this.router.events.pipe(
-      filter(event => event instanceof NavigationEnd)
-    )
-    .subscribe((event: NavigationEnd) => {
-        this.home = event.url;
-    });
+    this.subscriptions.push(this.router.events
+      .pipe(
+        filter(event => event instanceof NavigationEnd)
+      )
+      .subscribe((event: NavigationEnd) => {
+          this.home = event.url;
+      }));
   }
 
   ngOnInit(): void {
 
-    this.cartService.total$
-    .subscribe(amount => {
-      this.total = amount.totalAmount != null ? amount.totalAmount : 0;
-    });
+    this.subscriptions.push(this.cartService.total$
+      .subscribe(amount => {
+        this.total = amount.totalAmount != null ? amount.totalAmount : 0;
+      }));
 
-    this.userService.employee.subscribe(res => this.employee = res);
-    this.userService.sessionId.subscribe(res => this.sessionId = res);
+    this.subscriptions.push(this.userService.employee.subscribe(res => this.employee = res));
+    this.subscriptions.push(this.userService.sessionId.subscribe(res => this.sessionId = res));
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.forEach((subscription) => {
+      subscription.unsubscribe();
+    });
   }
 
   loggOut() {

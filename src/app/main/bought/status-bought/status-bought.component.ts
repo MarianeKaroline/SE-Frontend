@@ -1,16 +1,17 @@
 import { BoughtService } from '../bought.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { BoughtModel } from '../models/bought.model';
 import { StatusBought } from 'src/app/static_data/status-bought.enum';
-import { tap, switchMap } from 'rxjs/operators';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-status-bought',
   templateUrl: './status-bought.component.html',
   styleUrls: ['./status-bought.component.scss']
 })
-export class StatusBoughtComponent implements OnInit {
+export class StatusBoughtComponent implements OnInit, OnDestroy {
+  private subscriptions: Subscription[] = [];
   statusBought: string[] = [
     "Pending Confirmation",
     "Pending Payment",
@@ -27,14 +28,20 @@ export class StatusBoughtComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.route.params
+    this.subscriptions.push(this.route.params
       .subscribe(params => {
         this.boughtService.getOrderStatus(params['id']);
         this.id = params['id'];
-      });
+      }));
 
-    this.boughtService.allBought$
-      .subscribe(orders => this.orders = orders);
+      this.subscriptions.push(this.boughtService.allBought$
+      .subscribe(orders => this.orders = orders));
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.forEach((subscription) => {
+      subscription.unsubscribe();
+    });
   }
 
   status(id: number) {
@@ -53,8 +60,8 @@ export class StatusBoughtComponent implements OnInit {
   }
 
   updateStatus(boughtId: number, status: StatusBought) {
-    this.boughtService.putStatus(boughtId, status)
-      .subscribe(res => console.log(res));
+    this.subscriptions.push(this.boughtService.putStatus(boughtId, status)
+      .subscribe(res => console.log(res)));
   }
 
 }

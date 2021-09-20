@@ -1,17 +1,19 @@
 import { BoughtService } from './../../../bought/bought.service';
 import { CartService } from './../../../cart/cart.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, OnDestroy } from '@angular/core';
 import { UserService } from '../../user.service';
 import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-card',
   templateUrl: './card.component.html',
   styleUrls: ['./card.component.scss']
 })
-export class CardComponent implements OnInit {
+export class CardComponent implements OnInit, OnDestroy {
   @Output() event = new EventEmitter<boolean>();
+  private subscriptions: Subscription[] = [];
   sessionId: string;
   form: FormGroup;
 
@@ -26,8 +28,15 @@ export class CardComponent implements OnInit {
     this.formConfig();
   }
 
+  ngOnDestroy(): void {
+    this.subscriptions.forEach((subscription) => {
+      subscription.unsubscribe();
+    });
+  }
+
   formConfig() {
-    this.userService.sessionId.subscribe(res => this.sessionId = res);
+    this.subscriptions.push(this.userService.sessionId.subscribe(res => this.sessionId = res));
+
     this.form = this.formBuilder.group({
       cardNumber: [null, [Validators.pattern('^[0-9]{16}$'), Validators.required]],
       name: [null, Validators.required],
@@ -38,10 +47,10 @@ export class CardComponent implements OnInit {
   }
 
   addCard() {
-    this.userService.addCreditCard(this.form.value)
-    .subscribe(card => {
-      this.boughtService.setCreditCardId(card);
-    })
+    this.subscriptions.push(this.userService.addCreditCard(this.form.value)
+      .subscribe(card => {
+        this.boughtService.setCreditCardId(card);
+      }));
 
     this.router.navigateByUrl('/bought/preview');
   }

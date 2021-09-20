@@ -1,12 +1,13 @@
 import { BoughtService } from './../../../../bought/bought.service';
 import { CartService } from './../../../../cart/cart.service';
-import { Component, EventEmitter, OnInit, Output, ViewEncapsulation } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, ViewEncapsulation, OnDestroy } from '@angular/core';
 import { ShowAddressModel } from '../../../models/showAddress.model';
 import { UserService } from '../../../user.service';
 import { SwiperComponent } from "swiper/angular";
 
 // import Swiper core and required modules
 import SwiperCore, { Pagination } from "swiper";
+import { Subscription } from 'rxjs';
 
 // install Swiper modules
 SwiperCore.use([Pagination]);
@@ -17,8 +18,9 @@ SwiperCore.use([Pagination]);
   styleUrls: ['./show-address.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class ShowAddressComponent implements OnInit {
+export class ShowAddressComponent implements OnInit, OnDestroy {
   @Output() event = new EventEmitter<boolean>();
+  private subscriptions: Subscription[] = [];
   addresses: ShowAddressModel[] = [];
 
   constructor(private userService: UserService,
@@ -26,10 +28,16 @@ export class ShowAddressComponent implements OnInit {
               private boughtService: BoughtService) { }
 
   ngOnInit(): void {
-    this.userService.getAddresses()
-    .subscribe(address => {
-      this.addresses = address;
-    })
+    this.subscriptions.push(this.userService.getAddresses()
+      .subscribe(address => {
+        this.addresses = address;
+      }));
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.forEach((subscription) => {
+      subscription.unsubscribe();
+    });
   }
 
   buy(id: number) {

@@ -6,14 +6,15 @@ import { ProductsService } from './../products/products.service';
 import { ProductCartModel } from './models/productCart.model';
 import { take, tap, map, switchMap } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 import { environment } from 'src/environments/environment';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Subscription } from 'rxjs';
 
 const apiUrl = environment.apiUrl;
 
 @Injectable()
-export class CartService {
+export class CartService implements OnDestroy {
+  private subscriptions: Subscription[] = [];
   private static sessionId: string;
   private static verifyEmployee: boolean;
 
@@ -57,6 +58,12 @@ export class CartService {
     this._getTotal();
   }
 
+  ngOnDestroy(): void {
+    this.subscriptions.forEach((subscription) => {
+      subscription.unsubscribe();
+    });
+  }
+
   /* ------------------ Public  ------------------ */
 
   public setSessionId(id: string) {
@@ -72,10 +79,10 @@ export class CartService {
   }
 
   public getProducts() {
-    this._getProducts().subscribe((products) => {
+    this.subscriptions.push(this._getProducts().subscribe((products) => {
       CartService._products.next(products);
       this._localList(products);
-    });
+    }));
   }
 
   public addProduct(productId: number) {
@@ -169,16 +176,16 @@ export class CartService {
 
     if (list.length > 0) {
       list.forEach((p) => {
-        this._passItems(p.productId, p.amount).subscribe((products) => {
+        this.subscriptions.push(this._passItems(p.productId, p.amount).subscribe((products) => {
           this._next(list);
           this._localList(products);
-        });
+        }));
       });
     } else {
-      this._getProducts().subscribe((products) => {
+      this.subscriptions.push(this._getProducts().subscribe((products) => {
         this._next(list);
         this._localList(products);
-      });
+      }));
     }
   }
 

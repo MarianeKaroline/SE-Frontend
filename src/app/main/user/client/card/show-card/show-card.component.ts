@@ -3,11 +3,12 @@ import { CartService } from './../../../../cart/cart.service';
 import { Router } from '@angular/router';
 import { ShowCardModel } from './../../../models/showCard.model';
 import { UserService } from './../../../user.service';
-import { Component, EventEmitter, OnInit, Output, ViewEncapsulation } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, ViewEncapsulation, OnDestroy } from '@angular/core';
 import { SwiperComponent } from "swiper/angular";
 
 // import Swiper core and required modules
 import SwiperCore, { Pagination } from "swiper";
+import { Subscription } from 'rxjs';
 
 // install Swiper modules
 SwiperCore.use([Pagination]);
@@ -18,8 +19,9 @@ SwiperCore.use([Pagination]);
   styleUrls: ['./show-card.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class ShowCardComponent implements OnInit {
+export class ShowCardComponent implements OnInit, OnDestroy {
   @Output() event = new EventEmitter<boolean>();
+  private subscriptions: Subscription[] = [];
   card: boolean = false;
   cards: ShowCardModel[] = [];
 
@@ -28,9 +30,15 @@ export class ShowCardComponent implements OnInit {
               private boughtService: BoughtService) { }
 
   ngOnInit(): void {
-    this.userService.GetCreditCards()
-    .subscribe(cards => {
-      this.cards = cards;
+    this.subscriptions.push(this.userService.GetCreditCards()
+      .subscribe(cards => {
+        this.cards = cards;
+      }));
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.forEach((subscription) => {
+      subscription.unsubscribe();
     });
   }
 

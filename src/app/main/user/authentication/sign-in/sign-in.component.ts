@@ -1,7 +1,8 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { UserService } from '../../user.service';
 
 @Component({
@@ -10,7 +11,8 @@ import { UserService } from '../../user.service';
   styleUrls: ['./sign-in.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class SignInComponent implements OnInit {
+export class SignInComponent implements OnInit, OnDestroy {
+  private subscriptions: Subscription[] = [];
   employee: boolean;
   form: FormGroup;
 
@@ -25,6 +27,12 @@ export class SignInComponent implements OnInit {
     this.formConfig();
   }
 
+  ngOnDestroy(): void {
+    this.subscriptions.forEach((subscription) => {
+      subscription.unsubscribe();
+    });
+  }
+
   formConfig() {
     this.form = this.formBuilder.group({
       email: [null, [Validators.email, Validators.required]],
@@ -33,18 +41,18 @@ export class SignInComponent implements OnInit {
   }
 
   login() {
-    this.userService.login(this.form.value)
-    .subscribe(res => {
-      if (res == null) {
-        this._snackBar.open("User doesn't exist", "close", {
-          horizontalPosition: 'left',
-          verticalPosition: 'bottom'
-        });
-        this.router.navigateByUrl("/user/auth");
-      }
-    })
+    this.subscriptions.push(this.userService.login(this.form.value)
+      .subscribe(res => {
+        if (res == null) {
+          this._snackBar.open("User doesn't exist", "close", {
+            horizontalPosition: 'left',
+            verticalPosition: 'bottom'
+          });
+          this.router.navigateByUrl("/user/auth");
+        }
+      }));
 
-    this.userService.employee.subscribe(res => this.employee = res);
+    this.subscriptions.push(this.userService.employee.subscribe(res => this.employee = res));
     if (this.employee) {
       this.router.navigateByUrl("/user/employeer/profile");
     }

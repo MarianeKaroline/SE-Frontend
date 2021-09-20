@@ -1,10 +1,11 @@
 import { TotalCartModel } from './models/totalCart.model';
-import { Component, Inject, OnInit, ViewChild } from '@angular/core';
+import { Component, Inject, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { CartService } from './cart.service';
 import { ProductCartModel } from './models/productCart.model';
 import { MatStepper } from '@angular/material/stepper';
 import { Payment } from 'src/app/static_data/payment.enum';
 import { UserService } from '../user/user.service';
+import { Subscription } from 'rxjs';
 
 
 @Component({
@@ -12,8 +13,9 @@ import { UserService } from '../user/user.service';
   templateUrl: './cart.component.html',
   styleUrls: ['./cart.component.scss']
 })
-export class CartComponent implements OnInit {
+export class CartComponent implements OnInit, OnDestroy {
   @ViewChild('stepper') stepper: MatStepper;
+  private subscriptions: Subscription[] = [];
   paymentMethod: number = 0;
   paymentEnum = Payment;
   address: boolean = true;
@@ -27,14 +29,20 @@ export class CartComponent implements OnInit {
   ngOnInit(): void {
     this.cartService.setSubjectAdded(false);
 
-    this.cartService.products$
-      .subscribe(products => this.products = products);
+    this.subscriptions.push(this.cartService.products$
+      .subscribe(products => this.products = products));
 
-    this.cartService.total$
-      .subscribe(total => this.total = total);
+    this.subscriptions.push(this.cartService.total$
+      .subscribe(total => this.total = total));
 
 
-      this.userService.sessionId.subscribe(res => this.logged = res);
+    this.subscriptions.push(this.userService.sessionId.subscribe(res => this.logged = res));
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.forEach((subscription) => {
+      subscription.unsubscribe();
+    });
   }
 
   nextClicked() {

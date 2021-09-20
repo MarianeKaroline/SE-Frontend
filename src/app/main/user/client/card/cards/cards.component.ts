@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { ShowCardModel } from '../../../models/showCard.model';
 import { UserService } from '../../../user.service';
 
@@ -7,14 +8,21 @@ import { UserService } from '../../../user.service';
   templateUrl: './cards.component.html',
   styleUrls: ['./cards.component.scss'],
 })
-export class CardsComponent implements OnInit {
+export class CardsComponent implements OnInit, OnDestroy {
+  private subscriptions: Subscription[] = [];
   cards: ShowCardModel[] = [];
 
   constructor(private userService: UserService) {}
 
   ngOnInit(): void {
-    this.userService.GetCreditCards().subscribe((cards) => {
+    this.subscriptions.push(this.userService.GetCreditCards().subscribe((cards) => {
       this.cards = cards;
+    }));
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.forEach((subscription) => {
+      subscription.unsubscribe();
     });
   }
 

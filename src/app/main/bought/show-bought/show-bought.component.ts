@@ -2,14 +2,16 @@ import { Router } from '@angular/router';
 import { StatusBought } from './../../../static_data/status-bought.enum';
 import { BoughtModel } from './../models/bought.model';
 import { BoughtService } from './../bought.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-show-bought',
   templateUrl: './show-bought.component.html',
   styleUrls: ['./show-bought.component.scss']
 })
-export class ShowBoughtComponent implements OnInit {
+export class ShowBoughtComponent implements OnInit, OnDestroy {
+  private subscriptions: Subscription[] = [];
   rater: number = 0;
   starCount: number = 5;
   productId: number = 0;
@@ -26,8 +28,14 @@ export class ShowBoughtComponent implements OnInit {
       this.ratingArr.push(index);
     }
 
-    this.boughtService.show()
-    .subscribe(boughts => this.boughts = boughts);
+    this.subscriptions.push(this.boughtService.show()
+    .subscribe(boughts => this.boughts = boughts));
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.forEach((subscription) => {
+      subscription.unsubscribe();
+    });
   }
 
   status(id: number) {
@@ -62,8 +70,8 @@ export class ShowBoughtComponent implements OnInit {
   }
 
   rate() {
-    this.boughtService.rating(this.productId, this.rater)
-      .subscribe(res => console.log(res));
+    this.subscriptions.push(this.boughtService.rating(this.productId, this.rater)
+      .subscribe(res => console.log(res)));
 
     this.router.navigateByUrl('/bought/order-history');
   }

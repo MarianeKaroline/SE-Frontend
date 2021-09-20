@@ -1,9 +1,9 @@
 import { tap } from 'rxjs/operators';
 import { SuccessDialog } from './../../../shared/dialogs/success/success.dialog';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Subscription } from 'rxjs';
 import { AssistantService } from './../assistant.service';
 import { FormBuilder, FormGroup, FormGroupDirective, Validators } from '@angular/forms';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 
 @Component({
@@ -11,8 +11,9 @@ import { MatDialog } from '@angular/material/dialog';
   templateUrl: './form.component.html',
   styleUrls: ['./form.component.scss']
 })
-export class FormComponent implements OnInit {
+export class FormComponent implements OnInit, OnDestroy {
   @ViewChild(FormGroupDirective) formDirective: FormGroupDirective;
+  private subscriptions: Subscription[] = [];
   private _spinner = new BehaviorSubject<boolean>(false);
   public spinner = this._spinner.asObservable();
   form: FormGroup;
@@ -25,6 +26,12 @@ export class FormComponent implements OnInit {
 
   ngOnInit(): void {
     this.formConfig();
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.forEach((subscription) => {
+      subscription.unsubscribe();
+    });
   }
 
   formConfig() {
@@ -40,7 +47,7 @@ export class FormComponent implements OnInit {
   sendMessage() {
     this._spinner.next(true);
 
-    this.assistantService.sendEmail(this.form.value)
+    this.subscriptions.push(this.assistantService.sendEmail(this.form.value)
       .pipe(
         tap(() => {
           this._spinner.next(false);
@@ -52,7 +59,7 @@ export class FormComponent implements OnInit {
           dialogRef.afterClosed();
         })
       )
-      .subscribe();
+      .subscribe());
 
     this.formDirective.resetForm();
     this.form.reset();

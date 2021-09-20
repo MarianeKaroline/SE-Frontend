@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { Subscription } from 'rxjs';
 import { DeleteDialog } from 'src/app/shared/dialogs/delete/delete.dialog';
 import { CartService } from '../cart.service';
 import { ProductCartModel } from '../models/productCart.model';
@@ -13,7 +14,8 @@ export interface DialogData {
   templateUrl: './products-cart.component.html',
   styleUrls: ['./products-cart.component.scss']
 })
-export class ProductsCartComponent implements OnInit {
+export class ProductsCartComponent implements OnInit, OnDestroy {
+  private subscriptions: Subscription[] = [];
   products: ProductCartModel[] = [];
   del: boolean = false;
 
@@ -23,23 +25,29 @@ export class ProductsCartComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.cartService.products$
-      .subscribe(products => this.products = products);
+    this.subscriptions.push(this.cartService.products$
+      .subscribe(products => this.products = products));
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.forEach((subscription) => {
+      subscription.unsubscribe();
+    });
   }
 
   addProducts(id: number) {
-    this.cartService.addProduct(id)
-      .subscribe(bool => console.log(bool));
+    this.subscriptions.push(this.cartService.addProduct(id)
+      .subscribe(bool => console.log(bool)));
   }
 
   delete(id: number) {
-    this.cartService.removeProduct(id)
-      .subscribe(bool => console.log(bool));
+    this.subscriptions.push(this.cartService.removeProduct(id)
+      .subscribe(bool => console.log(bool)));
   }
 
   deleteProducts(id: number) {
-    this.cartService.removeProducts(id)
-      .subscribe(bool => console.log(bool));
+    this.subscriptions.push(this.cartService.removeProducts(id)
+      .subscribe(bool => console.log(bool)));
   }
 
   dialogDelete(id: number, removeOne: boolean) {

@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { AppService } from 'src/app/app.service';
 import { LayoutService } from '../../../../layout/layout.service';
 import { CategoriesModel } from '../../../../layout/search/models/categories.model';
@@ -9,7 +10,8 @@ import { CategoriesModel } from '../../../../layout/search/models/categories.mod
   templateUrl: './sidebar.component.html',
   styleUrls: ['./sidebar.component.scss']
 })
-export class SidebarComponent implements OnInit {
+export class SidebarComponent implements OnInit, OnDestroy {
+  private subscriptions: Subscription[] = [];
 
   categories: CategoriesModel[] = [];
 
@@ -17,10 +19,16 @@ export class SidebarComponent implements OnInit {
               private router: Router) { }
 
   ngOnInit(): void {
-    this.layoutService.getCategories()
+    this.subscriptions.push(this.layoutService.getCategories()
       .subscribe(category => {
         this.categories = category;
-      });
+      }));
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.forEach((subscription) => {
+      subscription.unsubscribe();
+    });
   }
 
   redirect(id: any) {
