@@ -1,4 +1,4 @@
-<section>
+<section class="status-bought">
   <div class="container">
     <div class="path">
       <p routerLink="/user/employeer/profile">Employee profile</p>
@@ -38,18 +38,26 @@
           <div class="order">
             <span class="title">Order nº {{ bought.boughtId }}</span>
           </div>
+          <div class="action">
+            <button class="rate-action confirm" *ngIf="bought.statusId != statusEnum.confirmed && bought.statusId != statusEnum.pendingPayment" (click)="updateStatus(bought.boughtId, statusEnum.confirmed)" mat-raised-button>Confirm purchase</button>
+            <button class="rate-action cancel" *ngIf="bought.statusId != statusEnum.canceled && bought.statusId != statusEnum.pendingPayment" (click)="updateStatus(bought.boughtId, statusEnum.canceled)" mat-raised-button>Cancel purchase</button>
+          </div>
         </div>
         <mat-divider></mat-divider>
         <div class="items">
           <span class="status">{{ status(bought.statusId) }}</span>
           <div class="products" *ngFor="let item of bought.itens">
-            <div class="image">
-              <img src="../../../../assets/images/{{ item.image }}" alt="">
+            <div class="column-1">
+              <div class="image">
+                <img src="../../../../assets/images/{{ item.image }}" alt="">
+              </div>
+              <span class="info">{{ item.productName }}</span>
             </div>
-            <span class="info">{{ item.productName }}</span>
-            <span class="info">{{ item.amount }}</span>
+            <div class="total-amount">
+              <span class="info">{{ item.amount }}x</span>
+            </div>
           </div>
-      </div>
+        </div>
 
       </div>
     </div>

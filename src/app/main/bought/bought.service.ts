@@ -31,7 +31,6 @@ export class BoughtService {
     private cartService: CartService
   ) {
     this.userService.sessionId.subscribe(res => this.sessionId = res);
-    this.getAll();
   }
 
   public preview() {
@@ -70,10 +69,6 @@ export class BoughtService {
         tap(() => this.getAll()),
         take(1)
       );
-  }
-
-  public getBoughtStatus(status: StatusBought) {
-    return this._getOrderStatus(status);
   }
 
   public setPaymentId(paymentId: number) {
@@ -126,11 +121,14 @@ export class BoughtService {
       );
   }
 
-  private _getOrderStatus(status: StatusBought) {
-    return this.http
+  public getOrderStatus(status: StatusBought) {
+    this.http
       .get<BoughtModel[]>(`${apiUrl}/bought/${status}`)
       .pipe(
         take(1)
-      );
+      )
+      .subscribe(res => {
+        this._allBought.next(res);
+      });
   }
 }

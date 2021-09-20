@@ -63,11 +63,11 @@
 }
 
 .best-selling .name-carousel {
-    position: absolute;
-    left: 200px;
-    top: 180px;
-    font-size: 9vh;
-    font-weight: 500;
+  position: absolute;
+  left: 200px;
+  top: 180px;
+  font-size: 9vh;
+  font-weight: 500;
 }
 
 .best-selling .price-carousel {
@@ -79,19 +79,19 @@
 }
 
 .best-selling .orange {
-    position: absolute;
-    color: #ff6600;
-    display: block;
-    right: 0;
-    margin-top: 65px;
-    font-size: 5vh;
+  position: absolute;
+  color: #ff6600;
+  display: block;
+  right: 0;
+  margin-top: 65px;
+  font-size: 5vh;
 }
 
 .best-selling .image-carousel {
-    position: absolute;
-    height: 40rem;
-    right: 200px;
-    bottom: 120px;
+  position: absolute;
+  height: 40rem;
+  right: 200px;
+  bottom: 120px;
 }
 
 .swiper {
@@ -119,7 +119,8 @@
   align-items: center;
 }
 
-.best-selling .swiper-button-next, .best-selling .swiper-button-prev {
+.best-selling .swiper-button-next,
+.best-selling .swiper-button-prev {
   color: #fff !important;
 }
 

@@ -17,15 +17,7 @@ export class SidebarComponent implements OnInit {
               private router: Router) { }
 
   ngOnInit(): void {
-    this.router.routeReuseStrategy.shouldReuseRoute = () => {
-      return false;
-    }
-
-    this.onCategories();
-  }
-
-  onCategories() {
-    return this.layoutService.getCategories()
+    this.layoutService.getCategories()
       .subscribe(category => {
         this.categories = category;
       });

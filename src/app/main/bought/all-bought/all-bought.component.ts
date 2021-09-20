@@ -22,6 +22,7 @@ export class AllBoughtComponent implements OnInit {
   constructor(private boughtService: BoughtService, private router: Router) { }
 
   ngOnInit(): void {
+    this.boughtService.getAll();
     this.boughtService.allBought$
       .subscribe(i => this.boughts = i)
   }

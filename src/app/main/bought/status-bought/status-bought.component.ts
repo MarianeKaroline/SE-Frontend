@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { BoughtModel } from '../models/bought.model';
 import { StatusBought } from 'src/app/static_data/status-bought.enum';
+import { tap, switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-status-bought',
@@ -10,7 +11,7 @@ import { StatusBought } from 'src/app/static_data/status-bought.enum';
   styleUrls: ['./status-bought.component.scss']
 })
 export class StatusBoughtComponent implements OnInit {
-  statusBought : string[] = [
+  statusBought: string[] = [
     "Pending Confirmation",
     "Pending Payment",
     "Confirmed",
@@ -18,6 +19,7 @@ export class StatusBoughtComponent implements OnInit {
   ]
   orders: BoughtModel[] = [];
   id: number;
+  statusEnum = StatusBought;
 
   constructor(
     private route: ActivatedRoute,
@@ -25,10 +27,14 @@ export class StatusBoughtComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.id = +this.route.snapshot.paramMap.get("id");
+    this.route.params
+      .subscribe(params => {
+        this.boughtService.getOrderStatus(params['id']);
+        this.id = params['id'];
+      });
 
-    this.boughtService.getBoughtStatus(this.id)
-    .subscribe(orders => this.orders = orders);
+    this.boughtService.allBought$
+      .subscribe(orders => this.orders = orders);
   }
 
   status(id: number) {
@@ -44,6 +50,11 @@ export class StatusBoughtComponent implements OnInit {
     else {
       return "Canceled"
     }
+  }
+
+  updateStatus(boughtId: number, status: StatusBought) {
+    this.boughtService.putStatus(boughtId, status)
+      .subscribe(res => console.log(res));
   }
 
 }

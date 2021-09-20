@@ -11,8 +11,7 @@ import { ProductsService } from '../../products.service';
   styleUrls: ['./category.component.scss']
 })
 export class CategoryComponent implements OnInit {
-  product: CategoryModel[] = [];
-  categoryId: number;
+  products: CategoryModel[] = [];
 
   constructor(private productService: ProductsService,
     private route: ActivatedRoute) { }
@@ -20,10 +19,10 @@ export class CategoryComponent implements OnInit {
   ngOnInit(): void {
 
     this.route.params
-      .subscribe(params => this.categoryId = +params['id']);
+      .subscribe(params => this.productService.getProductCategory(params['id']));
 
-    this.productService.getCategory(this.categoryId)
-      .subscribe(products => this.product = products);
+      this.productService.categoryProducts$
+        .subscribe(products => this.products = products);
   }
 
 }

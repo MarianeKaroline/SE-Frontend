@@ -18,6 +18,9 @@ export class ProductsService {
   private _products = new BehaviorSubject<ListProductsModel[]>([]);
   public products$ = this._products.asObservable();
 
+  private _categoryProducts = new BehaviorSubject<CategoryModel[]>([]);
+  public categoryProducts$ = this._categoryProducts.asObservable();
+
   constructor(private http: HttpClient) {
     this.addList();
   }
@@ -26,8 +29,13 @@ export class ProductsService {
     return this._bestSelling();
   }
 
-  public getCategory(id: number) {
-    return this._category(id);
+  public getProductCategory(id: number) {
+    this.http
+      .get<CategoryModel[]>(`${apiUrl}/product/category/${id}`)
+      .pipe(
+        take(1)
+      )
+      .subscribe(res => this._categoryProducts.next(res));
   }
 
   public getSelected(id: number) {
@@ -62,14 +70,6 @@ export class ProductsService {
   private _bestSelling() {
     return this.http
       .get<BestSellingModel[]>(`${apiUrl}/product`)
-      .pipe(
-        take(1)
-      );
-  }
-
-  private _category(id: number) {
-    return this.http
-      .get<CategoryModel[]>(`${apiUrl}/product/category/${id}`)
       .pipe(
         take(1)
       );
