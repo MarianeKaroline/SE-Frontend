@@ -71,7 +71,6 @@ const routes: Routes = [
       provide: STEPPER_GLOBAL_OPTIONS,
       useValue: {displayDefaultIndicatorType: false}
     },
-    CartService,
     UserService,
     BoughtService,
     LayoutService,

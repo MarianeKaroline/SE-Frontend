@@ -19,24 +19,20 @@ const apiUrl = environment.apiUrl;
 export class UserService implements OnDestroy {
   private subscriptions: Subscription[] = [];
 
-  private static _employee = new BehaviorSubject<boolean>(false);
-  public employee = UserService._employee.asObservable();
+  private _employee = new BehaviorSubject<boolean>(false);
+  public employee = this._employee.asObservable();
 
-  private static _sessionId = new BehaviorSubject<string>(null);
-  public sessionId = UserService._sessionId.asObservable();
+  private _sessionId = new BehaviorSubject<string>(null);
+  public sessionId = this._sessionId.asObservable();
 
   constructor(
     private http: HttpClient,
-    private appService: AppService,
-    private cartService: CartService
+    private appService: AppService
   ) {
-    UserService._sessionId.next(localStorage.getItem('sessionId'));
+    this._sessionId.next(localStorage.getItem('sessionId'));
     let aux = localStorage.getItem('employee');
     if (aux != null) {
-      UserService._employee.next(JSON.parse(aux));
-
-      this.cartService.setSessionId(localStorage.getItem('sessionId'));
-      this.cartService.setVerifyEmployee(JSON.parse(aux));
+      this._employee.next(JSON.parse(aux));
     }
   }
 
@@ -51,15 +47,8 @@ export class UserService implements OnDestroy {
     this.subscriptions.push(this._signIn(model)
     .subscribe(user => {
       if (user != null) {
-        UserService._sessionId.next(user.cpf);
-        UserService._employee.next(user.employee);
-
-        this.cartService.setSessionId(user.cpf);
-        this.cartService.setVerifyEmployee(user.employee);
-
-        if (!user.employee) {
-          this.cartService.passItems();
-        }
+        this._sessionId.next(user.cpf);
+        this._employee.next(user.employee);
 
         window.localStorage.setItem('sessionId', user.cpf);
         window.localStorage.setItem('employee', user.employee.toString());
@@ -93,14 +82,13 @@ export class UserService implements OnDestroy {
 
   public LoggOut() {
     this.appService.getIpAddress();
-    this.cartService.removeList();
 
     this.subscriptions.push(this.appService.getIp().subscribe((res: any) => {
-      UserService._sessionId.next(res.ip);
+      this._sessionId.next(res.ip);
     }));
 
     if (this.employee) {
-      UserService._employee.next(false);
+      this._employee.next(false);
       window.localStorage.setItem('employee', "false");
     }
   }
@@ -114,11 +102,11 @@ export class UserService implements OnDestroy {
   }
 
   public getEmployee() {
-    return UserService._employee.value;
+    return this._employee.value;
   }
 
   public getSessionId() {
-    return UserService._sessionId.value;
+    return this._sessionId.value;
   }
   /* ---- end Public ---- */
 
@@ -152,7 +140,7 @@ export class UserService implements OnDestroy {
 
   private _getAddresses() {
     return this.http
-    .get<ShowAddressModel[]>(`${apiUrl}/client/address/${UserService._sessionId.value}`)
+    .get<ShowAddressModel[]>(`${apiUrl}/client/address/${this._sessionId.value}`)
     .pipe(
       take(1)
     );
@@ -169,7 +157,7 @@ export class UserService implements OnDestroy {
 
   private _getCreditCards() {
     return this.http
-    .get<ShowCardModel[]>(`${apiUrl}/client/creditcard/${UserService._sessionId.value}`)
+    .get<ShowCardModel[]>(`${apiUrl}/client/creditcard/${this._sessionId.value}`)
     .pipe(
       take(1)
     );

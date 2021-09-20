@@ -93,7 +93,6 @@ const routes: Routes = [
   ],
   providers: [
     { provide: LOCALE_ID, useValue: 'pt-BR' },
-    CartService,
     UserService,
     BoughtService,
     LayoutService,

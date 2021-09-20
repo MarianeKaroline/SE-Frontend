@@ -128,7 +128,6 @@ const appRoutes: Routes = [
   providers: [
     { provide: LOCALE_ID, useValue: 'pt-BR' },
     CookieService,
-    CartService,
     UserService,
     BoughtService,
     LayoutService,

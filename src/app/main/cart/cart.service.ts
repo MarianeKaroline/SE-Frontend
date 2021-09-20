@@ -1,3 +1,4 @@
+import { UserService } from 'src/app/main/user/user.service';
 import { PaymentModel } from './models/payment.model';
 import { TotalCartModel } from './models/totalCart.model';
 import { StatusProduct } from './../../static_data/status-product.enum';
@@ -12,14 +13,16 @@ import { BehaviorSubject, Subscription } from 'rxjs';
 
 const apiUrl = environment.apiUrl;
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class CartService implements OnDestroy {
   private subscriptions: Subscription[] = [];
-  private static sessionId: string;
-  private static verifyEmployee: boolean;
+  private sessionId: string;
+  private verifyEmployee: boolean;
 
-  private static _products = new BehaviorSubject<ProductCartModel[]>([]);
-  public products$ = CartService._products.asObservable();
+  private _products = new BehaviorSubject<ProductCartModel[]>([]);
+  public products$ = this._products.asObservable();
 
   private _added = new BehaviorSubject<boolean>(false);
   public added$ = this._added.asObservable();
@@ -27,8 +30,8 @@ export class CartService implements OnDestroy {
   private _removed = new BehaviorSubject<boolean>(false);
   public removed$ = this._removed.asObservable();
 
-  private static _total = new BehaviorSubject<TotalCartModel>(null);
-  public total$ = CartService._total.asObservable();
+  private _total = new BehaviorSubject<TotalCartModel>(null);
+  public total$ = this._total.asObservable();
 
   productCart: ProductCartModel = {
     productId: 0,
@@ -45,17 +48,31 @@ export class CartService implements OnDestroy {
 
   constructor(
     private http: HttpClient,
-    private productsService: ProductsService
+    private productsService: ProductsService,
+    private userService: UserService
   ) {
+    this.userService.employee.subscribe(
+      (employee) => (this.verifyEmployee = employee)
+    );
+
+    this.userService.sessionId.subscribe((session) => {
+      this.sessionId = session;
+      if (session.length == 11) {
+        this.passItems();
+      } else {
+        this.removeList();
+      }
+    });
+
     let items = JSON.parse(localStorage.getItem('items'));
 
     if (items == null || items == []) {
       this.getProducts();
     } else {
-      CartService._products.next(items);
+      this._next(items);
     }
-
     this._getTotal();
+    this._localList();
   }
 
   ngOnDestroy(): void {
@@ -66,39 +83,30 @@ export class CartService implements OnDestroy {
 
   /* ------------------ Public  ------------------ */
 
-  public setSessionId(id: string) {
-    CartService.sessionId = id;
-  }
-
-  public setVerifyEmployee(verify: boolean) {
-    CartService.verifyEmployee = verify;
-  }
-
   public getVerifyEmployee() {
-    return CartService.verifyEmployee;
+    return this.verifyEmployee;
   }
 
   public getProducts() {
-    this.subscriptions.push(this._getProducts().subscribe((products) => {
-      CartService._products.next(products);
-      this._localList(products);
-    }));
+    this.subscriptions.push(
+      this._getProducts().subscribe((products) => {
+        this._products.next(products);
+      })
+    );
   }
 
   public addProduct(productId: number) {
-    let list = CartService._products.value;
+    let list = this._products.value;
 
     this._addToList(productId);
-    this._getTotal();
 
     this.setSubjectAdded(true);
 
-    if (CartService.sessionId.length == 11) {
+    if (this.sessionId.length == 11) {
       return this._addProduct(productId).pipe(
         tap(null, (err) => {
           list = list.filter((p) => p.productId != productId);
           this._next(list);
-          this._localList(list);
         })
       );
     }
@@ -111,18 +119,16 @@ export class CartService implements OnDestroy {
   }
 
   public removeProduct(productId: number) {
-    let list = CartService._products.value;
+    let list = this._products.value;
     let product = list.find((p) => p.productId == productId);
 
     this._removeToList(productId);
-    this._getTotal();
 
-    if (CartService.sessionId.length == 11) {
+    if (this.sessionId.length == 11) {
       return this._removeProduct(productId).pipe(
         tap(null, (err) => {
           list.push(product);
           this._next(list);
-          this._localList(list);
         })
       );
     }
@@ -137,21 +143,18 @@ export class CartService implements OnDestroy {
   }
 
   public removeProducts(productId: number) {
-    let list = CartService._products.value;
+    let list = this._products.value;
     let product = list.find((p) => p.productId == productId);
 
     list = list.filter((p) => p.productId != productId);
 
     this._next(list);
-    this._localList(list);
-    this._getTotal();
 
-    if (CartService.sessionId.length == 11) {
+    if (this.sessionId.length == 11) {
       return this._removeProducts(productId).pipe(
         tap(null, (err) => {
           list.push(product);
           this._next(list);
-          this._localList(list);
         })
       );
     }
@@ -172,27 +175,27 @@ export class CartService implements OnDestroy {
   }
 
   public passItems() {
-    let list = CartService._products.value;
+    let list = this._products.value;
 
     if (list.length > 0) {
       list.forEach((p) => {
-        this.subscriptions.push(this._passItems(p.productId, p.amount).subscribe((products) => {
-          this._next(list);
-          this._localList(products);
-        }));
+        this.subscriptions.push(
+          this._passItems(p.productId, p.amount).subscribe((products) => {
+            this._next(products);
+          })
+        );
       });
     } else {
-      this.subscriptions.push(this._getProducts().subscribe((products) => {
-        this._next(list);
-        this._localList(products);
-      }));
+      this.subscriptions.push(
+        this._getProducts().subscribe((products) => {
+          this._next(products);
+        })
+      );
     }
   }
 
   public removeList() {
-    this._localList([]);
     this._next([]);
-    this._getTotal();
   }
 
   public setSubjectAdded(added: boolean) {
@@ -205,51 +208,50 @@ export class CartService implements OnDestroy {
 
   private _getProducts() {
     return this.http
-      .get<ProductCartModel[]>(`${apiUrl}/cart/${CartService.sessionId}`)
+      .get<ProductCartModel[]>(`${apiUrl}/cart/${this.sessionId}`)
       .pipe(take(1));
   }
 
   private _addProduct(productId: number) {
     return this.http
-      .post<boolean>(
-        `${apiUrl}/cart/${productId}/${CartService.sessionId}`,
-        null
-      )
+      .post<boolean>(`${apiUrl}/cart/${productId}/${this.sessionId}`, null)
       .pipe(take(1));
   }
 
   private _removeProduct(productId: number) {
     return this.http
-      .delete<boolean>(`${apiUrl}/cart/${productId}/${CartService.sessionId}`)
+      .delete<boolean>(`${apiUrl}/cart/${productId}/${this.sessionId}`)
       .pipe(take(1));
   }
 
   private _removeProducts(productId: number) {
     return this.http
-      .delete<boolean>(
-        `${apiUrl}/cart/delete/${productId}/${CartService.sessionId}`
-      )
+      .delete<boolean>(`${apiUrl}/cart/delete/${productId}/${this.sessionId}`)
       .pipe(take(1));
   }
 
   private _passItems(productId: number, amount: number) {
     return this.http
       .post<ProductCartModel[]>(
-        `${apiUrl}/cart/${productId}/${amount}/${CartService.sessionId}`,
+        `${apiUrl}/cart/${productId}/${amount}/${this.sessionId}`,
         null
       )
       .pipe(take(1));
   }
 
-  private _localList(list: ProductCartModel[]) {
-    window.localStorage.setItem('items', JSON.stringify(list));
+  private _localList() {
+    this.products$.subscribe((list) => {
+      console.log(list);
+      window.localStorage.setItem('items', JSON.stringify(list));
+    });
   }
 
   private _addToList(productId: number) {
     let product = this.productsService
       .getAll()
       .find((p) => p.productId == productId);
-    let list = CartService._products.value;
+
+    let list = this._products.value;
     let exist = list.find((p) => p.productId == productId);
 
     if (exist != null) {
@@ -260,7 +262,6 @@ export class CartService implements OnDestroy {
     }
 
     this._next(list);
-    this._localList(list);
   }
 
   private _modelProducts(product: ListProductsModel) {
@@ -279,7 +280,7 @@ export class CartService implements OnDestroy {
   }
 
   private _removeToList(productId: number) {
-    let list = CartService._products.value;
+    let list = this._products.value;
     let product = list.find((p) => p.productId == productId);
 
     if (product.amount > 1) {
@@ -290,19 +291,20 @@ export class CartService implements OnDestroy {
     }
 
     this._next(list);
-    this._localList(list);
   }
 
   private _getTotal() {
-    let list = CartService._products.value;
-    let total = this._modelTotal();
+    this.products$.subscribe((p) => {
+      let list = p;
+      let total = this._modelTotal();
 
-    list.forEach((t) => {
-      total.totalAmount += t.amount;
-      total.totalPrice += t.amount * t.price;
+      list.forEach((t) => {
+        total.totalAmount += t.amount;
+        total.totalPrice += t.amount * t.price;
+      });
+
+      this._total.next(total);
     });
-
-    CartService._total.next(total);
   }
 
   private _modelTotal() {
@@ -313,6 +315,6 @@ export class CartService implements OnDestroy {
   }
 
   private _next(list: ProductCartModel[]) {
-    CartService._products.next(list);
+    this._products.next(list);
   }
 }
