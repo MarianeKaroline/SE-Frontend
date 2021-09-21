@@ -9,6 +9,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable, OnDestroy } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { BehaviorSubject, Subscription } from 'rxjs';
+import { AuthenticationService } from '../user/authentication/authentication.service';
 
 const apiUrl = environment.apiUrl;
 
@@ -28,10 +29,9 @@ export class BoughtService implements OnDestroy {
 
   constructor(
     private http: HttpClient,
-    private userService: UserService,
-    private cartService: CartService
+    private authService: AuthenticationService
   ) {
-    this.subscriptions.push(this.userService.sessionId.subscribe(res => this.sessionId = res));
+    this.subscriptions.push(this.authService.sessionId.subscribe(res => this.sessionId = res));
   }
 
   ngOnDestroy(): void {

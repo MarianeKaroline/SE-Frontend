@@ -6,6 +6,7 @@ import { MatStepper } from '@angular/material/stepper';
 import { Payment } from 'src/app/static_data/payment.enum';
 import { UserService } from '../user/user.service';
 import { Subscription } from 'rxjs';
+import { AuthenticationService } from '../user/authentication/authentication.service';
 
 
 @Component({
@@ -24,7 +25,10 @@ export class CartComponent implements OnInit, OnDestroy {
   total: TotalCartModel;
   logged: string;
 
-  constructor(private cartService: CartService, private userService: UserService) {}
+  constructor(
+    private cartService: CartService,
+    private authService: AuthenticationService
+  ) {}
 
   ngOnInit(): void {
     this.cartService.setSubjectAdded(false);
@@ -36,7 +40,7 @@ export class CartComponent implements OnInit, OnDestroy {
       .subscribe(total => this.total = total));
 
 
-    this.subscriptions.push(this.userService.sessionId.subscribe(res => this.logged = res));
+    this.subscriptions.push(this.authService.sessionId.subscribe(res => this.logged = res));
   }
 
   ngOnDestroy(): void {

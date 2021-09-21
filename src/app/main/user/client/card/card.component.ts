@@ -1,3 +1,4 @@
+import { AuthenticationService } from './../../authentication/authentication.service';
 import { BoughtService } from './../../../bought/bought.service';
 import { CartService } from './../../../cart/cart.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -21,7 +22,8 @@ export class CardComponent implements OnInit, OnDestroy {
     private userService: UserService,
     private formBuilder: FormBuilder,
     private router: Router,
-    private boughtService: BoughtService
+    private boughtService: BoughtService,
+    private authService: AuthenticationService
   ) { }
 
   ngOnInit(): void {
@@ -35,7 +37,7 @@ export class CardComponent implements OnInit, OnDestroy {
   }
 
   formConfig() {
-    this.subscriptions.push(this.userService.sessionId.subscribe(res => this.sessionId = res));
+    this.subscriptions.push(this.authService.sessionId.subscribe(res => this.sessionId = res));
 
     this.form = this.formBuilder.group({
       cardNumber: [null, [Validators.pattern('^[0-9]{16}$'), Validators.required]],

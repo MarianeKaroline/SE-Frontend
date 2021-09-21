@@ -1,3 +1,4 @@
+import { AuthenticationService } from './../user/authentication/authentication.service';
 import { UserService } from 'src/app/main/user/user.service';
 import { PaymentModel } from './models/payment.model';
 import { TotalCartModel } from './models/totalCart.model';
@@ -5,7 +6,7 @@ import { StatusProduct } from './../../static_data/status-product.enum';
 import { ListProductsModel } from './../products/models/list-products.model';
 import { ProductsService } from './../products/products.service';
 import { ProductCartModel } from './models/productCart.model';
-import { take, tap, map, switchMap } from 'rxjs/operators';
+import { take, tap, map } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import { Injectable, OnDestroy } from '@angular/core';
 import { environment } from 'src/environments/environment';
@@ -16,8 +17,7 @@ const apiUrl = environment.apiUrl;
 @Injectable({
   providedIn: 'root',
 })
-export class CartService implements OnDestroy {
-  private subscriptions: Subscription[] = [];
+export class CartService {
   private sessionId: string;
   private verifyEmployee: boolean;
 
@@ -49,36 +49,26 @@ export class CartService implements OnDestroy {
   constructor(
     private http: HttpClient,
     private productsService: ProductsService,
-    private userService: UserService
+    private authService: AuthenticationService
   ) {
-    this.userService.employee.subscribe(
+    let items = JSON.parse(localStorage.getItem('items'));
+
+    this.authService.employee.subscribe(
       (employee) => (this.verifyEmployee = employee)
     );
 
-    this.userService.sessionId.subscribe((session) => {
-      this.sessionId = session;
-      if (session.length == 11) {
-        this.passItems();
-      } else {
-        this.removeList();
-      }
-    });
+    this.authService.sessionId.subscribe(
+      (session) => (this.sessionId = session)
+    );
 
-    let items = JSON.parse(localStorage.getItem('items'));
-
-    if (items == null || items == []) {
+    if (items == null || items != []) {
       this.getProducts();
     } else {
       this._next(items);
     }
+
     this._getTotal();
     this._localList();
-  }
-
-  ngOnDestroy(): void {
-    this.subscriptions.forEach((subscription) => {
-      subscription.unsubscribe();
-    });
   }
 
   /* ------------------ Public  ------------------ */
@@ -88,11 +78,9 @@ export class CartService implements OnDestroy {
   }
 
   public getProducts() {
-    this.subscriptions.push(
-      this._getProducts().subscribe((products) => {
-        this._products.next(products);
-      })
-    );
+    this._getProducts().subscribe((products) => {
+      this._products.next(products);
+    });
   }
 
   public addProduct(productId: number) {
@@ -177,20 +165,17 @@ export class CartService implements OnDestroy {
   public passItems() {
     let list = this._products.value;
 
+    debugger;
     if (list.length > 0) {
       list.forEach((p) => {
-        this.subscriptions.push(
-          this._passItems(p.productId, p.amount).subscribe((products) => {
+        this._passItems(p.productId, p.amount).pipe(
+          tap((products) => {
             this._next(products);
           })
         );
       });
     } else {
-      this.subscriptions.push(
-        this._getProducts().subscribe((products) => {
-          this._next(products);
-        })
-      );
+      this._getProducts().pipe(tap((products) => this._next(products)));
     }
   }
 

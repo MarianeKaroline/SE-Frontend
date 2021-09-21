@@ -5,6 +5,7 @@ import { NavigationEnd, Router } from '@angular/router';
 import { filter, map } from 'rxjs/operators';
 import { TotalCartModel } from 'src/app/main/cart/models/totalCart.model';
 import { Observable, Subscription } from 'rxjs';
+import { AuthenticationService } from 'src/app/main/user/authentication/authentication.service';
 
 @Component({
   selector: 'app-header',
@@ -22,7 +23,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
   constructor(
     private router: Router,
     private cartService: CartService,
-    private userService: UserService
+    private userService: UserService,
+    private authService: AuthenticationService
   ) {
     this.subscriptions.push(this.router.events
       .pipe(
@@ -40,8 +42,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
         this.total = amount.totalAmount != null ? amount.totalAmount : 0;
       }));
 
-    this.subscriptions.push(this.userService.employee.subscribe(res => this.employee = res));
-    this.subscriptions.push(this.userService.sessionId.subscribe(res => this.sessionId = res));
+    this.subscriptions.push(this.authService.employee.subscribe(res => this.employee = res));
+    this.subscriptions.push(this.authService.sessionId.subscribe(res => this.sessionId = res));
   }
 
   ngOnDestroy(): void {

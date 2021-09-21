@@ -3,6 +3,7 @@ import { Component, OnInit, Output, ViewEncapsulation, EventEmitter, OnDestroy }
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { UserService } from '../../user.service';
 import { Subscription } from 'rxjs';
+import { AuthenticationService } from '../../authentication/authentication.service';
 
 @Component({
   selector: 'app-address',
@@ -20,7 +21,8 @@ export class AddressComponent implements OnInit, OnDestroy {
   constructor(
     private userService: UserService,
     private formBuilder: FormBuilder,
-    private boughtService: BoughtService
+    private boughtService: BoughtService,
+    private authService: AuthenticationService
   ) {}
 
   ngOnInit(): void {
@@ -34,7 +36,7 @@ export class AddressComponent implements OnInit, OnDestroy {
   }
 
   formConfig() {
-    this.subscriptions.push(this.userService.sessionId.subscribe(res => this.sessionId = res));
+    this.subscriptions.push(this.authService.sessionId.subscribe(res => this.sessionId = res));
 
     this.form = this.formBuilder.group({
       postcode: [null, [Validators.pattern('^[0-9]{8}$'), Validators.required]],

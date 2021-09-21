@@ -4,6 +4,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { UserService } from '../../user.service';
+import { AuthenticationService } from '../authentication.service';
 
 @Component({
   selector: 'app-sign-in',
@@ -20,7 +21,8 @@ export class SignInComponent implements OnInit, OnDestroy {
     private router: Router,
     private userService: UserService,
     private formBuilder: FormBuilder,
-    private _snackBar: MatSnackBar
+    private _snackBar: MatSnackBar,
+    private authService: AuthenticationService
   ) { }
 
   ngOnInit(): void {
@@ -52,7 +54,7 @@ export class SignInComponent implements OnInit, OnDestroy {
         }
       }));
 
-    this.subscriptions.push(this.userService.employee.subscribe(res => this.employee = res));
+    this.subscriptions.push(this.authService.employee.subscribe(res => this.employee = res));
     if (this.employee) {
       this.router.navigateByUrl("/user/employeer/profile");
     }

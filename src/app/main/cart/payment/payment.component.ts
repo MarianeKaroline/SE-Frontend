@@ -6,6 +6,7 @@ import { Component, EventEmitter, OnInit, Output, ViewEncapsulation, OnDestroy }
 import { Payment } from 'src/app/static_data/payment.enum';
 import { UserService } from '../../user/user.service';
 import { Subscription } from 'rxjs';
+import { AuthenticationService } from '../../user/authentication/authentication.service';
 
 @Component({
   selector: 'app-payment',
@@ -25,12 +26,12 @@ export class PaymentComponent implements OnInit, OnDestroy {
   constructor(
     private cartService: CartService,
     private router: Router,
-    private userService: UserService,
-    private boughtService: BoughtService
+    private boughtService: BoughtService,
+    private authService: AuthenticationService
   ) { }
 
   ngOnInit(): void {
-    this.subscriptions.push(this.userService.sessionId
+    this.subscriptions.push(this.authService.sessionId
       .subscribe(res => this.sessionId = res));
     this.payment();
   }
