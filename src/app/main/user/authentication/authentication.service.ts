@@ -19,13 +19,13 @@ export class AuthenticationService {
   private _sessionId = new BehaviorSubject<string>(null);
   public sessionId = this._sessionId.asObservable();
 
-  constructor(private http: HttpClient, private appService: AppService) {
+  constructor() {
     this._sessionId.next(localStorage.getItem('sessionId'));
     let aux = localStorage.getItem('employee');
 
-    if (aux != null) {
+    if (aux != null)
       this._employee.next(JSON.parse(aux));
-    }
+
   }
 
   /* ------------ Public  ------------ */
@@ -39,7 +39,6 @@ export class AuthenticationService {
   public setEmployee(employee: boolean) {
     this._employee.next(employee);
 
-
     window.localStorage.setItem('employee', employee.toString());
   }
 
@@ -50,5 +49,6 @@ export class AuthenticationService {
   public getSessionId() {
     return this._sessionId.value;
   }
+
   /* ------------ Public  ------------ */
 }

@@ -36,12 +36,11 @@ export class UserService {
     this._signIn(model).subscribe((user) => {
       if (user != null) {
         this.authService.setSessionId(user.cpf);
+        this.authService.setEmployee(user.employee);
 
-        if (user.employee != false) {
+        if (user.employee == false) {
           this.cartService.passItems();
         }
-
-        this.authService.setEmployee(user.employee);
       }
     });
 

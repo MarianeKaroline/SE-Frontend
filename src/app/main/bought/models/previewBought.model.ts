@@ -13,4 +13,5 @@ export interface PreviewBoughtModel {
   pix: string;
   method: number
   itens: ProductCartModel[];
+  totalPrice: number;
 }

@@ -1,3 +1,4 @@
+import { ProductsService } from './../products/products.service';
 import { StatusBought } from './../../static_data/status-bought.enum';
 import { BoughtModel } from './models/bought.model';
 import { CartService } from './../cart/cart.service';
@@ -29,7 +30,8 @@ export class BoughtService implements OnDestroy {
 
   constructor(
     private http: HttpClient,
-    private authService: AuthenticationService
+    private authService: AuthenticationService,
+    private productService: ProductsService
   ) {
     this.subscriptions.push(this.authService.sessionId.subscribe(res => this.sessionId = res));
   }
@@ -73,7 +75,10 @@ export class BoughtService implements OnDestroy {
     return this.http
       .put<StatusBought>(`${apiUrl}/bought/${boughtId}/${status}`, null)
       .pipe(
-        tap(() => this.getAll()),
+        tap(() => {
+          this.productService.addList();
+          this.getAll();
+        }),
         take(1)
       );
   }

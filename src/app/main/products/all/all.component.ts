@@ -27,10 +27,7 @@ export class AllComponent implements OnInit, OnDestroy {
   }
 
   editAvailable(productId: number, available: boolean) {
-    this.subscriptions.push(this.productsService.editAvailable(productId, available)
-      .subscribe(res => console.log(res)));
-
-    this.router.navigateByUrl('/', {skipLocationChange: true})
-      .then(() => this.router.navigate(['/product/all-products']));
+    this.productsService.editAvailable(productId, available)
+      .subscribe(res => console.log(res));
   }
 }

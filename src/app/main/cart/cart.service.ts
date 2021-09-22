@@ -8,9 +8,9 @@ import { ProductsService } from './../products/products.service';
 import { ProductCartModel } from './models/productCart.model';
 import { take, tap, map } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
-import { Injectable, OnDestroy } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
-import { BehaviorSubject, Subscription } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 
 const apiUrl = environment.apiUrl;
 
@@ -165,17 +165,20 @@ export class CartService {
   public passItems() {
     let list = this._products.value;
 
-    debugger;
     if (list.length > 0) {
       list.forEach((p) => {
         this._passItems(p.productId, p.amount).pipe(
           tap((products) => {
             this._next(products);
           })
-        );
+        )
+        .subscribe();
       });
     } else {
-      this._getProducts().pipe(tap((products) => this._next(products)));
+      this._getProducts().pipe(
+        tap((products) => this._next(products))
+      )
+      .subscribe();
     }
   }
 
