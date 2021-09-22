@@ -1,3 +1,4 @@
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { ProductSelectedModel } from './../models/ProductSelected.model';
 import { Component, OnInit, ViewEncapsulation, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
@@ -6,15 +7,14 @@ import { CartService } from '../../cart/cart.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Subscription } from 'rxjs';
 
-
+@UntilDestroy()
 @Component({
   selector: 'app-selected',
   templateUrl: './selected.component.html',
   styleUrls: ['./selected.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class SelectedComponent implements OnInit, OnDestroy {
-  private subscriptions: Subscription[] = [];
+export class SelectedComponent implements OnInit {
 
   sidebarOpen=false;
   selected: ProductSelectedModel;
@@ -33,24 +33,20 @@ export class SelectedComponent implements OnInit, OnDestroy {
     this.onSelected();
   }
 
-  ngOnDestroy(): void {
-    this.subscriptions.forEach((subscription) => {
-      subscription.unsubscribe();
-    });
-  }
-
   onSelected() {
-    this.subscriptions.push(this.productService.getSelected(this.id)
+    this.productService.getSelected(this.id)
+      .pipe(untilDestroyed(this))
       .subscribe(product => {
         this.selected = product;
         this.details = product.detail.split(";");
-      }));
+      });
   }
 
   addProduct(id: number) {
     if (this.cartService.getVerifyEmployee() == false) {
-      this.subscriptions.push(this.cartService.addProduct(id)
-        .subscribe(product => console.log(product)));
+      this.cartService.addProduct(id)
+        .pipe(untilDestroyed(this))
+        .subscribe(product => console.log(product));
     }
     else {
       this.snackBar.open("you cant add products to cart", "close", {

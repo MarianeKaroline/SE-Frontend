@@ -1,3 +1,4 @@
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { BoughtService } from '../bought.service';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
@@ -5,13 +6,13 @@ import { BoughtModel } from '../models/bought.model';
 import { StatusBought } from 'src/app/static_data/status-bought.enum';
 import { Subscription } from 'rxjs';
 
+@UntilDestroy()
 @Component({
   selector: 'app-status-bought',
   templateUrl: './status-bought.component.html',
   styleUrls: ['./status-bought.component.scss']
 })
-export class StatusBoughtComponent implements OnInit, OnDestroy {
-  private subscriptions: Subscription[] = [];
+export class StatusBoughtComponent implements OnInit {
   statusBought: string[] = [
     "Pending Confirmation",
     "Pending Payment",
@@ -28,20 +29,16 @@ export class StatusBoughtComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
-    this.subscriptions.push(this.route.params
+    this.route.params
+      .pipe(untilDestroyed(this))
       .subscribe(params => {
         this.boughtService.getOrderStatus(params['id']);
         this.id = params['id'];
-      }));
+      });
 
-      this.subscriptions.push(this.boughtService.allBought$
-      .subscribe(orders => this.orders = orders));
-  }
-
-  ngOnDestroy(): void {
-    this.subscriptions.forEach((subscription) => {
-      subscription.unsubscribe();
-    });
+      this.boughtService.allBought$
+      .pipe(untilDestroyed(this))
+      .subscribe(orders => this.orders = orders);
   }
 
   status(id: number) {
@@ -60,8 +57,9 @@ export class StatusBoughtComponent implements OnInit, OnDestroy {
   }
 
   updateStatus(boughtId: number, status: StatusBought) {
-    this.subscriptions.push(this.boughtService.putStatus(boughtId, status)
-      .subscribe(res => console.log(res)));
+    this.boughtService.putStatus(boughtId, status)
+      .pipe(untilDestroyed(this))
+      .subscribe(res => console.log(res));
   }
 
 }

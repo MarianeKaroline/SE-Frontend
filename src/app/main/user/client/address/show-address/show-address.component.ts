@@ -7,20 +7,20 @@ import { SwiperComponent } from "swiper/angular";
 
 // import Swiper core and required modules
 import SwiperCore, { Pagination } from "swiper";
-import { Subscription } from 'rxjs';
+import { untilDestroyed, UntilDestroy } from '@ngneat/until-destroy';
 
 // install Swiper modules
 SwiperCore.use([Pagination]);
 
+@UntilDestroy()
 @Component({
   selector: 'app-show-address',
   templateUrl: './show-address.component.html',
   styleUrls: ['./show-address.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class ShowAddressComponent implements OnInit, OnDestroy {
+export class ShowAddressComponent implements OnInit {
   @Output() event = new EventEmitter<boolean>();
-  private subscriptions: Subscription[] = [];
   addresses: ShowAddressModel[] = [];
 
   constructor(private userService: UserService,
@@ -28,16 +28,9 @@ export class ShowAddressComponent implements OnInit, OnDestroy {
               private boughtService: BoughtService) { }
 
   ngOnInit(): void {
-    this.subscriptions.push(this.userService.getAddresses()
-      .subscribe(address => {
-        this.addresses = address;
-      }));
-  }
-
-  ngOnDestroy(): void {
-    this.subscriptions.forEach((subscription) => {
-      subscription.unsubscribe();
-    });
+    this.userService.getAddresses()
+      .pipe(untilDestroyed(this))
+      .subscribe(address => this.addresses = address);
   }
 
   buy(id: number) {

@@ -1,3 +1,4 @@
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { tap } from 'rxjs/operators';
 import { SuccessDialog } from './../../../shared/dialogs/success/success.dialog';
 import { BehaviorSubject, Subscription } from 'rxjs';
@@ -6,14 +7,14 @@ import { FormBuilder, FormGroup, FormGroupDirective, Validators } from '@angular
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 
+@UntilDestroy()
 @Component({
   selector: 'app-form',
   templateUrl: './form.component.html',
   styleUrls: ['./form.component.scss']
 })
-export class FormComponent implements OnInit, OnDestroy {
+export class FormComponent implements OnInit {
   @ViewChild(FormGroupDirective) formDirective: FormGroupDirective;
-  private subscriptions: Subscription[] = [];
   private _spinner = new BehaviorSubject<boolean>(false);
   public spinner = this._spinner.asObservable();
   form: FormGroup;
@@ -26,12 +27,6 @@ export class FormComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.formConfig();
-  }
-
-  ngOnDestroy(): void {
-    this.subscriptions.forEach((subscription) => {
-      subscription.unsubscribe();
-    });
   }
 
   formConfig() {
@@ -47,7 +42,7 @@ export class FormComponent implements OnInit, OnDestroy {
   sendMessage() {
     this._spinner.next(true);
 
-    this.subscriptions.push(this.assistantService.sendEmail(this.form.value)
+    this.assistantService.sendEmail(this.form.value)
       .pipe(
         tap(() => {
           this._spinner.next(false);
@@ -57,9 +52,10 @@ export class FormComponent implements OnInit, OnDestroy {
           });
 
           dialogRef.afterClosed();
-        })
+        }),
+        untilDestroyed(this)
       )
-      .subscribe());
+      .subscribe();
 
     this.formDirective.resetForm();
     this.form.reset();

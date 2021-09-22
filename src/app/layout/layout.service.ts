@@ -15,10 +15,6 @@ export class LayoutService {
   constructor(private http: HttpClient) {}
 
   public getCategories() {
-    return this._categories();
-  }
-
-  private _categories() {
     return this.http
       .get<CategoriesModel[]>(`${apiUrl}/product/category`)
       .pipe(take(1));

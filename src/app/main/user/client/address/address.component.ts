@@ -1,3 +1,4 @@
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { BoughtService } from './../../../bought/bought.service';
 import { Component, OnInit, Output, ViewEncapsulation, EventEmitter, OnDestroy } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
@@ -5,15 +6,16 @@ import { UserService } from '../../user.service';
 import { Subscription } from 'rxjs';
 import { AuthenticationService } from '../../authentication/authentication.service';
 
+@UntilDestroy()
 @Component({
   selector: 'app-address',
   templateUrl: './address.component.html',
   styleUrls: ['./address.component.scss'],
   encapsulation: ViewEncapsulation.None,
 })
-export class AddressComponent implements OnInit, OnDestroy {
-  private subscriptions: Subscription[] = [];
+export class AddressComponent implements OnInit {
   @Output() event = new EventEmitter<boolean>();
+
   form: FormGroup;
   addressId: number;
   sessionId: string;
@@ -29,14 +31,10 @@ export class AddressComponent implements OnInit, OnDestroy {
     this.formConfig();
   }
 
-  ngOnDestroy(): void {
-    this.subscriptions.forEach((subscription) => {
-      subscription.unsubscribe();
-    });
-  }
-
   formConfig() {
-    this.subscriptions.push(this.authService.sessionId.subscribe(res => this.sessionId = res));
+    this.authService.sessionId
+      .pipe(untilDestroyed(this))
+      .subscribe(res => this.sessionId = res);
 
     this.form = this.formBuilder.group({
       postcode: [null, [Validators.pattern('^[0-9]{8}$'), Validators.required]],
@@ -49,10 +47,9 @@ export class AddressComponent implements OnInit, OnDestroy {
   }
 
   addAddress() {
-    this.subscriptions.push(this.userService.addAddress(this.form.value)
-      .subscribe((address) => {
-        this.boughtService.setAddressId(address);
-      }));
+    this.userService.addAddress(this.form.value)
+      .pipe(untilDestroyed(this))
+      .subscribe((address) => this.boughtService.setAddressId(address));
 
     this.event.emit(true);
   }

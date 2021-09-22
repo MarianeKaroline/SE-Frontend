@@ -1,16 +1,17 @@
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Component, OnInit, ViewEncapsulation, OnDestroy } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { UserService } from '../../user.service';
 
+@UntilDestroy()
 @Component({
   selector: 'app-sign-up',
   templateUrl: './sign-up.component.html',
   styleUrls: ['./sign-up.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class SignUpComponent implements OnInit, OnDestroy {
-  private subscriptions: Subscription[] = [];
+export class SignUpComponent implements OnInit {
   form: FormGroup;
 
   constructor(private userService: UserService,
@@ -18,12 +19,6 @@ export class SignUpComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.formConfig();
-  }
-
-  ngOnDestroy(): void {
-    this.subscriptions.forEach((subscription) => {
-      subscription.unsubscribe();
-    });
   }
 
   formConfig() {
@@ -41,9 +36,9 @@ export class SignUpComponent implements OnInit, OnDestroy {
   }
 
   signUp() {
-    this.subscriptions.push(this.userService.signUp(this.form.value).subscribe(sub => {
-      console.log(sub);
-    }));
+    this.userService.signUp(this.form.value)
+      .pipe(untilDestroyed(this))
+      .subscribe(sub => console.log(sub));
 
     this.form.reset();
   }

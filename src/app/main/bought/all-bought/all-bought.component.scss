@@ -31,7 +31,7 @@
 
 .all-bought .content {
   padding: 50px;
-  height: 7%;
+  height: 700px;
 }
 
 .all-bought .card {
@@ -56,10 +56,28 @@
   height: 10%;
 }
 
+.all-bought mat-form-field {
+  width: 200px;
+}
+
 .all-bought .items {
+  overflow-y: auto;
   margin: 20px 0;
   height: 80%;
   padding-left: 30px;
+}
+
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+::-webkit-scrollbar-track {
+  border: none;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #fe7f2d;
+  border-radius: 25px;
 }
 
 .all-bought .products {

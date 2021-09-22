@@ -1,3 +1,4 @@
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Component, OnInit, ViewEncapsulation, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -6,14 +7,14 @@ import { Subscription } from 'rxjs';
 import { UserService } from '../../user.service';
 import { AuthenticationService } from '../authentication.service';
 
+@UntilDestroy()
 @Component({
   selector: 'app-sign-in',
   templateUrl: './sign-in.component.html',
   styleUrls: ['./sign-in.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class SignInComponent implements OnInit, OnDestroy {
-  private subscriptions: Subscription[] = [];
+export class SignInComponent implements OnInit {
   employee: boolean;
   form: FormGroup;
 
@@ -29,12 +30,6 @@ export class SignInComponent implements OnInit, OnDestroy {
     this.formConfig();
   }
 
-  ngOnDestroy(): void {
-    this.subscriptions.forEach((subscription) => {
-      subscription.unsubscribe();
-    });
-  }
-
   formConfig() {
     this.form = this.formBuilder.group({
       email: [null, [Validators.email, Validators.required]],
@@ -43,7 +38,8 @@ export class SignInComponent implements OnInit, OnDestroy {
   }
 
   login() {
-    this.subscriptions.push(this.userService.login(this.form.value)
+    this.userService.login(this.form.value)
+      .pipe(untilDestroyed(this))
       .subscribe(res => {
         if (res == null) {
           this._snackBar.open("User doesn't exist", "close", {
@@ -52,9 +48,12 @@ export class SignInComponent implements OnInit, OnDestroy {
           });
           this.router.navigateByUrl("/user/auth");
         }
-      }));
+      });
 
-    this.subscriptions.push(this.authService.employee.subscribe(res => this.employee = res));
+    this.authService.employee
+      .pipe(untilDestroyed(this))
+      .subscribe(res => this.employee = res);
+
     if (this.employee) {
       this.router.navigateByUrl("/user/employeer/profile");
     }

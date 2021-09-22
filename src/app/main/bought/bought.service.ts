@@ -15,8 +15,7 @@ import { AuthenticationService } from '../user/authentication/authentication.ser
 const apiUrl = environment.apiUrl;
 
 @Injectable()
-export class BoughtService implements OnDestroy {
-  private subscriptions: Subscription[] = [];
+export class BoughtService {
 
   private _allBought = new BehaviorSubject<BoughtModel[]>([]);
   public allBought$ = this._allBought.asObservable();
@@ -33,34 +32,44 @@ export class BoughtService implements OnDestroy {
     private authService: AuthenticationService,
     private productService: ProductsService
   ) {
-    this.subscriptions.push(this.authService.sessionId.subscribe(res => this.sessionId = res));
-  }
-
-  ngOnDestroy(): void {
-    this.subscriptions.forEach((subscription) => {
-      subscription.unsubscribe();
-    });
+    this.authService.sessionId.subscribe(res => this.sessionId = res);
   }
 
   public preview() {
-    return this._preview();
+    this.model = this._modelAdd()
+
+    return this.http
+      .post<PreviewBoughtModel>(`${apiUrl}/bought/preview`, this.model)
+      .pipe(
+        take(1)
+      );
   }
 
   public addBought() {
-    return this._addBought();
+    this.model = this._modelAdd()
+
+    return this.http
+      .post(`${apiUrl}/bought/addbought`, this.model)
+      .pipe(
+        take(1)
+      );
   }
 
   public show() {
-    return this._show();
+    return this.http
+      .get<BoughtModel[]>(`${apiUrl}/bought/boughts/${this.sessionId}`)
+      .pipe(
+        take(1)
+      );
   }
 
   public getAll() {
-    this.subscriptions.push(this.http
+    this.http
       .get<BoughtModel[]>(`${apiUrl}/bought/allboughts`)
       .pipe(
         take(1)
       )
-      .subscribe(res => this._allBought.next(res)));
+      .subscribe(res => this._allBought.next(res));
   }
 
   public rating(productId: number, rating: number) {
@@ -83,6 +92,17 @@ export class BoughtService implements OnDestroy {
       );
   }
 
+  public getOrderStatus(status: StatusBought) {
+    this.http
+      .get<BoughtModel[]>(`${apiUrl}/bought/${status}`)
+      .pipe(
+        take(1)
+      )
+      .subscribe(res => {
+        this._allBought.next(res);
+      });
+  }
+
   public setPaymentId(paymentId: number) {
     BoughtService.paymentId = paymentId;
   }
@@ -95,52 +115,14 @@ export class BoughtService implements OnDestroy {
     BoughtService.addressId = addressId
   }
 
-  private _preview() {
-    this.model = {
+  private _modelAdd() {
+    return {
       paymentId: BoughtService.paymentId,
       creditCardId: BoughtService.creditCardId,
       addressId: BoughtService.addressId,
       sessionId: this.sessionId
     };
-
-    return this.http
-    .post<PreviewBoughtModel>(`${apiUrl}/bought/preview`, this.model)
-    .pipe(
-      take(1)
-    );
   }
 
-  private _addBought() {
-    this.model = {
-      paymentId: BoughtService.paymentId,
-      creditCardId: BoughtService.creditCardId,
-      addressId: BoughtService.addressId,
-      sessionId: this.sessionId
-    };
 
-    return this.http
-      .post(`${apiUrl}/bought/addbought`, this.model)
-      .pipe(
-        take(1)
-      );
-  }
-
-  private _show() {
-    return this.http
-      .get<BoughtModel[]>(`${apiUrl}/bought/boughts/${this.sessionId}`)
-      .pipe(
-        take(1)
-      );
-  }
-
-  public getOrderStatus(status: StatusBought) {
-    this.subscriptions.push(this.http
-      .get<BoughtModel[]>(`${apiUrl}/bought/${status}`)
-      .pipe(
-        take(1)
-      )
-      .subscribe(res => {
-        this._allBought.next(res);
-      }));
-  }
 }

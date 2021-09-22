@@ -1,17 +1,18 @@
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Router } from '@angular/router';
 import { Component, OnInit, ViewEncapsulation, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UserService } from '../../user.service';
 import { Subscription } from 'rxjs';
 
+@UntilDestroy()
 @Component({
   selector: 'app-new-employee',
   templateUrl: './new-employee.component.html',
   styleUrls: ['./new-employee.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class NewEmployeeComponent implements OnInit, OnDestroy {
-  private subscriptions: Subscription[] = [];
+export class NewEmployeeComponent implements OnInit {
   form: FormGroup;
 
   constructor(private userService: UserService,
@@ -20,12 +21,6 @@ export class NewEmployeeComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.formConfig();
-  }
-
-  ngOnDestroy(): void {
-    this.subscriptions.forEach((subscription) => {
-      subscription.unsubscribe();
-    });
   }
 
   formConfig() {
@@ -43,8 +38,9 @@ export class NewEmployeeComponent implements OnInit, OnDestroy {
   }
 
   register() {
-    this.subscriptions.push(this.userService.register(this.form.value)
-      .subscribe(sub => console.log(sub)));
+    this.userService.register(this.form.value)
+      .pipe(untilDestroyed(this))
+      .subscribe(sub => console.log(sub));
 
     this.router.navigateByUrl('/user/employeer/get-employees')
   }

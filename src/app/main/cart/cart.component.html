@@ -1,4 +1,4 @@
-<section>
+<section class="cart-component">
   <div class="container" *ngIf="total">
     <div class="row">
       <div class="col-8 content-1">
@@ -38,7 +38,7 @@
                 </div>
               </div>
 
-              <div class="button-continue" *ngIf="logged.length == 11">
+              <div class="button-continue button" *ngIf="logged.length == 11">
                 <button class="btn-3" mat-raised-button (click)="nextClicked()">Continue</button>
               </div>
             </div>
@@ -47,9 +47,11 @@
 
           <mat-step state="address" *ngIf="logged.length == 11" completed="false">
 
-            <app-address (event)="nextStepper($event)" *ngIf="address"></app-address>
-            <button (click)="newAddress()" *ngIf="address" class="your-address" mat-button>See your addresses</button>
-            <app-show-address (event)="nextStepper($event)" *ngIf="!address"></app-show-address>
+            <div class="show-address">
+              <app-address (event)="nextStepper($event)" *ngIf="address"></app-address>
+              <button (click)="newAddress()" *ngIf="address" class="your-address button" mat-button>See your addresses</button>
+              <app-show-address (event)="nextStepper($event)" *ngIf="!address"></app-show-address>
+            </div>
 
             <div class="back-1" *ngIf="address">
               <button mat-icon-button matStepperPrevious class="btn-icon"><mat-icon class="mat-18">arrow_back</mat-icon></button>
@@ -63,7 +65,7 @@
 
             <app-payment *ngIf="paymentMethod === 0" (paymentType)="payment($event)"></app-payment>
             <app-card *ngIf="paymentMethod == paymentEnum.creditCard && card"></app-card>
-            <button (click)="newCard()" *ngIf="paymentMethod == paymentEnum.creditCard && card" class="submit-btn your-address" mat-button>See your Cards</button>
+            <button (click)="newCard()" *ngIf="paymentMethod == paymentEnum.creditCard && card" class="submit-btn your-address button" mat-button>See your Cards</button>
 
             <app-show-card *ngIf="!card"></app-show-card>
 

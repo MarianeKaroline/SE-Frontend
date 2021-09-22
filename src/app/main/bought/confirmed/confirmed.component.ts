@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewEncapsulation, OnDestroy } from '@angular/core';
+import { untilDestroyed } from '@ngneat/until-destroy';
 import { NgxQrcodeElementTypes, NgxQrcodeErrorCorrectionLevels } from '@techiediaries/ngx-qrcode';
 import { Subscription } from 'rxjs';
 import { CartService } from '../../cart/cart.service';
@@ -11,8 +12,7 @@ import { PreviewBoughtModel } from '../models/previewBought.model';
   templateUrl: './confirmed.component.html',
   styleUrls: ['./confirmed.component.scss']
 })
-export class ConfirmedComponent implements OnInit, OnDestroy {
-  private subscriptions: Subscription[] = [];
+export class ConfirmedComponent implements OnInit {
   elementType = NgxQrcodeElementTypes.URL;
   width: 10;
   correctionLevel = NgxQrcodeErrorCorrectionLevels.HIGH;
@@ -20,27 +20,22 @@ export class ConfirmedComponent implements OnInit, OnDestroy {
   preview: PreviewBoughtModel;
   total: TotalCartModel;
 
-  constructor(private boughtService: BoughtService,
-              private cartService: CartService) { }
+  constructor(private boughtService: BoughtService, private cartService: CartService) { }
 
   ngOnInit(): void {
-    this.subscriptions.push(this.boughtService.preview()
+    this.boughtService.preview()
+      .pipe(untilDestroyed(this))
       .subscribe(preview => {
         this.cartService.removeList();
         this.preview = preview;
-      }));
+      });
 
-    this.subscriptions.push(this.cartService.total$
-      .subscribe(total => this.total = total))
+    this.cartService.total$
+      .pipe(untilDestroyed(this))
+      .subscribe(total => this.total = total);
 
-    this.subscriptions.push(this.boughtService.addBought()
-      .subscribe(() => {}));
+    this.boughtService.addBought()
+      .pipe(untilDestroyed(this))
+      .subscribe(() => {});
   }
-
-  ngOnDestroy(): void {
-    this.subscriptions.forEach((subscription) => {
-      subscription.unsubscribe();
-    });
-  }
-
 }

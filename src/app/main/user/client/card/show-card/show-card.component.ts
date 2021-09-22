@@ -1,3 +1,4 @@
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { BoughtService } from './../../../../bought/bought.service';
 import { CartService } from './../../../../cart/cart.service';
 import { Router } from '@angular/router';
@@ -13,15 +14,16 @@ import { Subscription } from 'rxjs';
 // install Swiper modules
 SwiperCore.use([Pagination]);
 
+@UntilDestroy()
 @Component({
   selector: 'app-show-card',
   templateUrl: './show-card.component.html',
   styleUrls: ['./show-card.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class ShowCardComponent implements OnInit, OnDestroy {
+export class ShowCardComponent implements OnInit {
   @Output() event = new EventEmitter<boolean>();
-  private subscriptions: Subscription[] = [];
+
   card: boolean = false;
   cards: ShowCardModel[] = [];
 
@@ -30,16 +32,9 @@ export class ShowCardComponent implements OnInit, OnDestroy {
               private boughtService: BoughtService) { }
 
   ngOnInit(): void {
-    this.subscriptions.push(this.userService.GetCreditCards()
-      .subscribe(cards => {
-        this.cards = cards;
-      }));
-  }
-
-  ngOnDestroy(): void {
-    this.subscriptions.forEach((subscription) => {
-      subscription.unsubscribe();
-    });
+    this.userService.GetCreditCards()
+      .pipe(untilDestroyed(this))
+      .subscribe(cards => this.cards = cards);
   }
 
   continue(id: number) {

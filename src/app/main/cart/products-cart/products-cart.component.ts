@@ -1,3 +1,4 @@
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
@@ -9,13 +10,13 @@ export interface DialogData {
   sure: boolean;
 }
 
+@UntilDestroy()
 @Component({
   selector: 'app-products-cart',
   templateUrl: './products-cart.component.html',
   styleUrls: ['./products-cart.component.scss']
 })
-export class ProductsCartComponent implements OnInit, OnDestroy {
-  private subscriptions: Subscription[] = [];
+export class ProductsCartComponent implements OnInit {
   products: ProductCartModel[] = [];
   del: boolean = false;
 
@@ -25,29 +26,27 @@ export class ProductsCartComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
-    this.subscriptions.push(this.cartService.products$
-      .subscribe(products => this.products = products));
-  }
-
-  ngOnDestroy(): void {
-    this.subscriptions.forEach((subscription) => {
-      subscription.unsubscribe();
-    });
+    this.cartService.products$
+      .pipe(untilDestroyed(this))
+      .subscribe(products => this.products = products);
   }
 
   addProducts(id: number) {
-    this.subscriptions.push(this.cartService.addProduct(id)
-      .subscribe(bool => console.log(bool)));
+    this.cartService.addProduct(id)
+      .pipe(untilDestroyed(this))
+      .subscribe(bool => console.log(bool));
   }
 
   delete(id: number) {
-    this.subscriptions.push(this.cartService.removeProduct(id)
-      .subscribe(bool => console.log(bool)));
+    this.cartService.removeProduct(id)
+      .pipe(untilDestroyed(this))
+      .subscribe(bool => console.log(bool));
   }
 
   deleteProducts(id: number) {
-    this.subscriptions.push(this.cartService.removeProducts(id)
-      .subscribe(bool => console.log(bool)));
+    this.cartService.removeProducts(id)
+      .pipe(untilDestroyed(this))
+      .subscribe(bool => console.log(bool));
   }
 
   dialogDelete(id: number, removeOne: boolean) {

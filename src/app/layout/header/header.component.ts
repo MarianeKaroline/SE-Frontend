@@ -6,15 +6,16 @@ import { filter, map } from 'rxjs/operators';
 import { TotalCartModel } from 'src/app/main/cart/models/totalCart.model';
 import { Observable, Subscription } from 'rxjs';
 import { AuthenticationService } from 'src/app/main/user/authentication/authentication.service';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
+@UntilDestroy()
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss']
 })
-export class HeaderComponent implements OnInit, OnDestroy {
+export class HeaderComponent implements OnInit {
 
-  private subscriptions: Subscription[] = [];
   employee: boolean
   home: any;
   sessionId: string;
@@ -26,30 +27,37 @@ export class HeaderComponent implements OnInit, OnDestroy {
     private userService: UserService,
     private authService: AuthenticationService
   ) {
-    this.subscriptions.push(this.router.events
+    this.router.events
       .pipe(
-        filter(event => event instanceof NavigationEnd)
+        filter(event => event instanceof NavigationEnd),
+        untilDestroyed(this)
       )
       .subscribe((event: NavigationEnd) => {
           this.home = event.url;
-      }));
+      });
   }
 
   ngOnInit(): void {
 
-    this.subscriptions.push(this.cartService.total$
+    this.cartService.total$
+      .pipe(
+        untilDestroyed(this)
+      )
       .subscribe(amount => {
         this.total = amount.totalAmount != null ? amount.totalAmount : 0;
-      }));
+      });
 
-    this.subscriptions.push(this.authService.employee.subscribe(res => this.employee = res));
-    this.subscriptions.push(this.authService.sessionId.subscribe(res => this.sessionId = res));
-  }
+    this.authService.employee
+    .pipe(
+      untilDestroyed(this)
+    )
+    .subscribe(res => this.employee = res);
 
-  ngOnDestroy(): void {
-    this.subscriptions.forEach((subscription) => {
-      subscription.unsubscribe();
-    });
+    this.authService.sessionId
+    .pipe(
+      untilDestroyed(this)
+    )
+    .subscribe(res => this.sessionId = res);
   }
 
   loggOut() {

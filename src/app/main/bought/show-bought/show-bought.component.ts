@@ -1,3 +1,4 @@
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Router } from '@angular/router';
 import { StatusBought } from './../../../static_data/status-bought.enum';
 import { BoughtModel } from './../models/bought.model';
@@ -5,13 +6,13 @@ import { BoughtService } from './../bought.service';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 
+@UntilDestroy()
 @Component({
   selector: 'app-show-bought',
   templateUrl: './show-bought.component.html',
   styleUrls: ['./show-bought.component.scss']
 })
-export class ShowBoughtComponent implements OnInit, OnDestroy {
-  private subscriptions: Subscription[] = [];
+export class ShowBoughtComponent implements OnInit {
   rater: number = 0;
   starCount: number = 5;
   productId: number = 0;
@@ -28,14 +29,9 @@ export class ShowBoughtComponent implements OnInit, OnDestroy {
       this.ratingArr.push(index);
     }
 
-    this.subscriptions.push(this.boughtService.show()
-    .subscribe(boughts => this.boughts = boughts));
-  }
-
-  ngOnDestroy(): void {
-    this.subscriptions.forEach((subscription) => {
-      subscription.unsubscribe();
-    });
+    this.boughtService.show()
+      .pipe(untilDestroyed(this))
+      .subscribe(boughts => this.boughts = boughts);
   }
 
   status(id: number) {
@@ -70,8 +66,9 @@ export class ShowBoughtComponent implements OnInit, OnDestroy {
   }
 
   rate() {
-    this.subscriptions.push(this.boughtService.rating(this.productId, this.rater)
-      .subscribe(res => console.log(res)));
+    this.boughtService.rating(this.productId, this.rater)
+      .pipe(untilDestroyed(this))
+      .subscribe(res => console.log(res));
 
     this.router.navigateByUrl('/bought/order-history');
   }

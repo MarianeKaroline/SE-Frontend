@@ -68,28 +68,52 @@ export class UserService {
 
   public addAddress(model: AddressModel)
   {
-    return this._addAddress(model);
+    return this.http
+      .post<number>(`${apiUrl}/client/address`, model)
+      .pipe(
+        take(1)
+      );
   }
 
   public getAddresses() {
-    return this._getAddresses();
+    return this.http
+      .get<ShowAddressModel[]>(`${apiUrl}/client/address/${this.sessionId}`)
+      .pipe(
+        take(1)
+      );
   }
 
   public addCreditCard(model: CreditCardModel)
   {
-    return this._addCreditCard(model);
+    return this.http
+      .post<number>(`${apiUrl}/client/creditcard`, model)
+      .pipe(
+        take(1)
+      );
   }
 
   public GetCreditCards() {
-    return this._getCreditCards();
+    return this.http
+      .get<ShowCardModel[]>(`${apiUrl}/client/creditcard/${this.sessionId}`)
+      .pipe(
+        take(1)
+      );
   }
 
   public getEmployees() {
-    return this._getEmployee();
+    return this.http
+      .get<RegisteredModel[]>(`${apiUrl}/employee/employees`)
+      .pipe(
+        take(1)
+      );
   }
 
   public register(model: SignUpModel) {
-    return this._register(model);
+    return this.http
+      .post<boolean>(`${apiUrl}/employee/register`, model)
+      .pipe(
+        take(1)
+      );
   }
   /* ---- end Public ---- */
 
@@ -100,56 +124,6 @@ export class UserService {
     return this.http
       .post<UserModel>(`${apiUrl}/user/signin`, model)
       .pipe(take(1));
-  }
-
-  private _addAddress(model: AddressModel)
-  {
-    return this.http
-    .post<number>(`${apiUrl}/client/address`, model)
-    .pipe(
-      take(1)
-    )
-  }
-
-  private _getAddresses() {
-    return this.http
-    .get<ShowAddressModel[]>(`${apiUrl}/client/address/${this.sessionId}`)
-    .pipe(
-      take(1)
-    );
-  }
-
-  private _addCreditCard(model: CreditCardModel)
-  {
-    return this.http
-    .post<number>(`${apiUrl}/client/creditcard`, model)
-    .pipe(
-      take(1)
-    );
-  }
-
-  private _getCreditCards() {
-    return this.http
-    .get<ShowCardModel[]>(`${apiUrl}/client/creditcard/${this.sessionId}`)
-    .pipe(
-      take(1)
-    );
-  }
-
-  private _getEmployee() {
-    return this.http
-    .get<RegisteredModel[]>(`${apiUrl}/employee/employees`)
-    .pipe(
-      take(1)
-    );
-  }
-
-  private _register(model: SignUpModel) {
-    return this.http
-    .post<boolean>(`${apiUrl}/employee/register`, model)
-    .pipe(
-      take(1)
-    );
   }
   /* ---- end Private ---- */
 }

@@ -1,15 +1,15 @@
 import { LayoutService } from '../layout.service';
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CategoriesModel } from './models/categories.model';
-import { Subscription } from 'rxjs';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
+@UntilDestroy()
 @Component({
   selector: 'app-search',
   templateUrl: './search.component.html',
   styleUrls: ['./search.component.scss']
 })
-export class SearchComponent implements OnInit, OnDestroy {
-  private subscriptions: Subscription[] = [];
+export class SearchComponent implements OnInit {
   categories: CategoriesModel[] = [];
 
   constructor(private layoutService: LayoutService) { }
@@ -18,17 +18,14 @@ export class SearchComponent implements OnInit, OnDestroy {
     this.onCategories();
   }
 
-  ngOnDestroy(): void {
-    this.subscriptions.forEach((subscription) => {
-      subscription.unsubscribe();
-    });
-  }
-
   onCategories() {
-    this.subscriptions.push(this.layoutService.getCategories()
+    this.layoutService.getCategories()
+      .pipe(
+        untilDestroyed(this)
+      )
       .subscribe(category => {
         this.categories = category;
-      }));
+      });
   }
 
 }

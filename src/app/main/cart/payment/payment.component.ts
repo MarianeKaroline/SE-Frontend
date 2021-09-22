@@ -1,3 +1,4 @@
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { BoughtService } from './../../bought/bought.service';
 import { Router } from '@angular/router';
 import { CartService } from './../cart.service';
@@ -8,16 +9,16 @@ import { UserService } from '../../user/user.service';
 import { Subscription } from 'rxjs';
 import { AuthenticationService } from '../../user/authentication/authentication.service';
 
+@UntilDestroy()
 @Component({
   selector: 'app-payment',
   templateUrl: './payment.component.html',
   styleUrls: ['./payment.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class PaymentComponent implements OnInit, OnDestroy {
+export class PaymentComponent implements OnInit {
   @Output() paymentType = new EventEmitter<number>();
 
-  private subscriptions: Subscription[] = [];
   method: PaymentModel[] = [];
   paymentMethod: number;
   paymentEnum = Payment;
@@ -31,22 +32,17 @@ export class PaymentComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
-    this.subscriptions.push(this.authService.sessionId
-      .subscribe(res => this.sessionId = res));
+    this.authService.sessionId
+      .pipe(untilDestroyed(this))
+      .subscribe(res => this.sessionId = res);
+
     this.payment();
   }
 
-  ngOnDestroy(): void {
-    this.subscriptions.forEach((subscription) => {
-      subscription.unsubscribe();
-    });
-  }
-
   payment() {
-    this.subscriptions.push(this.cartService.payment()
-      .subscribe(method => {
-        this.method = method
-      }));
+    this.cartService.payment()
+      .pipe(untilDestroyed(this))
+      .subscribe(method => this.method = method);
   }
 
   pMethod(id: number) {

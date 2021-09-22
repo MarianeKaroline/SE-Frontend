@@ -1,3 +1,4 @@
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { AuthenticationService } from './../../authentication/authentication.service';
 import { BoughtService } from './../../../bought/bought.service';
 import { CartService } from './../../../cart/cart.service';
@@ -7,14 +8,14 @@ import { UserService } from '../../user.service';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 
+@UntilDestroy()
 @Component({
   selector: 'app-card',
   templateUrl: './card.component.html',
   styleUrls: ['./card.component.scss']
 })
-export class CardComponent implements OnInit, OnDestroy {
+export class CardComponent implements OnInit {
   @Output() event = new EventEmitter<boolean>();
-  private subscriptions: Subscription[] = [];
   sessionId: string;
   form: FormGroup;
 
@@ -30,14 +31,10 @@ export class CardComponent implements OnInit, OnDestroy {
     this.formConfig();
   }
 
-  ngOnDestroy(): void {
-    this.subscriptions.forEach((subscription) => {
-      subscription.unsubscribe();
-    });
-  }
-
   formConfig() {
-    this.subscriptions.push(this.authService.sessionId.subscribe(res => this.sessionId = res));
+    this.authService.sessionId
+      .pipe(untilDestroyed(this))
+      .subscribe(res => this.sessionId = res);
 
     this.form = this.formBuilder.group({
       cardNumber: [null, [Validators.pattern('^[0-9]{16}$'), Validators.required]],
@@ -49,10 +46,9 @@ export class CardComponent implements OnInit, OnDestroy {
   }
 
   addCard() {
-    this.subscriptions.push(this.userService.addCreditCard(this.form.value)
-      .subscribe(card => {
-        this.boughtService.setCreditCardId(card);
-      }));
+    this.userService.addCreditCard(this.form.value)
+      .pipe(untilDestroyed(this))
+      .subscribe(card => this.boughtService.setCreditCardId(card));
 
     this.router.navigateByUrl('/bought/preview');
   }

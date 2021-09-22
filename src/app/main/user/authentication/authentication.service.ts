@@ -1,11 +1,6 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { take } from 'rxjs/operators';
-import { AppService } from 'src/app/app.service';
 import { environment } from 'src/environments/environment';
-import { SignUpModel } from '../models/sign-up.model';
-import { UserModel } from '../models/user.model';
 
 const apiUrl = environment.apiUrl;
 

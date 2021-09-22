@@ -1,3 +1,4 @@
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { UploadImageService } from './../../../shared/upload-image.service';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
@@ -5,14 +6,13 @@ import { Router } from '@angular/router';
 import { ProductsService } from '../products.service';
 import { Subscription } from 'rxjs';
 
+@UntilDestroy()
 @Component({
   selector: 'app-new-product',
   templateUrl: './new-product.component.html',
   styleUrls: ['./new-product.component.scss']
 })
-export class NewProductComponent implements OnInit, OnDestroy {
-  private subscriptions: Subscription[] = [];
-
+export class NewProductComponent implements OnInit {
   form: FormGroup;
   fileToUpload: File = null;
   fileName = '';
@@ -25,12 +25,6 @@ export class NewProductComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.formConfig();
-  }
-
-  ngOnDestroy(): void {
-    this.subscriptions.forEach((subscription) => {
-      subscription.unsubscribe();
-    });
   }
 
   formConfig() {
@@ -48,11 +42,13 @@ export class NewProductComponent implements OnInit, OnDestroy {
   }
 
   register() {
-    this.subscriptions.push(this.productsService.add(this.form.value)
-      .subscribe(product => console.log(product)));
+    this.productsService.add(this.form.value)
+      .pipe(untilDestroyed(this))
+      .subscribe(product => console.log(product));
 
-    this.subscriptions.push(this.upload.postFile(this.file)
-      .subscribe(file => console.log(file)));
+    this.upload.postFile(this.file)
+      .pipe(untilDestroyed(this))
+      .subscribe(file => console.log(file));
 
     this.router.navigateByUrl('/product/all-products');
   }

@@ -1,3 +1,4 @@
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
@@ -6,13 +7,13 @@ import { AppService } from 'src/app/app.service';
 import { CategoryModel } from '../../models/category.model';
 import { ProductsService } from '../../products.service';
 
+@UntilDestroy()
 @Component({
   selector: 'app-category',
   templateUrl: './category.component.html',
   styleUrls: ['./category.component.scss']
 })
-export class CategoryComponent implements OnInit, OnDestroy {
-  private subscriptions: Subscription[] = [];
+export class CategoryComponent implements OnInit{
   products: CategoryModel[] = [];
 
   constructor(private productService: ProductsService,
@@ -20,16 +21,12 @@ export class CategoryComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.route.params
+      .pipe(untilDestroyed(this))
       .subscribe(params => this.productService.getProductCategory(params['id']));
 
-    this.subscriptions.push(this.productService.categoryProducts$
-        .subscribe(products => this.products = products));
-  }
-
-  ngOnDestroy(): void {
-    this.subscriptions.forEach((subscription) => {
-      subscription.unsubscribe();
-    });
+    this.productService.categoryProducts$
+      .pipe(untilDestroyed(this))
+      .subscribe(products => this.products = products);
   }
 
 }

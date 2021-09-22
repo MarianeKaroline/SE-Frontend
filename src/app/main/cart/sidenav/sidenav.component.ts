@@ -1,3 +1,4 @@
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { NavigationEnd, Router } from '@angular/router';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AppService } from 'src/app/app.service';
@@ -7,13 +8,13 @@ import { TotalCartModel } from '../models/totalCart.model';
 import { filter } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
 
+@UntilDestroy()
 @Component({
   selector: 'app-sidenav',
   templateUrl: './sidenav.component.html',
   styleUrls: ['./sidenav.component.scss']
 })
-export class SidenavComponent implements OnInit, OnDestroy {
-  private subscriptions: Subscription[] = [];
+export class SidenavComponent implements OnInit {
   sidebarOpen = true;
   products: ProductCartModel[] = [];
   total: TotalCartModel;
@@ -23,27 +24,24 @@ export class SidenavComponent implements OnInit, OnDestroy {
     private appService: AppService,
     private router: Router
   ) {
-    this.subscriptions.push(this.router.events.pipe(
-      filter(event => event instanceof NavigationEnd)
+    this.router.events
+    .pipe(
+      filter(event => event instanceof NavigationEnd),
+      untilDestroyed(this)
     )
     .subscribe((event: NavigationEnd) => {
       this.appService.route = event.url;
-    }));
+    });
   }
 
   ngOnInit(): void {
 
-    this.subscriptions.push(this.cartService.products$
-      .subscribe(products => this.products = products));
+    this.cartService.products$
+      .pipe(untilDestroyed(this))
+      .subscribe(products => this.products = products);
 
-    this.subscriptions.push(this.cartService.total$
-      .subscribe(total => this.total = total));
+    this.cartService.total$
+      .pipe(untilDestroyed(this))
+      .subscribe(total => this.total = total);
   }
-
-  ngOnDestroy(): void {
-    this.subscriptions.forEach((subscription) => {
-      subscription.unsubscribe();
-    });
-  }
-
 }

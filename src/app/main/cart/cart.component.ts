@@ -1,5 +1,6 @@
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { TotalCartModel } from './models/totalCart.model';
-import { Component, Inject, OnInit, ViewChild, OnDestroy } from '@angular/core';
+import { Component, Inject, OnInit, ViewChild, OnDestroy, ViewEncapsulation } from '@angular/core';
 import { CartService } from './cart.service';
 import { ProductCartModel } from './models/productCart.model';
 import { MatStepper } from '@angular/material/stepper';
@@ -8,15 +9,15 @@ import { UserService } from '../user/user.service';
 import { Subscription } from 'rxjs';
 import { AuthenticationService } from '../user/authentication/authentication.service';
 
-
+@UntilDestroy()
 @Component({
   selector: 'app-cart',
   templateUrl: './cart.component.html',
-  styleUrls: ['./cart.component.scss']
+  styleUrls: ['./cart.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
-export class CartComponent implements OnInit, OnDestroy {
+export class CartComponent implements OnInit {
   @ViewChild('stepper') stepper: MatStepper;
-  private subscriptions: Subscription[] = [];
   paymentMethod: number = 0;
   paymentEnum = Payment;
   address: boolean = true;
@@ -33,20 +34,18 @@ export class CartComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.cartService.setSubjectAdded(false);
 
-    this.subscriptions.push(this.cartService.products$
-      .subscribe(products => this.products = products));
+    this.cartService.products$
+      .pipe(untilDestroyed(this))
+      .subscribe(products => this.products = products);
 
-    this.subscriptions.push(this.cartService.total$
-      .subscribe(total => this.total = total));
+    this.cartService.total$
+      .pipe(untilDestroyed(this))
+      .subscribe(total => this.total = total);
 
 
-    this.subscriptions.push(this.authService.sessionId.subscribe(res => this.logged = res));
-  }
-
-  ngOnDestroy(): void {
-    this.subscriptions.forEach((subscription) => {
-      subscription.unsubscribe();
-    });
+    this.authService.sessionId
+      .pipe(untilDestroyed(this))
+      .subscribe(res => this.logged = res);
   }
 
   nextClicked() {
