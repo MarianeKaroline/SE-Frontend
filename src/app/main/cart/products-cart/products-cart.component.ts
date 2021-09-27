@@ -35,18 +35,24 @@ export class ProductsCartComponent implements OnInit {
     this.cartService.addProduct(id)
       .pipe(untilDestroyed(this))
       .subscribe(bool => console.log(bool));
+
+    this.cartService.setSubjectAdded(false);
   }
 
   delete(id: number) {
     this.cartService.removeProduct(id)
       .pipe(untilDestroyed(this))
       .subscribe(bool => console.log(bool));
+
+    this.cartService.setSubjectAdded(false);
   }
 
   deleteProducts(id: number) {
     this.cartService.removeProducts(id)
       .pipe(untilDestroyed(this))
       .subscribe(bool => console.log(bool));
+
+    this.cartService.setSubjectAdded(false);
   }
 
   dialogDelete(id: number, removeOne: boolean) {

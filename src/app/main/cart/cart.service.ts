@@ -1,5 +1,4 @@
 import { AuthenticationService } from './../user/authentication/authentication.service';
-import { UserService } from 'src/app/main/user/user.service';
 import { PaymentModel } from './models/payment.model';
 import { TotalCartModel } from './models/totalCart.model';
 import { StatusProduct } from './../../static_data/status-product.enum';
@@ -61,7 +60,6 @@ export class CartService {
       (session) => (this.sessionId = session)
     );
 
-    debugger;
     if (items == null || items.length == 0) {
       this.getProducts();
     } else {
