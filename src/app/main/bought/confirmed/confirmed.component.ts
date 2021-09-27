@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewEncapsulation, OnDestroy } from '@angular/core';
-import { untilDestroyed } from '@ngneat/until-destroy';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { NgxQrcodeElementTypes, NgxQrcodeErrorCorrectionLevels } from '@techiediaries/ngx-qrcode';
 import { Subscription } from 'rxjs';
 import { CartService } from '../../cart/cart.service';
@@ -7,6 +7,7 @@ import { TotalCartModel } from '../../cart/models/totalCart.model';
 import { BoughtService } from '../bought.service';
 import { PreviewBoughtModel } from '../models/previewBought.model';
 
+@UntilDestroy()
 @Component({
   selector: 'app-confirmed',
   templateUrl: './confirmed.component.html',

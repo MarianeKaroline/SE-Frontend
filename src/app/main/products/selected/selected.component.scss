@@ -25,14 +25,20 @@
 }
 
 .selected .full {
-  color: #fff;
+  color: #fcbf49;
 }
 
 .selected .half {
   position: absolute;
   display: inline-block;
   overflow: hidden;
-  color: #fff;
+  color: #fcbf49;
+}
+
+.selected .rate-number {
+  margin-left: .7rem;
+  color: hsl(0, 0%, 74%);
+  font-weight: 300;
 }
 
 .selected .container {

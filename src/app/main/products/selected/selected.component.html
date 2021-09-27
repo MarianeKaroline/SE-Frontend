@@ -28,6 +28,7 @@
           </ng-template>
 
           <ngb-rating [rate]="selected.rating" [starTemplate]="t" [readonly]="true" [max]="5"></ngb-rating>
+          <span class="rate-number">({{selected.rating | number : '1.1-1'}})</span>
         </div>
       </div>
 

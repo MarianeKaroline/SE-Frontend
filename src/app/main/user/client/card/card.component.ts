@@ -1,12 +1,10 @@
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { AuthenticationService } from './../../authentication/authentication.service';
 import { BoughtService } from './../../../bought/bought.service';
-import { CartService } from './../../../cart/cart.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Component, EventEmitter, OnInit, Output, OnDestroy } from '@angular/core';
 import { UserService } from '../../user.service';
 import { Router } from '@angular/router';
-import { Subscription } from 'rxjs';
 
 @UntilDestroy()
 @Component({
