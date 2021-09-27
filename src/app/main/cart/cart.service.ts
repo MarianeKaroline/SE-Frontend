@@ -19,7 +19,7 @@ const apiUrl = environment.apiUrl;
 })
 export class CartService {
   private sessionId: string;
-  private verifyEmployee: boolean;
+  private employee: boolean;
 
   private _products = new BehaviorSubject<ProductCartModel[]>([]);
   public products$ = this._products.asObservable();
@@ -54,14 +54,15 @@ export class CartService {
     let items = JSON.parse(localStorage.getItem('items'));
 
     this.authService.employee.subscribe(
-      (employee) => (this.verifyEmployee = employee)
+      (employee) => (this.employee = employee)
     );
 
     this.authService.sessionId.subscribe(
       (session) => (this.sessionId = session)
     );
 
-    if (items == null || items != []) {
+    debugger;
+    if (items == null || items.length == 0) {
       this.getProducts();
     } else {
       this._next(items);
@@ -74,7 +75,7 @@ export class CartService {
   /* ------------------ Public  ------------------ */
 
   public getVerifyEmployee() {
-    return this.verifyEmployee;
+    return this.employee;
   }
 
   public getProducts() {
@@ -90,6 +91,7 @@ export class CartService {
 
     this.setSubjectAdded(true);
 
+    //Verify if session is client's cpf
     if (this.sessionId.length == 11) {
       return this._addProduct(productId).pipe(
         tap(null, (err) => {
@@ -112,6 +114,7 @@ export class CartService {
 
     this._removeToList(productId);
 
+    //Verify if session is client's cpf
     if (this.sessionId.length == 11) {
       return this._removeProduct(productId).pipe(
         tap(null, (err) => {
@@ -138,6 +141,7 @@ export class CartService {
 
     this._next(list);
 
+    //Verify if session is client's cpf
     if (this.sessionId.length == 11) {
       return this._removeProducts(productId).pipe(
         tap(null, (err) => {
